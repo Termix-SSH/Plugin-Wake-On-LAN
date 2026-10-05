@@ -4,9 +4,9 @@ import express, { type Router } from "express";
 import {
   createMockCtx,
   type MockPluginContext,
-} from "@termix/plugin-sdk/testing";
-import type { PluginManifest } from "@termix/plugin-sdk/manifest";
-import type { PluginHostSummary } from "@termix/plugin-sdk/backend";
+} from "@termix-ssh/plugin-sdk/testing";
+import type { PluginManifest } from "@termix-ssh/plugin-sdk/manifest";
+import type { PluginHostSummary } from "@termix-ssh/plugin-sdk/backend";
 import manifestJson from "../../manifest.json";
 
 export const manifest = manifestJson as unknown as PluginManifest;

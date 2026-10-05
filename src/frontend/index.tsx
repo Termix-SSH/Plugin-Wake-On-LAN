@@ -1,5 +1,5 @@
 import { Zap } from "lucide-react";
-import type { TermixApp } from "@termix/plugin-sdk/frontend";
+import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { hasMacAddress, macAddressOf, wakeHost } from "./host-action.js";
 
 export function activate(app: TermixApp): void {

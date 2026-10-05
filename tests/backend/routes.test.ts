@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import type { PluginHostSummary } from "@termix/plugin-sdk/backend";
+import type { PluginHostSummary } from "@termix-ssh/plugin-sdk/backend";
 import { startServer, type TestServer } from "./helpers.js";
 
 vi.mock("../../src/backend/magic-packet.js", async () => {

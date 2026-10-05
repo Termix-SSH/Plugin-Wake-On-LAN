@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createMockCtx } from "@termix/plugin-sdk/testing";
+import { createMockCtx } from "@termix-ssh/plugin-sdk/testing";
 import { createWakeOnLanService } from "../../src/backend/service.js";
 
 vi.mock("../../src/backend/magic-packet.js", async () => {

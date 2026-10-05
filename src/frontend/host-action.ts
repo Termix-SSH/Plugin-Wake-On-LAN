@@ -3,7 +3,7 @@ import type {
   PluginApiClient,
   PluginHostRecord,
   TermixApp,
-} from "@termix/plugin-sdk/frontend";
+} from "@termix-ssh/plugin-sdk/frontend";
 
 export function macAddressOf(
   host: Pick<PluginHostRecord, "pluginSettings"> | null | undefined,
