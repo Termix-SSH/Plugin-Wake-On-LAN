@@ -20,3 +20,9 @@ npm run format     # format the code with Prettier
 ## Permissions
 
 - `wake-on-lan.send`: send Wake-on-LAN packets. Admins and users have it by default.
+
+## Services
+
+Provides to other plugins:
+
+- `wake-on-lan.send`: wake a host

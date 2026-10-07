@@ -24,14 +24,6 @@ Wake-on-LAN sends a magic packet to wake a host up.
 
 <br />
 
-## Services
-
-Provides to other plugins:
-
-- `wake-on-lan.send`: wake a host
-
-<br />
-
 ## Sponsors
 
 Interested in a paid placement to support development? Email [mail@termix.site](mailto:mail@termix.site).
