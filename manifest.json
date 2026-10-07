@@ -10,6 +10,11 @@
   "repository": "https://github.com/Termix-SSH/Plugin-Wake-On-LAN",
   "category": "Networking",
   "icon": "Zap",
+  "features": [
+    "Wake a host in one click",
+    "Wake a host before a remote desktop connection",
+    "Wake a host from an automation"
+  ],
   "engine": {
     "termix": ">=26.10.0",
     "api": "1"
