@@ -8,6 +8,7 @@
   },
   "license": "Apache-2.0",
   "repository": "https://github.com/Termix-SSH/Plugin-Wake-On-LAN",
+  "docs": "https://docs.termix.site/plugins/wake-on-lan",
   "category": "Networking",
   "icon": "Zap",
   "features": [
@@ -17,7 +18,7 @@
   ],
   "engine": {
     "termix": ">=26.10.0",
-    "api": "1"
+    "api": "^1.2"
   },
   "capabilities": [
     "hosts:read",

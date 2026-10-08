@@ -14,6 +14,8 @@
 
 Wake-on-LAN sends a magic packet to wake a host up.
 
+Read the [docs](https://docs.termix.site/plugins/wake-on-lan) to set it up and use it.
+
 <br />
 
 ## Features

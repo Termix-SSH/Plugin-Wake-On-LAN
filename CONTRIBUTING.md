@@ -10,19 +10,6 @@ npm run validate   # check manifest.json
 npm run format     # format the code with Prettier
 ```
 
-## Settings
+## Docs
 
-### Host
-
-- **MAC address:** the network card to wake
-- **Broadcast address:** where to send the packet. Leave it blank for 255.255.255.255
-
-## Permissions
-
-- `wake-on-lan.send`: send Wake-on-LAN packets. Admins and users have it by default.
-
-## Services
-
-Provides to other plugins:
-
-- `wake-on-lan.send`: wake a host
+The docs for this plugin are in [docs/](docs/) and are published at https://docs.termix.site/plugins/wake-on-lan. Settings, permissions, services, environment variables and the API reference are made from `manifest.json` and the `@openapi` comments in the code, so keep those up to date instead of writing them by hand. See [writing docs](https://docs.termix.site/develop/docs).
