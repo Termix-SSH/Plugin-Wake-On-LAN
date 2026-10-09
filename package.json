@@ -33,6 +33,7 @@
   "peerDependencies": {
     "@termix-ssh/plugin-sdk": "^1.0.4",
     "express": "^5.2.1",
+    "react": "^19.2.8",
     "sonner": "^2.0.8"
   },
   "lint-staged": {

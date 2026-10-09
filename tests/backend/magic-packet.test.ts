@@ -94,6 +94,23 @@ describe("sendMagicPacket", () => {
     );
   });
 
+  it("rejects a broadcast address that is not IPv4", async () => {
+    await expect(
+      sendMagicPacket("aa:bb:cc:dd:ee:ff", "example.com"),
+    ).rejects.toThrow("Invalid broadcast address");
+  });
+
+  it("closes the socket when broadcast cannot be enabled", async () => {
+    (
+      mockSocket.setBroadcast as ReturnType<typeof vi.fn>
+    ).mockImplementationOnce(() => {
+      throw new Error("EBADF");
+    });
+    await expect(sendMagicPacket("aa:bb:cc:dd:ee:ff")).rejects.toThrow("EBADF");
+    expect(mockSocket.close).toHaveBeenCalled();
+    expect(mockSocket.send).not.toHaveBeenCalled();
+  });
+
   it("sends to 255.255.255.255 by default", async () => {
     await sendMagicPacket("aa:bb:cc:dd:ee:ff");
     expect(mockSocket.send).toHaveBeenCalledWith(

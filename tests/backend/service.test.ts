@@ -63,6 +63,38 @@ describe("wake-on-lan service", () => {
     );
   });
 
+  it("trims the MAC and broadcast address", async () => {
+    const mock = createMockCtx({
+      capabilities: ["hosts:read", "network:broadcast"],
+      hosts: [HOST],
+      actor: "user-1",
+    });
+    await mock.ctx.settings.setHost(1, "macAddress", " aa:bb:cc:dd:ee:ff ");
+    await mock.ctx.settings.setHost(1, "broadcastAddress", " 10.0.0.255 ");
+
+    const service = createWakeOnLanService(mock.ctx);
+    await service.wake(1);
+
+    expect(sendMagicPacket).toHaveBeenCalledWith(
+      "aa:bb:cc:dd:ee:ff",
+      "10.0.0.255",
+    );
+  });
+
+  it("rejects a broadcast address that is not an IPv4 address", async () => {
+    const mock = createMockCtx({
+      capabilities: ["hosts:read", "network:broadcast"],
+      hosts: [HOST],
+      actor: "user-1",
+    });
+    await mock.ctx.settings.setHost(1, "macAddress", "aa:bb:cc:dd:ee:ff");
+    await mock.ctx.settings.setHost(1, "broadcastAddress", "example.com");
+
+    const service = createWakeOnLanService(mock.ctx);
+    await expect(service.wake(1)).rejects.toThrow("Invalid broadcast address");
+    expect(sendMagicPacket).not.toHaveBeenCalled();
+  });
+
   it("rejects a host with no MAC address configured", async () => {
     const mock = createMockCtx({
       capabilities: ["hosts:read", "network:broadcast"],

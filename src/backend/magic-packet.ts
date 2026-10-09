@@ -1,4 +1,5 @@
 import dgram from "dgram";
+import { isIPv4 } from "net";
 
 const MAC_REGEX = /^([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}$/;
 
@@ -20,6 +21,10 @@ export function isValidMac(mac: string): boolean {
   return MAC_REGEX.test(mac);
 }
 
+export function isValidBroadcastAddress(address: string): boolean {
+  return isIPv4(address);
+}
+
 export function sendMagicPacket(
   mac: string,
   broadcastAddress = "255.255.255.255",
@@ -27,6 +32,9 @@ export function sendMagicPacket(
   return new Promise((resolve, reject) => {
     if (!isValidMac(mac)) {
       return reject(new Error("Invalid MAC address"));
+    }
+    if (!isValidBroadcastAddress(broadcastAddress)) {
+      return reject(new Error("Invalid broadcast address"));
     }
 
     const packet = buildMagicPacket(mac);
@@ -38,7 +46,12 @@ export function sendMagicPacket(
     });
 
     socket.bind(() => {
-      socket.setBroadcast(true);
+      try {
+        socket.setBroadcast(true);
+      } catch (err) {
+        socket.close();
+        return reject(err);
+      }
       socket.send(packet, 0, packet.length, 9, broadcastAddress, (err) => {
         socket.close();
         if (err) reject(err);
