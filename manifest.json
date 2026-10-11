@@ -39,10 +39,7 @@
         "name": "send",
         "titleKey": "permissions.send.title",
         "descriptionKey": "permissions.send.description",
-        "defaultRoles": [
-          "admin",
-          "user"
-        ]
+        "defaultRoles": ["admin", "user"]
       }
     ],
     "settings": {
@@ -70,9 +67,5 @@
     }
   },
   "locales": "locales",
-  "platforms": [
-    "linux",
-    "win32",
-    "darwin"
-  ]
+  "platforms": ["linux", "win32", "darwin"]
 }
