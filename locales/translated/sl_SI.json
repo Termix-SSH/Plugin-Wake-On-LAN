@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Prebudi",
+    "sent": "Paket za prebujanje prek omrežja je bil poslan",
+    "failed": "Pošiljanje paketa za prebujanje prek omrežja ni uspelo"
+  },
+  "permissions": {
+    "send": {
+      "title": "Pošiljanje paketov za prebujanje prek omrežja",
+      "description": "Prebudite gostitelja s pošiljanjem magičnega paketa na njegov MAC naslov."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC naslov",
+        "description": "Omrežni MAC naslov gostitelja, ki se uporablja za pošiljanje paketov za prebujanje prek omrežja.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Naslov za razširjeno pošiljanje",
+        "description": "Naslov za razširjeno pošiljanje podomrežja, na katerega se bo paket poslal. Pustite prazno za 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

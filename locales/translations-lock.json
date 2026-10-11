@@ -1,0 +1,13 @@
+{
+  "hostAction.title": "d6a3650e37b6",
+  "hostAction.sent": "7ac11acf62c4",
+  "hostAction.failed": "bc531b8c0515",
+  "permissions.send.title": "041373c7d076",
+  "permissions.send.description": "b1f29c2e6272",
+  "settings.host.macAddress.label": "9f9d1a2b038c",
+  "settings.host.macAddress.description": "cf75072ec760",
+  "settings.host.macAddress.placeholder": "9ee9a721a064",
+  "settings.host.broadcastAddress.label": "3d43111d5d5b",
+  "settings.host.broadcastAddress.description": "43a40e73251d",
+  "settings.host.broadcastAddress.placeholder": "a0ee8a6d7706"
+}

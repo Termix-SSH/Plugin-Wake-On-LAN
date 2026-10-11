@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Ärda",
+    "sent": "Wake-on-LAN-i pakett saadetud",
+    "failed": "Wake-on-LAN-i paketi saatmine ebaõnnestus"
+  },
+  "permissions": {
+    "send": {
+      "title": "Wake-on-LAN-i pakettide saatmine",
+      "description": "Ärda host, saatides selle MAC-aadressile maagilise paketi."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC-aadress",
+        "description": "Hosti võrgu MAC-aadress, mida kasutatakse Wake-on-LAN-i pakettide saatmiseks.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Laialeviiaadress",
+        "description": "Alamvõrgu laialeviiaadress, kuhu pakett saadetakse. Jäta tühjaks, kui kasutada 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

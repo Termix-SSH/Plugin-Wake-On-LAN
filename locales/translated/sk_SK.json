@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Prebudiť",
+    "sent": "Wake-on-LAN paket odoslaný",
+    "failed": "Nepodarilo sa odoslať Wake-on-LAN paket"
+  },
+  "permissions": {
+    "send": {
+      "title": "Odosielanie Wake-on-LAN paketov",
+      "description": "Prebudenie hosta odoslaním magického paketu na jeho MAC adresu."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC adresa",
+        "description": "Sieťová MAC adresa hosta, ktorá sa používa na odosielanie Wake-on-LAN paketov.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Vysielacia adresa",
+        "description": "Vysielacia adresa podsiete, na ktorú sa má paket odoslať. Ak je pole prázdne, použije sa 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

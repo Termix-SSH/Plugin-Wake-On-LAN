@@ -1,20 +1,20 @@
 {
   "hostAction": {
-    "title": "Uyan",
+    "title": "Uyandır",
     "sent": "Wake-on-LAN paketi gönderildi",
-    "failed": "Wake-on-LAN paketi gönderilemedi."
+    "failed": "Wake-on-LAN paketi gönderilemedi"
   },
   "permissions": {
     "send": {
       "title": "Wake-on-LAN paketleri gönder",
-      "description": "Bir sunucuyu, MAC adresine sihirli bir paket göndererek uyandırın."
+      "description": "MAC adresine bir sihirli paket göndererek bir ana bilgisayarı uyandırın."
     }
   },
   "settings": {
     "host": {
       "macAddress": {
         "label": "MAC adresi",
-        "description": "Wake-on-LAN paketlerini göndermek için kullanılan ana bilgisayarın ağ MAC adresi.",
+        "description": "Wake-on-LAN paketleri göndermek için kullanılan ana bilgisayarın ağ MAC adresi.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {

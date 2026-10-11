@@ -1,8 +1,8 @@
 {
   "hostAction": {
-    "title": "Våkne",
+    "title": "Vekk",
     "sent": "Wake-on-LAN-pakke sendt",
-    "failed": "Kunne ikke sende Wake-on-LAN-pakken"
+    "failed": "Kunne ikke sende Wake-on-LAN-pakke"
   },
   "permissions": {
     "send": {
@@ -14,12 +14,12 @@
     "host": {
       "macAddress": {
         "label": "MAC-adresse",
-        "description": "Vertens nettverks-MAC-adresse, som brukes til å sende Wake-on-LAN-pakker.",
+        "description": "Vertens nettverks-MAC-adresse, brukt til å sende Wake-on-LAN-pakker.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
         "label": "Kringkastingsadresse",
-        "description": "Subnett-kringkastingsadressen som pakken skal sendes til. La stå tomt for 255.255.255.255.",
+        "description": "Subnettets kringkastingsadresse som pakken skal sendes til. La stå tomt for 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

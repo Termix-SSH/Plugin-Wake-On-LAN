@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Probudi",
+    "sent": "Wake-on-LAN paket je poslan",
+    "failed": "Slanje Wake-on-LAN paketa nije uspjelo"
+  },
+  "permissions": {
+    "send": {
+      "title": "Slanje Wake-on-LAN paketa",
+      "description": "Probudi host slanjem magičnog paketa na njegovu MAC adresu."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC adresa",
+        "description": "Mrežna MAC adresa hosta, koristi se za slanje Wake-on-LAN paketa.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Broadcast adresa",
+        "description": "Broadcast adresa podmjere na koju će se paket poslati. Ostavi prazno za 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

@@ -2,11 +2,11 @@
   "hostAction": {
     "title": "Herätä",
     "sent": "Wake-on-LAN-paketti lähetetty",
-    "failed": "Wake-on-LAN-paketin lähettäminen epäonnistui."
+    "failed": "Wake-on-LAN-paketin lähettäminen epäonnistui"
   },
   "permissions": {
     "send": {
-      "title": "Lähetä Wake-on-LAN-paketit",
+      "title": "Lähetä Wake-on-LAN-paketteja",
       "description": "Herätä isäntä lähettämällä taikapaketti sen MAC-osoitteeseen."
     }
   },
@@ -14,12 +14,12 @@
     "host": {
       "macAddress": {
         "label": "MAC-osoite",
-        "description": "Isännän verkon MAC-osoite, jota käytetään Wake-on-LAN-pakettien lähettämiseen.",
+        "description": "Isännän verkkomac-osoite, jota käytetään Wake-on-LAN-pakettien lähettämiseen.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "Lähetysosoite",
-        "description": "Aliverkon lähetysosoite, johon paketti lähetetään. Jätä tyhjäksi, jos arvo on 255.255.255.255.",
+        "label": "Lähetysohjeistettu osoite",
+        "description": "Aliverkon laajalähetysosoite, johon paketti lähetetään. Jätä tyhjäksi, jos haluat käyttää osoitetta 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

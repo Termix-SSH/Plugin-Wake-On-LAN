@@ -1,25 +1,25 @@
 {
   "hostAction": {
-    "title": "Thức dậy",
-    "sent": "Gói tin Wake-on-LAN đã được gửi",
-    "failed": "Không thể gửi gói tin Wake-on-LAN."
+    "title": "Đánh thức",
+    "sent": "Đã gửi gói Wake-on-LAN",
+    "failed": "Không thể gửi gói Wake-on-LAN"
   },
   "permissions": {
     "send": {
-      "title": "Gửi gói tin Wake-on-LAN",
-      "description": "Đánh thức máy chủ bằng cách gửi gói tin đặc biệt đến địa chỉ MAC của nó."
+      "title": "Gửi gói Wake-on-LAN",
+      "description": "Đánh thức máy chủ bằng cách gửi gói tin magic đến địa chỉ MAC của nó."
     }
   },
   "settings": {
     "host": {
       "macAddress": {
         "label": "Địa chỉ MAC",
-        "description": "Địa chỉ MAC mạng của máy chủ, được sử dụng để gửi các gói tin Wake-on-LAN.",
+        "description": "Địa chỉ MAC mạng của máy chủ, dùng để gửi các gói Wake-on-LAN.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "Địa chỉ phát sóng",
-        "description": "Địa chỉ broadcast của mạng con để gửi gói tin đến. Để trống nếu là 255.255.255.255.",
+        "label": "Địa chỉ broadcast",
+        "description": "Địa chỉ broadcast của subnet để gửi gói tin. Để trống nếu muốn dùng 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

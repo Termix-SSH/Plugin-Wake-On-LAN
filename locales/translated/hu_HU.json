@@ -1,25 +1,25 @@
 {
   "hostAction": {
-    "title": "Ébred",
+    "title": "Ébresztés",
     "sent": "Wake-on-LAN csomag elküldve",
     "failed": "Nem sikerült elküldeni a Wake-on-LAN csomagot"
   },
   "permissions": {
     "send": {
       "title": "Wake-on-LAN csomagok küldése",
-      "description": "Ébressz fel egy gazdagépet egy mágikus csomag MAC-címére küldésével."
+      "description": "Egy gép felébresztése egy varázscsomag elküldésével a MAC-címére."
     }
   },
   "settings": {
     "host": {
       "macAddress": {
         "label": "MAC-cím",
-        "description": "A gazdagép hálózati MAC-címe, amelyet a Wake-on-LAN csomagok küldésére használnak.",
+        "description": "A gép hálózati MAC-címe, amelyet a Wake-on-LAN csomagok küldéséhez használunk.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "Sugárzási cím",
-        "description": "Az alhálózati szórási cím, ahová a csomagot küldeni kell. Hagyja üresen a 255.255.255.255 értéket.",
+        "label": "Broadcast cím",
+        "description": "A subnet broadcast címe, ahová a csomagot elküldjük. Hagyd üresen, ha 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

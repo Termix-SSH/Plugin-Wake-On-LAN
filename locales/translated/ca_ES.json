@@ -14,12 +14,12 @@
     "host": {
       "macAddress": {
         "label": "Adreça MAC",
-        "description": "L'adreça MAC de xarxa de l'amfitrió, que s'utilitza per enviar paquets Wake-on-LAN.",
+        "description": "L'adreça MAC de xarxa del host, utilitzada per enviar paquets Wake-on-LAN.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
         "label": "Adreça de difusió",
-        "description": "L'adreça de difusió de la subxarxa a la qual s'enviarà el paquet. Deixeu-ho en blanc si voleu 255.255.255.255.",
+        "description": "L'adreça de difusió de la subxarxa on enviar el paquet. Deixa-ho buit per utilitzar 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

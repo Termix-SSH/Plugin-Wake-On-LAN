@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Pamodināt",
+    "sent": "Wake-on-LAN pakete nosūtīta",
+    "failed": "Neizdevās nosūtīt Wake-on-LAN paketi"
+  },
+  "permissions": {
+    "send": {
+      "title": "Nosūtīt Wake-on-LAN paketes",
+      "description": "Pamodiniet hostu, nosūtot maģisko paketi tā MAC adresē."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC adrese",
+        "description": "Hosta tīkla MAC adrese, kas tiek izmantota Wake-on-LAN paketu nosūtīšanai.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Plašsārauts adrese",
+        "description": "Apakštīkla plašsārauta adrese, kurai nosūtīt paketi. Atstājiet tukšu, lai izmantotu 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

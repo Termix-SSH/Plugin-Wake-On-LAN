@@ -7,7 +7,7 @@
   "permissions": {
     "send": {
       "title": "Enviar paquetes Wake-on-LAN",
-      "description": "Despierte un host enviándole un paquete mágico a su dirección MAC."
+      "description": "Despierta un host enviando un paquete mágico a su dirección MAC."
     }
   },
   "settings": {
@@ -18,8 +18,8 @@
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "Discurso de radio",
-        "description": "La dirección de difusión de subred a la que se enviará el paquete. Deje en blanco para 255.255.255.255.",
+        "label": "Dirección de difusión",
+        "description": "La dirección de difusión de la subred a la que enviar el paquete. Déjalo en blanco para usar 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

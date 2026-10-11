@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Pabudinti",
+    "sent": "Wake-on-LAN paketas išsiųstas",
+    "failed": "Nepavyko išsiųsti Wake-on-LAN paketo"
+  },
+  "permissions": {
+    "send": {
+      "title": "Siųsti Wake-on-LAN paketus",
+      "description": "Pabudinti hostą išsiuntus magišką paketą jo MAC adresui."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "MAC adresas",
+        "description": "Hosto tinklo MAC adresas, naudojamas siunčiant Wake-on-LAN paketus.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Transliavimo adresas",
+        "description": "Po tinklo transliavimo adresas, kuriam siunčiamas paketas. Palikite tuščią, jei norite naudoti 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}

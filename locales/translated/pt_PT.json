@@ -1,25 +1,25 @@
 {
   "hostAction": {
-    "title": "Acordar",
+    "title": "Despertar",
     "sent": "Pacote Wake-on-LAN enviado",
-    "failed": "Falha ao enviar pacote Wake-on-LAN"
+    "failed": "Falha ao enviar o pacote Wake-on-LAN"
   },
   "permissions": {
     "send": {
       "title": "Enviar pacotes Wake-on-LAN",
-      "description": "Ative um host enviando um pacote mágico para o seu endereço MAC."
+      "description": "Despertar um host enviando um pacote mágico para o seu endereço MAC."
     }
   },
   "settings": {
     "host": {
       "macAddress": {
-        "label": "endereço MAC",
-        "description": "O endereço MAC de rede do host, utilizado para enviar pacotes Wake-on-LAN.",
+        "label": "Endereço MAC",
+        "description": "O endereço MAC de rede do host, usado para enviar pacotes Wake-on-LAN.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "discurso de transmissão",
-        "description": "Endereço de broadcast da sub-rede para a qual o pacote deve ser enviado. Deixe em branco para 255.255.255.255.",
+        "label": "Endereço de transmissão",
+        "description": "O endereço de transmissão da sub-rede para onde enviar o pacote. Deixe em branco para 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

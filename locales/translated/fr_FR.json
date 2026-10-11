@@ -1,13 +1,13 @@
 {
   "hostAction": {
-    "title": "Se réveiller",
+    "title": "Réveiller",
     "sent": "Paquet Wake-on-LAN envoyé",
     "failed": "Échec de l'envoi du paquet Wake-on-LAN"
   },
   "permissions": {
     "send": {
       "title": "Envoyer des paquets Wake-on-LAN",
-      "description": "Réveillez un hôte en envoyant un paquet magique à son adresse MAC."
+      "description": "Réveiller un hôte en envoyant un paquet magique à son adresse MAC."
     }
   },
   "settings": {
@@ -19,7 +19,7 @@
       },
       "broadcastAddress": {
         "label": "Adresse de diffusion",
-        "description": "Adresse de diffusion du sous-réseau vers laquelle envoyer le paquet. Laisser vide pour 255.255.255.255.",
+        "description": "L'adresse de diffusion du sous-réseau vers laquelle envoyer le paquet. Laissez vide pour 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
     }

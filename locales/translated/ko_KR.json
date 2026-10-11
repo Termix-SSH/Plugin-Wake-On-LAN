@@ -1,25 +1,25 @@
 {
   "hostAction": {
-    "title": "깨어 있다",
-    "sent": "Wake-on-LAN 패킷을 전송했습니다.",
-    "failed": "Wake-on-LAN 패킷 전송에 실패했습니다."
+    "title": "깨우기",
+    "sent": "Wake-on-LAN 패킷이 전송되었습니다",
+    "failed": "Wake-on-LAN 패킷 전송에 실패했습니다"
   },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN 패킷을 전송합니다.",
-      "description": "MAC 주소로 매직 패킷을 전송하여 호스트를 깨우세요."
+      "title": "Wake-on-LAN 패킷 전송",
+      "description": "MAC 주소로 매직 패킷을 보내 호스트를 깨웁니다."
     }
   },
   "settings": {
     "host": {
       "macAddress": {
         "label": "MAC 주소",
-        "description": "호스트의 네트워크 MAC 주소로, Wake-on-LAN 패킷을 전송하는 데 사용됩니다.",
+        "description": "Wake-on-LAN 패킷 전송에 사용되는 호스트의 네트워크 MAC 주소입니다.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
-        "label": "방송 주소",
-        "description": "패킷을 전송할 서브넷 브로드캐스트 주소입니다. 255.255.255.255를 입력하려면 비워 두십시오.",
+        "label": "브로드캐스트 주소",
+        "description": "패킷을 보낼 서브넷 브로드캐스트 주소입니다. 비워두면 255.255.255.255가 사용됩니다.",
         "placeholder": "192.168.1.255"
       }
     }

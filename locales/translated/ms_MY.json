@@ -1,0 +1,27 @@
+{
+  "hostAction": {
+    "title": "Bangunkan",
+    "sent": "Pakej Wake-on-LAN dihantar",
+    "failed": "Gagal menghantar pakej Wake-on-LAN"
+  },
+  "permissions": {
+    "send": {
+      "title": "Hantar pakej Wake-on-LAN",
+      "description": "Bangunkan hos dengan menghantar pakej ajaib ke alamat MACnya."
+    }
+  },
+  "settings": {
+    "host": {
+      "macAddress": {
+        "label": "Alamat MAC",
+        "description": "Alamat MAC rangkaian hos, digunakan untuk menghantar pakej Wake-on-LAN.",
+        "placeholder": "AA:BB:CC:DD:EE:FF"
+      },
+      "broadcastAddress": {
+        "label": "Alamat siaran",
+        "description": "Alamat siaran subreka untuk menghantar pakej. Biarkan kosong untuk 255.255.255.255.",
+        "placeholder": "192.168.1.255"
+      }
+    }
+  }
+}
