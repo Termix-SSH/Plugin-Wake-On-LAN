@@ -17,8 +17,8 @@ Pick Wake from the host's menu. With [Remote Desktop](/plugins/remote-desktop), 
 
 The packet is sent from the Termix server, so the server has to be on the same network as the machine.
 
-- **Termix in Docker.** Broadcast packets don't leave Docker's default bridge network. Run the container with `network_mode: host`, or use a macvlan network.
-- **Another subnet.** Most routers drop broadcasts between subnets. Set the subnet's broadcast address, and your router may need to forward it.
-- **Wrong MAC.** Use the MAC of the wired port that is set to wake.
+- Termix in Docker: Broadcast packets don't leave Docker's default bridge network. Run the container with `network_mode: host`, or use a macvlan network.
+- Another subnet: Most routers drop broadcasts between subnets. Set the subnet's broadcast address, and your router may need to forward it.
+- Wrong MAC: Use the MAC of the wired port that is set to wake.
 
 Who can wake hosts is set by the `wake-on-lan.send` permission. Admins and users have it at first.
