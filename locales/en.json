@@ -25,6 +25,7 @@
     }
   },
   "plugin": {
+    "name": "Wake-on-LAN",
     "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address."
   }
 }
