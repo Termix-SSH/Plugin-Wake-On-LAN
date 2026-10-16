@@ -23,5 +23,8 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address."
   }
 }
