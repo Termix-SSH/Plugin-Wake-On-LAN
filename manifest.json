@@ -1,7 +1,7 @@
 {
   "id": "wake-on-lan",
   "name": "Wake-on-LAN",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address.",
   "author": {
     "name": "Termix"
