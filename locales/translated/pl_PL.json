@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Wybudzaj uśpienie maszyny, wysyłając pakiet Wake-on-LAN na jej adres MAC."
   }
 }

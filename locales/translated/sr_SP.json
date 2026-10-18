@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Покрените спавајуће машине слањем Wake-on-LAN пакета на њихову MAC адресу."
   }
 }

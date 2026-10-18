@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "إيقاظ الأجهزة النائبة عن طريق إرسال حزمة Wake-on-LAN إلى عنوان MAC الخاص بها."
   }
 }

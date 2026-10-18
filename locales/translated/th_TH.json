@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "ปลุกเครื่องที่หลับใหลโดยการส่งแพ็กเก็ต Wake-on-LAN ไปยังที่อยู่ MAC ของเครื่อง"
   }
 }

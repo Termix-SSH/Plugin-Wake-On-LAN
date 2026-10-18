@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "העברת מכונות ישנות על ידי שליחת חבילת Wake-on-LAN לכתובת ה-MAC שלהן."
   }
 }

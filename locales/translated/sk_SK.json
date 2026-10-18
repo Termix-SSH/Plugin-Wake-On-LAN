@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Prebúdzajte spiacie počítače odoslaním Wake-on-LAN paketu na ich MAC adresu."
   }
 }

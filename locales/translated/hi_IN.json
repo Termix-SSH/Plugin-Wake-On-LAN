@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "अपने MAC पते पर Wake-on-LAN पैकेट भेजकर सो रहे मशीनों को जगाएं।"
   }
 }

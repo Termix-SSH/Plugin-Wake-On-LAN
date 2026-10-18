@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Desperta equips en suspensió enviant un paquet Wake-on-LAN a la seva adreça MAC."
   }
 }

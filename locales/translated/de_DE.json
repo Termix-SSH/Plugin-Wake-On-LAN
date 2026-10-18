@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Wecken Sie schlafende Geräte, indem Sie ein Wake-on-LAN-Paket an deren MAC-Adresse senden."
   }
 }

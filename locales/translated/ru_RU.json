@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Пробуждение спящих устройств путём отправки пакета Wake-on-LAN на их MAC-адрес."
   }
 }

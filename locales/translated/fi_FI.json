@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Herätä nukkuvat koneet lähettämällä Wake-on-LAN-paketti niiden MAC-osoitteeseen."
   }
 }

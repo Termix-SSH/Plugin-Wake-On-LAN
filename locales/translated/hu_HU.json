@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Ébreszd fel az alvó gépeket egy Wake-on-LAN csomag elküldésével a MAC-címükre."
   }
 }

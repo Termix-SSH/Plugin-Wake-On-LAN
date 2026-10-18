@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Khởi động các máy đang ngủ bằng cách gửi gói Wake-on-LAN đến địa chỉ MAC của chúng."
   }
 }

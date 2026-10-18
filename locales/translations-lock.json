@@ -9,5 +9,7 @@
   "settings.host.macAddress.placeholder": "9ee9a721a064",
   "settings.host.broadcastAddress.label": "3d43111d5d5b",
   "settings.host.broadcastAddress.description": "43a40e73251d",
-  "settings.host.broadcastAddress.placeholder": "a0ee8a6d7706"
+  "settings.host.broadcastAddress.placeholder": "a0ee8a6d7706",
+  "plugin.name": "f5138d959567",
+  "plugin.description": "07a93a462996"
 }

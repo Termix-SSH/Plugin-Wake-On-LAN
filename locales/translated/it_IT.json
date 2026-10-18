@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Riattiva le macchine in sospensione inviando un pacchetto Wake-on-LAN al loro indirizzo MAC."
   }
 }

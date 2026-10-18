@@ -23,5 +23,9 @@
         "placeholder": "192.168.1.255"
       }
     }
+  },
+  "plugin": {
+    "name": "Wake-on-LAN",
+    "description": "Wek slapende masjiene deur ’n Wake-on-LAN-pakket na hul MAC-adres te stuur."
   }
 }
