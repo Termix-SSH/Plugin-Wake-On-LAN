@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "MAC アドレスに Wake-on-LAN パケットを送信して、スリープ中のマシンを起動します。"
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "まだMACアドレスが設定されているホストはありません。ホストの設定から追加してください。"
   }
 }

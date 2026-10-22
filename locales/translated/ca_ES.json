@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Desperta equips en suspensió enviant un paquet Wake-on-LAN a la seva adreça MAC."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Cap host no té una adreça MAC encara. Afegeix-ne una a la configuració d'un host."
   }
 }

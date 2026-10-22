@@ -27,5 +27,9 @@
   "plugin": {
     "name": "网络唤醒",
     "description": "向机器的 MAC 地址发送网络唤醒数据包，唤醒处于休眠状态的机器。"
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "暂无主机配置了 MAC 地址。请在主机设置中添加。"
   }
 }

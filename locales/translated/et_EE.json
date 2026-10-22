@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Äratab uinuvad masinad, saates nende MAC-aadressile Wake-on-LAN-i paketi."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Ühelgi perel pole veel MAC-aadressi. Lisa see hosti seadetes."
   }
 }

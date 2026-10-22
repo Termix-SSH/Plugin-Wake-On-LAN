@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Herätä nukkuvat koneet lähettämällä Wake-on-LAN-paketti niiden MAC-osoitteeseen."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Yhdenkään isäntälaitteen MAC-osoitetta ei ole vielä määritetty. Lisää se isäntälaitteen asetuksista."
   }
 }

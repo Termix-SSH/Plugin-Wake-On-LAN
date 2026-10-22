@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "העברת מכונות ישנות על ידי שליחת חבילת Wake-on-LAN לכתובת ה-MAC שלהן."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "עדיין אין לשרתים כתובת MAC. הוסף אחת בהגדרות של שרת."
   }
 }

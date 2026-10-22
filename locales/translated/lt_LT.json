@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Pabudinkite miegančius kompiuterius, siųsdami Wake-on-LAN paketą jų MAC adresui."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Nėra jokių serverių su MAC adresu. Pridėkite vieną serverio nustatymuose."
   }
 }

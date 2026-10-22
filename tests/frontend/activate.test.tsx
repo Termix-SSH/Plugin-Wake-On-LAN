@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import {
   renderWithApp,
   type RenderedPluginApp,
@@ -29,5 +30,35 @@ describe(`${manifest.id} activate`, () => {
     const app = await renderWithApp(plugin, { manifest, locales });
     await app.deactivate();
     expect(app.registered.hostActions()).toEqual([]);
+  });
+});
+
+describe("wake dashboard card", () => {
+  it("wakes a host with a MAC address", async () => {
+    const api = { post: vi.fn(async () => ({ data: {} })) };
+    rendered = await renderWithApp(plugin, {
+      manifest,
+      locales,
+      api: api as never,
+      permissions: ["wake-on-lan.send"],
+      hosts: [
+        {
+          id: "2",
+          name: "desk",
+          ip: "10.0.0.2",
+          port: 22,
+          pluginSettings: {
+            "wake-on-lan": { macAddress: "AA:BB:CC:DD:EE:FF" },
+          },
+        },
+        { id: "3", name: "nas", ip: "10.0.0.3", port: 22 },
+      ],
+    });
+    expect(rendered.registered.dashboardCards()).toEqual(["wake-on-lan"]);
+    rendered.renderDashboardCard("wake-on-lan");
+    expect(await screen.findByText("desk")).toBeTruthy();
+    expect(screen.queryByText("nas")).toBeNull();
+    fireEvent.click(screen.getByLabelText("Wake"));
+    await waitFor(() => expect(api.post).toHaveBeenCalledWith("/host/2/wake"));
   });
 });

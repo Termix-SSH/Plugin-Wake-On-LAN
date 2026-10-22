@@ -27,5 +27,9 @@
   "plugin": {
     "name": "網路喚醒",
     "description": "向機器的 MAC 位址傳送網路喚醒封包，喚醒處於休眠狀態的機器。"
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "目前沒有任何主機設定 MAC 位址。請前往主機設定中新增。"
   }
 }

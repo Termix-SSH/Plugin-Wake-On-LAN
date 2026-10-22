@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "No hosts have a MAC address yet. Add one in a host's settings."
   }
 }

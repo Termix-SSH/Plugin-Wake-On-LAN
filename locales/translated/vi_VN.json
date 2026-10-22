@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Khởi động các máy đang ngủ bằng cách gửi gói Wake-on-LAN đến địa chỉ MAC của chúng."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Chưa có máy chủ nào có địa chỉ MAC. Hãy thêm địa chỉ trong cài đặt của máy chủ."
   }
 }

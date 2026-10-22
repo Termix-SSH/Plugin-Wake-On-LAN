@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Vekk sovende maskiner ved å sende et Wake-on-LAN-pakke til MAC-adressen deres."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Ingen vertsmaskiner har ennå en MAC-adresse. Legg til én i innstillingene for en vertsmaskin."
   }
 }

@@ -1,6 +1,7 @@
 import { Zap } from "lucide-react";
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { hasMacAddress, macAddressOf, wakeHost } from "./host-action.js";
+import { WakeCard } from "./WakeCard";
 
 export function activate(app: TermixApp): void {
   app.registerHostAction({
@@ -11,6 +12,15 @@ export function activate(app: TermixApp): void {
     order: 50,
     when: (host) => hasMacAddress(host),
     run: (host) => wakeHost(app.api, app.t, String(host.id)),
+  });
+
+  app.registerDashboardCard({
+    id: "wake-on-lan",
+    titleKey: "card.title",
+    defaultPanel: "side",
+    defaultHeight: 180,
+    frame: "framed",
+    component: WakeCard,
   });
 
   // A saved host's MAC address, for plugins that send their own wake packet.

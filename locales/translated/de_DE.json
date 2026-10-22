@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Wecken Sie schlafende Geräte, indem Sie ein Wake-on-LAN-Paket an deren MAC-Adresse senden."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Kein Host verfügt noch über eine MAC-Adresse. Fügen Sie eine in den Einstellungen eines Hosts hinzu."
   }
 }

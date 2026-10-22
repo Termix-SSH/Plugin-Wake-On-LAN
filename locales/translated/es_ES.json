@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Despierta máquinas en suspensión enviando un paquete Wake-on-LAN a su dirección MAC."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Aún no hay hosts con dirección MAC. Añade una en la configuración de un host."
   }
 }

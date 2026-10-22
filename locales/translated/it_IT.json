@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Riattiva le macchine in sospensione inviando un pacchetto Wake-on-LAN al loro indirizzo MAC."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Nessun host ha ancora un indirizzo MAC. Aggiungine uno nelle impostazioni di un host."
   }
 }

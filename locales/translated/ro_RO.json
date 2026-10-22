@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Repornește mașinile în repaus prin trimiterea unui pachet Wake-on-LAN către adresa lor MAC."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Niciun host nu are încă o adresă MAC. Adăugați una în setările unui host."
   }
 }

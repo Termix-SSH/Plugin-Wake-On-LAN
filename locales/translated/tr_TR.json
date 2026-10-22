@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Uyuyan makineleri MAC adreslerine Wake-on-LAN paketi göndererek uyandırın."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Henüz hiçbir ana bilgisayarın MAC adresi yok. Bir ana bilgisayarın ayarlarından ekleyin."
   }
 }

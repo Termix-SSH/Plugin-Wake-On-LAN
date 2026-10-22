@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Wybudzaj uśpienie maszyny, wysyłając pakiet Wake-on-LAN na jej adres MAC."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Żaden host nie ma jeszcze adresu MAC. Dodaj go w ustawieniach hosta."
   }
 }

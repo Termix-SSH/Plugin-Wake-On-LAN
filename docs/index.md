@@ -13,6 +13,10 @@ Pick Wake from the host's menu. With [Remote Desktop](/plugins/remote-desktop), 
 
 [Automations](/plugins/automations) has a Wake a host step. Pair it with a schedule to bring machines up in the morning.
 
+## On the dashboard
+
+Add the Wake-on-LAN card in the dashboard's edit mode. It lists every host with a MAC address and wakes one with a click.
+
 ## It doesn't wake
 
 The packet is sent from the Termix server, so the server has to be on the same network as the machine.

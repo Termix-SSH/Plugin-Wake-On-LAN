@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "MAC 주소로 Wake-on-LAN 패킷을 전송하여 절전 중인 기기를 깨웁니다."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "아직 MAC 주소가 설정된 호스트가 없습니다. 호스트 설정에서 추가하세요."
   }
 }

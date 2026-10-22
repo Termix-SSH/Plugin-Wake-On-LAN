@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Prebúdzajte spiacie počítače odoslaním Wake-on-LAN paketu na ich MAC adresu."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Žiadny hostiteľ zatiaľ nemá MAC adresu. Pridajte ju v nastaveniach hostiteľa."
   }
 }

@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "Wek slapende masjiene deur ’n Wake-on-LAN-pakket na hul MAC-adres te stuur."
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "Geen gasheer het nog 'n MAC-adres nie. Voeg een by in 'n gasheer se instellings."
   }
 }

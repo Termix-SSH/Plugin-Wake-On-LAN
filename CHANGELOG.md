@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Wake-on-LAN dashboard card: wake any host with a MAC address in one click
+
 ## 1.0.2
 
 ### Changed

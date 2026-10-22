@@ -27,5 +27,9 @@
   "plugin": {
     "name": "Wake-on-LAN",
     "description": "अपने MAC पते पर Wake-on-LAN पैकेट भेजकर सो रहे मशीनों को जगाएं।"
+  },
+  "card": {
+    "title": "Wake-on-LAN",
+    "empty": "अभी तक किसी होस्ट का MAC पता नहीं है। किसी होस्ट की सेटिंग्स में एक जोड़ें।"
   }
 }

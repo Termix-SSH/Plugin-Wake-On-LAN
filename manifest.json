@@ -1,7 +1,7 @@
 {
   "id": "wake-on-lan",
   "name": "Wake-on-LAN",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address.",
   "author": {
     "name": "Termix"
@@ -15,7 +15,8 @@
   "features": [
     "Wake a host in one click",
     "Wake a host before a remote desktop connection",
-    "Wake a host from an automation"
+    "Wake a host from an automation",
+    "A dashboard card to wake any host with a MAC address"
   ],
   "engine": {
     "termix": ">=26.10.0",
@@ -65,7 +66,14 @@
           }
         ]
       }
-    }
+    },
+    "dashboardCards": [
+      {
+        "id": "wake-on-lan",
+        "titleKey": "card.title",
+        "icon": "Zap"
+      }
+    ]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]
