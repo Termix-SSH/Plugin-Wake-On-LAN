@@ -13,6 +13,8 @@
 - Custom wake, shutdown and check commands with `{{ DEVICE_IP }}` and `{{ DEVICE_MAC }}`
 - Commands can run over SSH, or on the Termix server once an admin allows it
 - Wake and shut down on a cron schedule, with an alert if a run fails
+- Wake, shut down and sleep from Automations, Fleets, the CLI, the phone app and the command palette through Termix actions
+- Power state shows as a status tile on the dashboard and host page
 - SecureON passwords, wake port 7 or 9, broadcast worked out from the LAN IP and netmask
 - Device description, a clickable link that can open after waking, and a confirm step
 - Wake all for a folder

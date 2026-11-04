@@ -338,6 +338,14 @@ export function registerWakeOnLanRoutes(
     res.status(201).json({ hostId: host.id });
   });
 
+  // Buttons go through the same gate as every surface, so they land in history.
+  const runAction = async (actionId: string, hostId: number): Promise<void> => {
+    const outcome = await ctx.operations.run(actionId, { hostId });
+    if (outcome.status !== "success") {
+      throw new PowerError(outcome.error ?? outcome.status);
+    }
+  };
+
   const action =
     (run: (hostId: number) => Promise<void>) =>
     async (req: Request, res: Response) => {
@@ -378,7 +386,7 @@ export function registerWakeOnLanRoutes(
   router.post(
     "/devices/:hostId/wake",
     ctx.rbac.require("send") as never,
-    action((hostId) => power.wake(hostId)),
+    action((hostId) => runAction("wake-on-lan.wake", hostId)),
   );
 
   /**
@@ -405,7 +413,7 @@ export function registerWakeOnLanRoutes(
   router.post(
     "/devices/:hostId/shutdown",
     ctx.rbac.require("shutdown") as never,
-    action((hostId) => power.shutdown(hostId)),
+    action((hostId) => runAction("wake-on-lan.shutdown", hostId)),
   );
 
   /**
@@ -432,7 +440,7 @@ export function registerWakeOnLanRoutes(
   router.post(
     "/devices/:hostId/sleep",
     ctx.rbac.require("shutdown") as never,
-    action((hostId) => power.sleep(hostId)),
+    action((hostId) => runAction("wake-on-lan.sleep", hostId)),
   );
 
   /**

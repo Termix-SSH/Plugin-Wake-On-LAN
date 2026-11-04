@@ -1,4 +1,5 @@
 import type { Router } from "express";
+import { registerOperations } from "./operations.js";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { createCommandRunner } from "./commands.js";
 import { createDeviceStore } from "./devices.js";
@@ -39,6 +40,7 @@ export async function activate(ctx: PluginContext) {
   });
 
   ctx.services.provide("wake-on-lan.send", createWakeOnLanService(power));
+  registerOperations(ctx, store, power, status);
   registerWakeOnLanRoutes(ctx.http.router<Router>(), ctx, {
     store,
     status,

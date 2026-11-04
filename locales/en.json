@@ -208,5 +208,19 @@
     "name": "Power",
     "description": "Machines with their status and power buttons.",
     "pick": "Machines to show. Pick none to show all."
+  },
+  "operations": {
+    "wake": {
+      "title": "Wake machine"
+    },
+    "shutdown": {
+      "title": "Shut down machine"
+    },
+    "sleep": {
+      "title": "Put machine to sleep"
+    },
+    "powerState": {
+      "title": "Power state"
+    }
   }
 }

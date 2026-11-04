@@ -25,7 +25,7 @@
     "Wake a host from an automation"
   ],
   "engine": {
-    "termix": ">=26.10.6",
+    "termix": ">=26.11.1-0",
     "api": "^1.13"
   },
   "capabilities": [
@@ -39,6 +39,7 @@
     "network:probe",
     "network:serve",
     "notify:send",
+    "operations:provide",
     "process:spawn",
     "secrets:own",
     "ssh:connect",
@@ -141,7 +142,95 @@
         "openFrom": ["rail", "palette"]
       }
     ],
-    "uses": ["homepage.widgets"]
+    "uses": ["homepage.widgets"],
+    "operations": {
+      "actions": [
+        {
+          "id": "wake-on-lan.wake",
+          "titleKey": "operations.wake.title",
+          "icon": "Power",
+          "scope": "host",
+          "risk": "change",
+          "permission": "send",
+          "hostAccess": "connect",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enablePower": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "wake-on-lan.shutdown",
+          "titleKey": "operations.shutdown.title",
+          "icon": "PowerOff",
+          "scope": "host",
+          "risk": "change",
+          "permission": "shutdown",
+          "hostAccess": "connect",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enablePower": true
+            }
+          },
+          "surfaces": {
+            "assistant": true
+          }
+        },
+        {
+          "id": "wake-on-lan.sleep",
+          "titleKey": "operations.sleep.title",
+          "icon": "Moon",
+          "scope": "host",
+          "risk": "change",
+          "permission": "shutdown",
+          "hostAccess": "connect",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enablePower": true
+            }
+          },
+          "surfaces": {
+            "assistant": true
+          }
+        },
+        {
+          "id": "wake-on-lan.power-state",
+          "titleKey": "operations.powerState.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "send",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enablePower": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "wake-on-lan.power",
+          "titleKey": "operations.powerState.title",
+          "read": "wake-on-lan.power-state",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60,
+          "fix": "wake-on-lan.wake"
+        }
+      ]
+    }
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]
