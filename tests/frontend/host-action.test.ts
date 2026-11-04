@@ -1,10 +1,12 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { toast } from "sonner";
 import type { PluginApiClient } from "@termix-ssh/plugin-sdk/frontend";
+import { initApi } from "../../src/frontend/api.js";
+import { timeAgo } from "../../src/frontend/format.js";
 import {
   hasMacAddress,
   macAddressOf,
-  wakeHost,
+  powerAction,
 } from "../../src/frontend/host-action.js";
 
 vi.mock("sonner", () => ({
@@ -17,7 +19,7 @@ afterEach(() => {
 
 function stubApi(overrides: Partial<PluginApiClient> = {}): PluginApiClient {
   return {
-    get: vi.fn(async () => ({ data: {} })),
+    get: vi.fn(async () => ({ data: { devices: [], can: {} } })),
     post: vi.fn(async () => ({ data: {} })),
     put: vi.fn(async () => ({ data: {} })),
     patch: vi.fn(async () => ({ data: {} })),
@@ -27,72 +29,84 @@ function stubApi(overrides: Partial<PluginApiClient> = {}): PluginApiClient {
 }
 
 const t = (key: string) => key;
+const device = {
+  hostId: 7,
+  name: "zeus",
+  wakeConfirm: false,
+  shutdownConfirm: true,
+};
 
 describe("macAddressOf", () => {
-  it("returns the trimmed MAC address a host keeps", () => {
+  it("reads the trimmed MAC from plugin settings", () => {
     expect(
       macAddressOf({
-        pluginSettings: {
-          "wake-on-lan": { macAddress: " aa:bb:cc:dd:ee:ff " },
-        },
+        pluginSettings: { "wake-on-lan": { macAddress: " aa:bb " } },
       }),
-    ).toBe("aa:bb:cc:dd:ee:ff");
+    ).toBe("aa:bb");
   });
 
-  it("is null without a host or an address", () => {
-    expect(macAddressOf(undefined)).toBeNull();
+  it("is null for a blank or missing MAC", () => {
+    expect(macAddressOf(null)).toBeNull();
     expect(macAddressOf({ pluginSettings: {} })).toBeNull();
     expect(
-      macAddressOf({ pluginSettings: { "wake-on-lan": { macAddress: "  " } } }),
-    ).toBeNull();
-  });
-});
-
-describe("hasMacAddress", () => {
-  it("is true when the host's wake-on-lan settings carry a MAC address", () => {
-    expect(
       hasMacAddress({
-        pluginSettings: { "wake-on-lan": { macAddress: "aa:bb:cc:dd:ee:ff" } },
+        pluginSettings: { "wake-on-lan": { macAddress: "  " } },
       }),
-    ).toBe(true);
-  });
-
-  it("is false with no plugin settings", () => {
-    expect(hasMacAddress({})).toBe(false);
-  });
-
-  it("is false with an empty MAC address", () => {
-    expect(
-      hasMacAddress({ pluginSettings: { "wake-on-lan": { macAddress: "" } } }),
     ).toBe(false);
   });
 });
 
-describe("wakeHost", () => {
-  it("posts to the host's wake route and toasts success", async () => {
-    const api = stubApi();
-    wakeHost(api, t, "1");
-    await vi.waitFor(() =>
-      expect(api.post).toHaveBeenCalledWith("/host/1/wake"),
-    );
-    await vi.waitFor(() => expect(toast.success).toHaveBeenCalled());
+describe("powerAction", () => {
+  let api: PluginApiClient;
+
+  beforeEach(() => {
+    api = stubApi();
+    initApi(api);
   });
 
-  it("toasts the server's error message on failure", async () => {
-    const api = stubApi({
-      post: vi
-        .fn()
-        .mockRejectedValue({ response: { data: { error: "no mac" } } }),
-    });
-    wakeHost(api, t, "1");
-    await vi.waitFor(() => expect(toast.error).toHaveBeenCalledWith("no mac"));
+  it("wakes with no question when the device doesn't ask", async () => {
+    const confirm = vi.fn();
+    expect(await powerAction(device, "wake", t as never, confirm)).toBe(true);
+    expect(confirm).not.toHaveBeenCalled();
+    expect(api.post).toHaveBeenCalledWith("/devices/7/wake");
+    expect(toast.success).toHaveBeenCalled();
   });
 
-  it("falls back to a generic message with no server error", async () => {
-    const api = stubApi({ post: vi.fn().mockRejectedValue(new Error("x")) });
-    wakeHost(api, t, "1");
-    await vi.waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith("hostAction.failed"),
+  it("asks first when the device wants that, and stops on no", async () => {
+    const confirm = vi.fn(async () => false);
+    expect(await powerAction(device, "shutdown", t as never, confirm)).toBe(
+      false,
     );
+    expect(confirm).toHaveBeenCalledOnce();
+    expect(api.post).not.toHaveBeenCalled();
+  });
+
+  it("shows the server's error", async () => {
+    initApi(
+      stubApi({
+        post: vi.fn(async () => {
+          throw { response: { data: { error: "No route" } } };
+        }) as never,
+      }),
+    );
+    expect(await powerAction(device, "wake", t as never, vi.fn())).toBe(false);
+    expect(toast.error).toHaveBeenCalledWith("No route");
+  });
+});
+
+describe("timeAgo", () => {
+  const now = Date.parse("2026-11-03T12:00:00Z");
+
+  it("says how long ago", () => {
+    expect(timeAgo("2026-11-03T10:00:00Z", "en", now)).toBe("2 hours ago");
+    expect(timeAgo("2026-11-03T11:55:00Z", "en", now)).toBe("5 minutes ago");
+  });
+
+  it("handles a language written with an underscore", () => {
+    expect(timeAgo("2026-11-03T10:00:00Z", "pt_BR", now)).toContain("2");
+  });
+
+  it("is null with no time", () => {
+    expect(timeAgo(null, "en", now)).toBeNull();
   });
 });

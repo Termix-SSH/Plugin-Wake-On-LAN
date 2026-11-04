@@ -1,7 +1,7 @@
 {
   "name": "@termix-plugin/wake-on-lan",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "build": "termix-plugin build",
@@ -10,7 +10,8 @@
     "validate": "termix-plugin validate",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "migrations": "termix-plugin migrations"
   },
   "dependencies": {
     "lucide-react": "^1.33.0"
@@ -18,12 +19,14 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.0",
-    "@termix-ssh/plugin-sdk": "^1.0.19",
+    "@termix-ssh/plugin-sdk": "^1.0.22",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "better-sqlite3": "^13.0.3",
+    "drizzle-orm": "^0.45.4",
     "husky": "^9.1.7",
     "i18next": "^26.4.2",
     "jsdom": "^30.0.1",
@@ -33,7 +36,8 @@
     "vitest": "^4.1.11"
   },
   "peerDependencies": {
-    "@termix-ssh/plugin-sdk": "^1.0.5",
+    "@termix-ssh/plugin-sdk": "^1.0.22",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
     "react": "^19.2.8",
     "sonner": "^2.0.8"

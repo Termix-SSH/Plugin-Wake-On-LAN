@@ -1,44 +1,45 @@
-import { Zap } from "lucide-react";
+import { Power } from "lucide-react";
 import {
-  useHosts,
-  usePermission,
-  usePluginApi,
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, ListRowAction, PanelList } from "@termix-ssh/plugin-sdk/ui";
-import { macAddressOf, wakeHost } from "./host-action.js";
+import { Button, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { timeAgo } from "./format";
+import { PowerButton, StatusDot } from "./PowerButton";
+import { useDevices } from "./status-store";
 
-/** Dashboard card: every host with a MAC address, with a Wake button. */
-export function WakeCard(_props: DashboardCardProps) {
-  const { t } = useTranslation();
-  const api = usePluginApi();
-  const allowed = usePermission("send");
-  const { hosts } = useHosts();
-  const wakeable = hosts.filter((host) => macAddressOf(host) !== null);
+/** Dashboard card: every device with its status and power button. */
+export function WakeCard({ isVisible, shell }: DashboardCardProps) {
+  const { t, language } = useTranslation();
+  const { devices, can } = useDevices(isVisible !== false);
   return (
     <PanelList
       empty={
-        <p className="p-3 text-xs text-muted-foreground">{t("card.empty")}</p>
+        <div className="flex flex-col items-start gap-2 p-3">
+          <p className="text-xs text-muted-foreground">{t("card.empty")}</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => shell.openSingletonTab("power")}
+          >
+            <Power className="size-3.5" />
+            {t("tab.title")}
+          </Button>
+        </div>
       }
     >
-      {wakeable.map((host, index) => (
+      {devices.map((device, index) => (
         <ListRow
-          key={host.id}
+          key={device.hostId}
           stripe={index}
-          title={host.name || host.ip}
-          meta={macAddressOf(host)}
-          actions={
-            allowed ? (
-              <ListRowAction
-                label={t("hostAction.title")}
-                tone="brand"
-                onClick={() => wakeHost(api, t, String(host.id))}
-              >
-                <Zap />
-              </ListRowAction>
-            ) : undefined
+          icon={<StatusDot status={device.status} />}
+          title={device.name}
+          meta={
+            device.status === "online"
+              ? device.address
+              : (timeAgo(device.lastSeenAt, language) ?? device.address)
           }
+          trailing={<PowerButton device={device} can={can} />}
         />
       ))}
     </PanelList>

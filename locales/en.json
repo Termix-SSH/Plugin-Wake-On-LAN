@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Wake",
-    "sent": "Wake-on-LAN packet sent",
-    "failed": "Failed to send Wake-on-LAN packet"
-  },
   "permissions": {
     "send": {
-      "title": "Send Wake-on-LAN packets",
-      "description": "Wake a host by sending a magic packet to its MAC address."
+      "title": "Wake machines",
+      "description": "Wake a host from the Power tab, its menu or an automation."
+    },
+    "shutdown": {
+      "title": "Shut down machines",
+      "description": "Shut down a host or put it to sleep."
+    },
+    "scan": {
+      "title": "Scan networks",
+      "description": "Look for machines from an SSH host you can connect to."
+    },
+    "serverCommands": {
+      "title": "Use the Termix server",
+      "description": "Save commands that run on the Termix server, and scan from it. This can run anything the server can."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Power",
+        "description": "Show this host on the Power tab."
+      },
       "macAddress": {
         "label": "MAC address",
-        "description": "The host's network MAC address, used to send Wake-on-LAN packets.",
+        "description": "The MAC address of the network port that wakes this host.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,180 @@
         "description": "The subnet broadcast address to send the packet to. Leave blank for 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Status check interval",
+        "description": "Seconds between status checks. Checks through a relay host use SSH each time."
+      },
+      "allowServerCommands": {
+        "label": "Allow commands on the Termix server",
+        "description": "Let saved ping, wake and shutdown commands run on the Termix server. Only users with the Use the Termix server permission can save them."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address."
+    "description": "Wake, shut down and track your machines from one power dashboard."
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "No hosts have a MAC address yet. Add one in a host's settings."
+    "title": "Power",
+    "empty": "No machines yet. Open the Power tab to add one or scan your network."
+  },
+  "tab": {
+    "title": "Power",
+    "status": "{{online}} of {{total}} online",
+    "add": "Add",
+    "scan": "Scan",
+    "search": "Search machines",
+    "failed": "Could not load your machines",
+    "empty": "No machines yet",
+    "emptyHint": "Add a machine, or scan your network to find them.",
+    "noMatch": "Nothing matches your search",
+    "noFolder": "No folder",
+    "wakeAll": "Wake all",
+    "wakeAllConfirm": "Wake {{count}} machines in {{folder}}?"
+  },
+  "status": {
+    "unknown": "Not checked yet",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Waking",
+    "stopping": "Shutting down",
+    "failed": "Did not respond in time"
+  },
+  "power": {
+    "wake": "Wake",
+    "shutdown": "Shut down",
+    "sleep": "Sleep",
+    "settings": "Power settings",
+    "confirm": {
+      "wake": "Wake {{name}}?",
+      "shutdown": "Shut down {{name}}?",
+      "sleep": "Put {{name}} to sleep?"
+    },
+    "sent": {
+      "wake": "Waking {{name}}",
+      "shutdown": "Shutting down {{name}}",
+      "sleep": "Putting {{name}} to sleep"
+    },
+    "failed": {
+      "wake": "Failed to wake this machine",
+      "shutdown": "Failed to shut down this machine",
+      "sleep": "Failed to put this machine to sleep"
+    }
+  },
+  "device": {
+    "title": "Machine",
+    "general": "General",
+    "name": "Name",
+    "mac": "MAC address",
+    "noMac": "No MAC address",
+    "lanIp": "LAN IP",
+    "lanIpHint": "The address on the machine's own network, if it differs from the host's address.",
+    "netmask": "Netmask",
+    "netmaskHint": "Used to work out the broadcast address.",
+    "description": "Description",
+    "link": "Link",
+    "linkHint": "Makes the name clickable, like a link to a dashboard.",
+    "autoOpen": "Open link after waking",
+    "autoOpenHint": "Opens the link once the machine is online.",
+    "lastChange": "Last change",
+    "status": "Status",
+    "statusFrom": "Check from",
+    "statusFromHint": "Use an SSH host on the same network when Termix can't reach the machine.",
+    "ports": "Ports",
+    "portsHint": "Open ports show on the card. The Termix server only checks ports, so add one the machine answers on.",
+    "pingCommand": "Custom check",
+    "pingCommandHint": "Optional. Exit code 0 means the machine is on. {{ip}} and {{mac}} are filled in.",
+    "wake": "Wake",
+    "wakeMode": "Wake with",
+    "wakeMagic": "Wake-on-LAN packet",
+    "commandMode": "Custom command",
+    "wakeFrom": "Send from",
+    "wakeFromHint": "The packet has to start on the machine's own network. Pick an SSH host there if Termix isn't.",
+    "fromServer": "Termix server",
+    "broadcast": "Broadcast address",
+    "broadcastHint": "Leave blank to work it out from the LAN IP and netmask.",
+    "wakePort": "Port",
+    "secureOn": "SecureON password",
+    "secureOnHint": "Optional. 4 or 6 characters, or a value written like a MAC address.",
+    "secretSaved": "Saved, leave blank to keep",
+    "wakeCommand": "Wake command",
+    "placeholders": "{{ip}} and {{mac}} are filled in.",
+    "timeout": "Timeout (seconds)",
+    "timeoutHint": "How long to wait before marking it as not responding.",
+    "cron": "Schedule (cron)",
+    "cronHint": "Optional. Five fields, in the server's time zone.",
+    "confirm": "Ask before running",
+    "shutdown": "Shutdown",
+    "shutdownMode": "Shut down with",
+    "shutdownNone": "Nothing",
+    "shutdownSsh": "This host's SSH login",
+    "shutdownSshHint": "Needs root or passwordless sudo on Linux and macOS.",
+    "shutdownCommand": "Shutdown command",
+    "commands": "Custom commands",
+    "commandTarget": "Run commands on",
+    "commandTargetHint": "Commands run with the login of the person who saved them.",
+    "targetHost": "This host, over SSH",
+    "targetRelay": "Another host, over SSH",
+    "targetServer": "The Termix server",
+    "commandRelay": "Host",
+    "pickHost": "Pick a host",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Use Sleep-On-LAN",
+    "solHint": "Needs the Sleep-On-LAN tool on the machine with an HTTP listener.",
+    "solPort": "Port",
+    "solUser": "Username",
+    "solPassword": "Password",
+    "test": "Test",
+    "testShutdownConfirm": "This runs the real command and may shut down {{name}}. Continue?",
+    "testFailed": "The test failed",
+    "saveFirst": "Save first",
+    "exitCode": "Exit code {{code}}",
+    "loadFailed": "Could not load this machine",
+    "saveFailed": "Could not save"
+  },
+  "add": {
+    "title": "Add machine",
+    "host": "Host",
+    "newHost": "New host",
+    "hostHint": "If this machine is already a host, pick it so it doesn't show up twice. Its address stays as it is."
+  },
+  "scan": {
+    "title": "Scan network",
+    "where": "Where to scan",
+    "from": "Scan from",
+    "fromHint": "Pick an SSH host on that network. It uses nmap if it has it, or else ping.",
+    "range": "Range",
+    "rangeHint": "Leave blank for that host's own private networks.",
+    "rangeNeeded": "Needed when scanning from the Termix server.",
+    "start": "Scan",
+    "scanning": "Scanning...",
+    "note": "A scan finds machines on the network. It can't tell if Wake-on-LAN is turned on for them.",
+    "none": "Nothing found",
+    "failed": "The scan failed",
+    "addFailed": "Could not add that machine",
+    "noMac": "No MAC found",
+    "newHost": "New host",
+    "attachTo": "Attach to {{name}}",
+    "attach": "Attach",
+    "add": "Add",
+    "added": "Done",
+    "choose": "Where this machine goes",
+    "match": {
+      "mac": "Same MAC as {{name}}",
+      "ip": "Same IP as {{name}}",
+      "name": "Same name as {{name}}"
+    },
+    "hint": {
+      "bridge": "Almost nothing was found. A Termix container on a bridge network can't see your LAN, so scan from an SSH host instead.",
+      "no-mac": "Some machines have no MAC. Run the scan with nmap as root, or check the host can see them."
+    }
+  },
+  "widget": {
+    "name": "Power",
+    "description": "Machines with their status and power buttons.",
+    "pick": "Machines to show. Pick none to show all."
   }
 }

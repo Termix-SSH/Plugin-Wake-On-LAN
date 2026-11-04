@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "tables": {
+    "devices": {
+      "columns": {
+        "id": {
+          "type": "id",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "hostId": {
+          "type": "refHost",
+          "notNull": true
+        },
+        "lanIp": {
+          "type": "varchar",
+          "length": 64,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "netmask": {
+          "type": "varchar",
+          "length": 64,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "description": {
+          "type": "text"
+        },
+        "linkUrl": {
+          "type": "text"
+        },
+        "autoOpenLink": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": false
+        },
+        "wakeFrom": {
+          "type": "integer"
+        },
+        "wakePort": {
+          "type": "integer",
+          "notNull": true,
+          "defaultValue": 9
+        },
+        "wakeMode": {
+          "type": "varchar",
+          "length": 12,
+          "notNull": true,
+          "defaultValue": "magic"
+        },
+        "wakeCommandSealed": {
+          "type": "text"
+        },
+        "wakeTimeout": {
+          "type": "integer",
+          "notNull": true,
+          "defaultValue": 120
+        },
+        "wakeConfirm": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": false
+        },
+        "wakeCron": {
+          "type": "varchar",
+          "length": 120,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "secureOnSealed": {
+          "type": "text"
+        },
+        "statusFrom": {
+          "type": "integer"
+        },
+        "ports": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "pingCommandSealed": {
+          "type": "text"
+        },
+        "shutdownMode": {
+          "type": "varchar",
+          "length": 12,
+          "notNull": true,
+          "defaultValue": "none"
+        },
+        "shutdownCommandSealed": {
+          "type": "text"
+        },
+        "shutdownTimeout": {
+          "type": "integer",
+          "notNull": true,
+          "defaultValue": 120
+        },
+        "shutdownConfirm": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": true
+        },
+        "shutdownCron": {
+          "type": "varchar",
+          "length": 120,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "commandTarget": {
+          "type": "varchar",
+          "length": 12,
+          "notNull": true,
+          "defaultValue": "host"
+        },
+        "commandRelay": {
+          "type": "integer"
+        },
+        "solEnabled": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": false
+        },
+        "solPort": {
+          "type": "integer",
+          "notNull": true,
+          "defaultValue": 8009
+        },
+        "solUser": {
+          "type": "varchar",
+          "length": 120,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "solPasswordSealed": {
+          "type": "text"
+        },
+        "status": {
+          "type": "varchar",
+          "length": 12,
+          "notNull": true,
+          "defaultValue": "unknown"
+        },
+        "openPorts": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "statusChangedAt": {
+          "type": "timestamp"
+        },
+        "lastSeenAt": {
+          "type": "timestamp"
+        },
+        "lastWakeRunAt": {
+          "type": "timestamp"
+        },
+        "lastShutdownRunAt": {
+          "type": "timestamp"
+        },
+        "updatedBy": {
+          "type": "varchar",
+          "length": 255
+        }
+      },
+      "indexes": [
+        {
+          "name": "idx_p_wake_on_lan_devices_host",
+          "columns": [
+            "hostId"
+          ],
+          "unique": true
+        }
+      ]
+    }
+  }
+}

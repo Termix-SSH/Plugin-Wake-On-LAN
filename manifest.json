@@ -1,8 +1,8 @@
 {
   "id": "wake-on-lan",
   "name": "Wake-on-LAN",
-  "version": "1.1.0",
-  "description": "Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address.",
+  "version": "1.2.0",
+  "description": "Wake, shut down and track your machines from one power dashboard.",
   "author": {
     "name": "Termix"
   },
@@ -13,20 +13,37 @@
   "category": "Networking",
   "icon": "Zap",
   "features": [
-    "Wake a host in one click",
+    "A Power tab with every machine, its status, last seen time and a power button",
+    "Wake from the Termix server, or from any SSH host on the machine's network",
+    "Shut down over SSH, with Sleep-On-LAN or with your own command",
+    "Check status by port, ping or your own command",
+    "Find machines with a network scan and attach them to existing hosts",
+    "Wake and shut down on a schedule with cron",
+    "Turn on over the network with a SecureON password",
+    "A dashboard card and homepage widget with power buttons",
     "Wake a host before a remote desktop connection",
-    "Wake a host from an automation",
-    "A dashboard card to wake any host with a MAC address"
+    "Wake a host from an automation"
   ],
   "engine": {
-    "termix": ">=26.10.0",
-    "api": "^1.2"
+    "termix": ">=26.10.6",
+    "api": "^1.13"
   },
   "capabilities": [
+    "credentials:use",
+    "db:own",
     "hosts:read",
+    "hosts:write",
+    "kv:own",
     "network:broadcast",
+    "network:outbound",
+    "network:probe",
     "network:serve",
-    "ui:surface"
+    "notify:send",
+    "process:spawn",
+    "secrets:own",
+    "ssh:connect",
+    "ui:surface",
+    "users:impersonate"
   ],
   "provides": [
     {
@@ -42,10 +59,32 @@
         "titleKey": "permissions.send.title",
         "descriptionKey": "permissions.send.description",
         "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "shutdown",
+        "titleKey": "permissions.shutdown.title",
+        "descriptionKey": "permissions.shutdown.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "scan",
+        "titleKey": "permissions.scan.title",
+        "descriptionKey": "permissions.scan.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "server-commands",
+        "titleKey": "permissions.serverCommands.title",
+        "descriptionKey": "permissions.serverCommands.description",
+        "defaultRoles": ["admin"]
       }
     ],
     "settings": {
       "host": {
+        "enableKey": "enablePower",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
         "editorGroup": "top",
         "editorOrder": 90,
         "fields": [
@@ -55,25 +94,54 @@
             "labelKey": "settings.host.macAddress.label",
             "descriptionKey": "settings.host.macAddress.description",
             "placeholderKey": "settings.host.macAddress.placeholder",
-            "defaultable": false
+            "defaultable": false,
+            "requires": "enablePower"
           },
           {
             "key": "broadcastAddress",
             "type": "string",
             "labelKey": "settings.host.broadcastAddress.label",
             "descriptionKey": "settings.host.broadcastAddress.description",
-            "placeholderKey": "settings.host.broadcastAddress.placeholder"
+            "placeholderKey": "settings.host.broadcastAddress.placeholder",
+            "requires": "enablePower"
           }
         ]
-      }
+      },
+      "admin": [
+        {
+          "key": "statusInterval",
+          "type": "number",
+          "labelKey": "settings.admin.statusInterval.label",
+          "descriptionKey": "settings.admin.statusInterval.description",
+          "min": 15,
+          "max": 3600,
+          "default": 60
+        },
+        {
+          "key": "allowServerCommands",
+          "type": "boolean",
+          "labelKey": "settings.admin.allowServerCommands.label",
+          "descriptionKey": "settings.admin.allowServerCommands.description",
+          "default": false
+        }
+      ]
     },
     "dashboardCards": [
       {
         "id": "wake-on-lan",
         "titleKey": "card.title",
-        "icon": "Zap"
+        "icon": "Power"
       }
-    ]
+    ],
+    "tabs": [
+      {
+        "id": "power",
+        "titleKey": "tab.title",
+        "icon": "Power",
+        "openFrom": ["rail", "palette"]
+      }
+    ],
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

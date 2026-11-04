@@ -1,9 +1,12 @@
 import { toast } from "sonner";
 import type {
-  PluginApiClient,
+  ConfirmRequest,
   PluginHostRecord,
   TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
+import type { DeviceSummary } from "../shared/types";
+import { errorMessage, runAction, type PowerAction } from "./api";
+import { pokeStatus, reloadDevices } from "./status-store";
 
 export function macAddressOf(
   host: Pick<PluginHostRecord, "pluginSettings"> | null | undefined,
@@ -20,21 +23,33 @@ export function hasMacAddress(
   return macAddressOf(host) !== null;
 }
 
-function errorMessage(error: unknown, fallback: string): string {
-  const message = (error as { response?: { data?: { error?: string } } })
-    ?.response?.data?.error;
-  return message ?? fallback;
-}
-
-export function wakeHost(
-  api: PluginApiClient,
+/** Asks first when the device wants that, then runs the action with toasts. */
+export async function powerAction(
+  device: Pick<
+    DeviceSummary,
+    "hostId" | "name" | "wakeConfirm" | "shutdownConfirm"
+  >,
+  action: PowerAction,
   t: TermixApp["t"],
-  hostId: string,
-): void {
-  void api
-    .post(`/host/${hostId}/wake`)
-    .then(() => toast.success(t("hostAction.sent")))
-    .catch((error: unknown) => {
-      toast.error(errorMessage(error, t("hostAction.failed")));
+  confirm: (options: ConfirmRequest) => Promise<boolean>,
+): Promise<boolean> {
+  const ask = action === "wake" ? device.wakeConfirm : device.shutdownConfirm;
+  if (ask) {
+    const ok = await confirm({
+      title: t(`power.confirm.${action}`, { name: device.name }),
+      confirmLabel: t(`power.${action}`),
+      destructive: action !== "wake",
     });
+    if (!ok) return false;
+  }
+  try {
+    await runAction(device.hostId, action);
+    toast.success(t(`power.sent.${action}`, { name: device.name }));
+    await reloadDevices();
+    pokeStatus();
+    return true;
+  } catch (error) {
+    toast.error(errorMessage(error, t(`power.failed.${action}`)));
+    return false;
+  }
 }

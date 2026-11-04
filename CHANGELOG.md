@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Power tab: every machine with its status, last change, open ports and a power button
+- Send the wake packet from any SSH host on the machine's network, for when Termix is somewhere else
+- Keep a host's own address and set a separate LAN IP, so a Tailscale host needs no second entry
+- Network scan from an SSH host or the Termix server, with results matched to your hosts
+- Shut down over SSH, with Sleep-On-LAN, or with your own command
+- Status from ports, ping through an SSH host, or your own command
+- Custom wake, shutdown and check commands with `{{ DEVICE_IP }}` and `{{ DEVICE_MAC }}`
+- Commands can run over SSH, or on the Termix server once an admin allows it
+- Wake and shut down on a cron schedule, with an alert if a run fails
+- SecureON passwords, wake port 7 or 9, broadcast worked out from the LAN IP and netmask
+- Device description, a clickable link that can open after waking, and a confirm step
+- Wake all for a folder
+- Homepage widget with status and power buttons
+- Shut down button on the host row
+- Shut down, scan and server command permissions
+
+### Changed
+
+- The dashboard card shows status and shuts machines down as well as waking them
+- The Wake-on-LAN host settings now sit behind a Power switch, turned on for hosts that already have a MAC
+- Automations and Mobile wake a host with its saved method
+
 ## 1.1.0
 
 ### Added
