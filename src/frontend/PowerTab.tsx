@@ -212,11 +212,10 @@ export function PowerTab({
           title={t("tab.title")}
           status={t("tab.status", { online, total: devices.length })}
           actions={
-            <>
+            <div className="flex items-center gap-2">
               {can.scan && (
                 <Button
                   variant="outline"
-                  size="sm"
                   onClick={() => setView({ kind: "scan" })}
                 >
                   <Radar className="size-3.5" />
@@ -227,7 +226,7 @@ export function PowerTab({
                 label={t("tab.add")}
                 onClick={() => setView({ kind: "add" })}
               />
-            </>
+            </div>
           }
           toolbar={
             <>
