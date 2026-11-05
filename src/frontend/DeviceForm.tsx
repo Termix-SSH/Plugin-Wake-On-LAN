@@ -477,6 +477,20 @@ export function DeviceForm({
           )}
 
           <SectionCard
+            title={t("device.bmc")}
+            icon={<Power className="size-3.5" />}
+          >
+            <div className="flex flex-col gap-3 py-3">
+              <SwitchRow
+                label={t("device.useBmc")}
+                description={t("device.useBmcHint")}
+                checked={form.useBmc}
+                onChange={(useBmc) => set({ useBmc })}
+              />
+            </div>
+          </SectionCard>
+
+          <SectionCard
             title={t("device.sleep")}
             icon={<Moon className="size-3.5" />}
           >

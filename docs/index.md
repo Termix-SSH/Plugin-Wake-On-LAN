@@ -66,6 +66,8 @@ Shut down with one of these:
 
 Sleep-On-LAN needs the [Sleep-On-LAN](https://github.com/SR-G/sleep-on-lan) tool on the machine, with an HTTP listener like `HTTP:8009`. When a relay is set, the request comes from the relay. Termix blocks requests to private addresses from the server, so without a relay an admin has to allow the address.
 
+Use the BMC when there is one is off by default. Turn it on for a device that has a BMC linked in the Out-of-band plugin. Wake then powers the machine on through the BMC instead of a packet, which also works when Wake-on-LAN is off in the BIOS. Shut down uses the BMC to ask the machine to shut down, but only when no other shutdown method is set. If the host has no BMC, or Out-of-band is off, the other methods are used. You need edit access to the host, and the power permission in Out-of-band.
+
 After a wake or a shutdown the card shows Waking or Shutting down until the status changes or the timeout runs out. Link makes the name clickable, and Open link after waking opens it once the machine is up, if your browser allows it.
 
 ## Custom commands

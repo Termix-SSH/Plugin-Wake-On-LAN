@@ -13,6 +13,7 @@ import {
   isValidMac,
   sendMagicPacket,
 } from "./magic-packet.js";
+import type { Bmc } from "./bmc.js";
 import type { Relay } from "./relay.js";
 import type { StatusTracker } from "./status.js";
 
@@ -82,6 +83,7 @@ export function createPowerManager(
   relay: Relay,
   commands: CommandRunner,
   status: StatusTracker,
+  bmc?: Bmc,
 ): PowerManager {
   async function hostOf(hostId: number): Promise<PluginHostSummary> {
     const host = await ctx.hosts.get(hostId);
@@ -151,6 +153,24 @@ export function createPowerManager(
     }
   }
 
+  /** Opt in per device, and only when Out-of-band has a BMC for the host. */
+  async function viaBmc(
+    host: PluginHostSummary,
+    row: DeviceRow,
+    action: "on" | "graceful-shutdown",
+  ): Promise<boolean> {
+    if (!bmc || !row.useBmc) return false;
+    if (!(await bmc.available(host.id, row.updatedBy))) return false;
+    try {
+      await bmc.set(host.id, row.updatedBy, action);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      throw new PowerError(message || "The BMC did not accept the change");
+    }
+    ctx.log.info(`Asked the BMC of host ${host.id} to ${action}`);
+    return true;
+  }
+
   async function sendPacket(host: PluginHostSummary, row: DeviceRow) {
     const mac = await macOf(host.id);
     if (!mac || !isValidMac(mac)) {
@@ -213,7 +233,9 @@ export function createPowerManager(
     async wake(hostId, options = {}) {
       const host = await hostOf(hostId);
       const row = await store.read(hostId);
-      if (row.wakeMode === "custom") {
+      if (await viaBmc(host, row, "on")) {
+        // The BMC powered it on, no packet needed
+      } else if (row.wakeMode === "custom") {
         const result = await runSaved(host, row, row.wakeCommandSealed);
         if (!result.ok) {
           throw new PowerError(
@@ -234,7 +256,12 @@ export function createPowerManager(
     async shutdown(hostId, options = {}) {
       const host = await hostOf(hostId);
       const row = await store.read(hostId);
-      if (row.shutdownMode === "ssh") {
+      if (
+        row.shutdownMode === "none" &&
+        (await viaBmc(host, row, "graceful-shutdown"))
+      ) {
+        // Asked the BMC for a clean shutdown
+      } else if (row.shutdownMode === "ssh") {
         await sshShutdown(host);
       } else if (row.shutdownMode === "custom") {
         const result = await runSaved(host, row, row.shutdownCommandSealed);

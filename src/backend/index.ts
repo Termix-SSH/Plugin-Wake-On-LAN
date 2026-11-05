@@ -7,6 +7,7 @@ import { createPowerManager } from "./power.js";
 import { createRelay } from "./relay.js";
 import { registerWakeOnLanRoutes } from "./routes.js";
 import { createScheduler, SCHEDULE_TICK_MS } from "./schedule.js";
+import { createBmc } from "./bmc.js";
 import { createWakeOnLanService } from "./service.js";
 import { createStatusTracker, FAST_TICK_MS, TICK_MS } from "./status.js";
 import { devices } from "./tables.js";
@@ -31,7 +32,14 @@ export async function activate(ctx: PluginContext) {
   const relay = createRelay(ctx);
   const commands = createCommandRunner(ctx, relay);
   const status = createStatusTracker(ctx, store, relay, commands);
-  const power = createPowerManager(ctx, store, relay, commands, status);
+  const power = createPowerManager(
+    ctx,
+    store,
+    relay,
+    commands,
+    status,
+    createBmc(ctx),
+  );
   const scheduler = createScheduler(ctx, store, power, status);
 
   await status.load();

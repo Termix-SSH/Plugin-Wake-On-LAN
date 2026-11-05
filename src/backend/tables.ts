@@ -52,6 +52,8 @@ export const devices = defineTable(
     solUser: varchar(120).notNull().default(""),
     solPasswordSealed: text(),
 
+    useBmc: boolean().notNull().default(false),
+
     status: varchar(12).notNull().default("unknown"),
     openPorts: varchar(255).notNull().default(""),
     statusChangedAt: timestamp(),

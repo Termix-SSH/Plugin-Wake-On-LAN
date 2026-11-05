@@ -54,6 +54,7 @@ export interface DeviceRow {
   solPort: number;
   solUser: string;
   solPasswordSealed: string | null;
+  useBmc: boolean;
   status: string;
   openPorts: string;
   statusChangedAt: string | null;
@@ -94,6 +95,7 @@ export function defaultRow(hostId: number): DeviceRow {
     solPort: 8009,
     solUser: "",
     solPasswordSealed: null,
+    useBmc: false,
     status: "unknown",
     openPorts: "",
     statusChangedAt: null,
@@ -190,6 +192,7 @@ export async function toConfig(
     solEnabled: row.solEnabled,
     solPort: row.solPort,
     solUser: row.solUser,
+    useBmc: row.useBmc === true,
   };
 }
 
@@ -338,6 +341,7 @@ export async function toPatch(
     solEnabled: input.solEnabled === true,
     solPort: input.solPort,
     solUser: input.solUser.trim(),
+    useBmc: input.useBmc === true,
     updatedBy: userId,
   };
   if (input.secureOn !== undefined) {

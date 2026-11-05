@@ -136,6 +136,11 @@
         "solPasswordSealed": {
           "type": "text"
         },
+        "useBmc": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": false
+        },
         "status": {
           "type": "varchar",
           "length": 12,

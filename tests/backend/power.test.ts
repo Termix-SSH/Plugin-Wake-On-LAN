@@ -7,6 +7,7 @@ import {
   type DeviceStore,
 } from "../../src/backend/devices.js";
 import { buildMagicPacket } from "../../src/backend/magic-packet.js";
+import type { Bmc } from "../../src/backend/bmc.js";
 import { createPowerManager, wakeScript } from "../../src/backend/power.js";
 import type { Relay } from "../../src/backend/relay.js";
 import type { StatusTracker } from "../../src/backend/status.js";
@@ -18,7 +19,11 @@ function sealed(value: string) {
   return createFakeContext().ctx.secrets.seal(value);
 }
 
-function setup(row: Partial<DeviceRow>, sshResult = { code: 0, stderr: "" }) {
+function setup(
+  row: Partial<DeviceRow>,
+  sshResult = { code: 0, stderr: "" },
+  bmc?: Bmc,
+) {
   const fake = createFakeContext({
     hosts: [hostOf(1, "zeus"), hostOf(2, "apollo")],
     actor: "presser",
@@ -55,6 +60,7 @@ function setup(row: Partial<DeviceRow>, sshResult = { code: 0, stderr: "" }) {
     relay,
     createCommandRunner(ctx, relay),
     status,
+    bmc,
   );
   return { ctx, fake, relay, status, exec, power };
 }
@@ -202,5 +208,88 @@ describe("sleep", () => {
   it("refuses when Sleep-On-LAN is off", async () => {
     const { power } = setup({});
     await expect(power.sleep(1)).rejects.toThrow(/Sleep-On-LAN is off/);
+  });
+});
+
+describe("BMC", () => {
+  const bmcOf = (has: boolean) => {
+    const set = vi.fn(async () => {});
+    const bmc: Bmc = { available: vi.fn(async () => has), set };
+    return { bmc, set };
+  };
+
+  it("powers on through the BMC instead of a packet when opted in", async () => {
+    const { bmc, set } = bmcOf(true);
+    const { power, status } = setup(
+      { useBmc: true, updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await power.wake(1);
+    expect(set).toHaveBeenCalledWith(1, "owner", "on");
+    expect(status.expect).toHaveBeenCalled();
+  });
+
+  it("ignores the BMC when the device did not opt in", async () => {
+    const { bmc, set } = bmcOf(true);
+    const { ctx, power, relay } = setup(
+      { wakeFrom: 2, updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await ctx.settings.setHost(1, "macAddress", MAC);
+    await power.wake(1);
+    expect(set).not.toHaveBeenCalled();
+    expect(relay.run).toHaveBeenCalled();
+  });
+
+  it("falls back to the packet when the host has no BMC", async () => {
+    const { bmc, set } = bmcOf(false);
+    const { ctx, power, relay } = setup(
+      { useBmc: true, wakeFrom: 2, updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await ctx.settings.setHost(1, "macAddress", MAC);
+    await power.wake(1);
+    expect(set).not.toHaveBeenCalled();
+    expect(relay.run).toHaveBeenCalled();
+  });
+
+  it("asks the BMC to shut down only when no other method is set", async () => {
+    const { bmc, set } = bmcOf(true);
+    const none = setup(
+      { useBmc: true, shutdownMode: "none", updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await none.power.shutdown(1);
+    expect(set).toHaveBeenCalledWith(1, "owner", "graceful-shutdown");
+    expect(none.exec).not.toHaveBeenCalled();
+
+    set.mockClear();
+    const ssh = setup(
+      { useBmc: true, shutdownMode: "ssh", updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await ssh.power.shutdown(1);
+    expect(set).not.toHaveBeenCalled();
+    expect(ssh.exec).toHaveBeenCalled();
+  });
+
+  it("shows the BMC error instead of falling back", async () => {
+    const bmc: Bmc = {
+      available: async () => true,
+      set: async () => {
+        throw new Error("You need edit access to the linked host");
+      },
+    };
+    const { power } = setup(
+      { useBmc: true, wakeFrom: 2, updatedBy: "owner" },
+      undefined,
+      bmc,
+    );
+    await expect(power.wake(1)).rejects.toThrow(/edit access/);
   });
 });

@@ -37,6 +37,8 @@ export interface DeviceConfig {
   solEnabled: boolean;
   solPort: number;
   solUser: string;
+  // Use the Out-of-band plugin for wake and shutdown when the host has a BMC
+  useBmc: boolean;
 }
 
 /** A save. A password left out stays as it is, an empty one clears it. */

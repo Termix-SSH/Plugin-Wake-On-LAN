@@ -47,6 +47,7 @@ function input(patch: Partial<DeviceInput> = {}): DeviceInput {
     solEnabled: false,
     solPort: 8009,
     solUser: "",
+    useBmc: false,
     ...patch,
   };
 }

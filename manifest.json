@@ -233,5 +233,15 @@
     }
   },
   "locales": "locales",
-  "platforms": ["linux", "win32", "darwin"]
+  "platforms": ["linux", "win32", "darwin"],
+  "optionalDependencies": {
+    "out-of-band": "^1.0.0"
+  },
+  "requires": [
+    {
+      "service": "out-of-band.power",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ]
 }

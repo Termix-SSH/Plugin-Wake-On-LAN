@@ -115,7 +115,8 @@ export function registerWakeOnLanRoutes(
       wakeConfirm: row?.wakeConfirm ?? false,
       shutdownConfirm: row?.shutdownConfirm ?? true,
       canWake: row?.wakeMode === "custom" || isValidMac(mac.trim()),
-      canShutdown: (row?.shutdownMode ?? "none") !== "none",
+      canShutdown:
+        (row?.shutdownMode ?? "none") !== "none" || row?.useBmc === true,
       canSleep: row?.solEnabled ?? false,
       canEdit: await allowed("edit", host.id),
     };
