@@ -15,6 +15,7 @@ import {
   ViewToggle,
   useConfirm,
   type DataColumn,
+  PanelFrame,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { DeviceSummary } from "../shared/types";
 import { AddDeviceForm } from "./AddDeviceForm";
@@ -172,7 +173,7 @@ export function PowerTab({
   ];
 
   const card = (device: DeviceSummary) => (
-    <div className="flex h-full flex-col gap-2 border border-border bg-card p-3 text-xs">
+    <div className="flex h-full flex-col gap-2 p-3 text-xs">
       <div className="flex min-w-0 items-center gap-2 text-sm">
         <StatusDot status={device.status} />
         {name(device)}
@@ -205,8 +206,8 @@ export function PowerTab({
   );
 
   return (
-    <div className="h-full w-full overflow-hidden">
-      <div className="flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden">
+    <PanelFrame>
+      <>
         <PanelShell
           icon={<Power className="size-4" />}
           title={t("tab.title")}
@@ -257,11 +258,11 @@ export function PowerTab({
               />
             )
           ) : (
-            <div className="flex flex-col gap-4 p-3">
+            <div className="flex flex-col">
               {groups.map(([folder, items]) => (
-                <section key={folder} className="flex flex-col gap-2">
+                <section key={folder} className="flex flex-col">
                   {(folder || groups.length > 1) && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 border-b border-border px-3 py-1.5">
                       <h3 className="min-w-0 flex-1 truncate text-xs font-medium text-muted-foreground">
                         {folder || t("tab.noFolder")}
                       </h3>
@@ -293,7 +294,7 @@ export function PowerTab({
             </div>
           )}
         </PanelShell>
-      </div>
-    </div>
+      </>
+    </PanelFrame>
   );
 }

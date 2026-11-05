@@ -1,29 +1,36 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Loader2, Moon, Power } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, useConfirm } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  StatusDot as SdkStatusDot,
+  useConfirm,
+  type StatusTone,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { DeviceSummary } from "../shared/types";
 import type { Allowed, PowerAction } from "./api";
 import { powerAction } from "./host-action";
 
-const TONE: Record<DeviceSummary["status"], string> = {
-  online: "bg-emerald-500",
-  offline: "bg-muted-foreground/50",
-  unknown: "bg-muted-foreground/30",
-  waking: "bg-amber-500 animate-pulse",
-  stopping: "bg-amber-500 animate-pulse",
-  failed: "bg-destructive",
+// Offline is idle here: a powered off machine is normal, not an error.
+const TONE: Record<DeviceSummary["status"], StatusTone> = {
+  online: "ok",
+  offline: "idle",
+  unknown: "idle",
+  waking: "warn",
+  stopping: "warn",
+  failed: "bad",
 };
 
 export function StatusDot({ status }: { status: DeviceSummary["status"] }) {
   const { t } = useTranslation();
   return (
-    <span
-      className={`inline-block size-2 shrink-0 rounded-full ${TONE[status]}`}
-      title={t(`status.${status}`)}
-      role="img"
-      aria-label={t(`status.${status}`)}
-    />
+    <span role="img" aria-label={t(`status.${status}`)} className="inline-flex">
+      <SdkStatusDot
+        tone={TONE[status]}
+        pulse={status === "waking" || status === "stopping"}
+        title={t(`status.${status}`)}
+      />
+    </span>
   );
 }
 

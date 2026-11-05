@@ -10,6 +10,7 @@ import {
   SectionCard,
   SelectField,
   TextField,
+  Select2,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ScanResponse, ScanResult } from "../shared/types";
 import { addDevice, attachResult, errorMessage, scan } from "./api";
@@ -91,6 +92,7 @@ export function ScanView({ onClose }: { onClose: () => void }) {
 
   return (
     <InlineView
+      stacked
       open
       onOpenChange={(open) => {
         if (!open) onClose();
@@ -98,7 +100,7 @@ export function ScanView({ onClose }: { onClose: () => void }) {
       title={t("scan.title")}
       icon={<Radar className="size-4" />}
     >
-      <div className="flex flex-col gap-3 p-3">
+      <>
         <SectionCard
           title={t("scan.where")}
           icon={<Radar className="size-3.5" />}
@@ -138,9 +140,13 @@ export function ScanView({ onClose }: { onClose: () => void }) {
           </div>
         </SectionCard>
 
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {error && (
+          <p className="border-b border-border px-3 py-2 text-xs text-destructive">
+            {error}
+          </p>
+        )}
         {response?.hint && (
-          <p className="text-xs text-muted-foreground">
+          <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
             {t(`scan.hint.${response.hint}`)}
           </p>
         )}
@@ -180,8 +186,8 @@ export function ScanView({ onClose }: { onClose: () => void }) {
                     </span>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <select
-                        className="h-8 max-w-48 border border-border bg-background px-2 text-xs"
+                      <Select2
+                        className="h-8 max-w-48 px-2.5 text-xs"
                         value={chosen(result)}
                         aria-label={t("scan.choose")}
                         onChange={(event) =>
@@ -196,7 +202,7 @@ export function ScanView({ onClose }: { onClose: () => void }) {
                             {option.label}
                           </option>
                         ))}
-                      </select>
+                      </Select2>
                       <Button
                         size="sm"
                         variant="outline"
@@ -214,7 +220,7 @@ export function ScanView({ onClose }: { onClose: () => void }) {
             ))}
           </PanelList>
         )}
-      </div>
+      </>
     </InlineView>
   );
 }

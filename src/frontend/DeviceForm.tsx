@@ -176,6 +176,7 @@ export function DeviceForm({
 
   return (
     <InlineView
+      stacked
       open
       onOpenChange={(open) => {
         if (!open) onClose();
@@ -202,7 +203,7 @@ export function DeviceForm({
           <p className="p-4 text-xs text-destructive">{error}</p>
         ) : null
       ) : (
-        <div className="flex flex-col gap-3 p-3">
+        <>
           <SectionCard
             title={t("device.general")}
             icon={<Info className="size-3.5" />}
@@ -516,7 +517,7 @@ export function DeviceForm({
               )}
             </div>
           </SectionCard>
-        </div>
+        </>
       )}
     </InlineView>
   );

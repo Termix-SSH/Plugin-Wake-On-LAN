@@ -68,6 +68,7 @@ export function AddDeviceForm({ onClose }: { onClose: () => void }) {
 
   return (
     <InlineView
+      stacked
       open
       onOpenChange={(open) => {
         if (!open) onClose();
@@ -88,7 +89,7 @@ export function AddDeviceForm({ onClose }: { onClose: () => void }) {
         />
       }
     >
-      <div className="p-3">
+      <>
         <SectionCard
           title={t("device.general")}
           icon={<Power className="size-3.5" />}
@@ -141,7 +142,7 @@ export function AddDeviceForm({ onClose }: { onClose: () => void }) {
             />
           </div>
         </SectionCard>
-      </div>
+      </>
     </InlineView>
   );
 }
