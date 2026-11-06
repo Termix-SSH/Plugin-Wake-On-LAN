@@ -27,7 +27,7 @@ function Tab({ isVisible, tab }: TabProps) {
 }
 
 export function activate(app: TermixApp): void {
-  initApi(app.api);
+  initApi(app);
   startStatusPolling();
 
   app.registerTab(TAB_ID, Tab, {

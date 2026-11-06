@@ -1,4 +1,9 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
+import {
+  isElectron,
+  resolveConnectionOrigin,
+  resolveRemoteHostId,
+} from "@termix-ssh/plugin-sdk/ui";
 import type {
   CommandKind,
   DeviceDetail,
@@ -21,15 +26,16 @@ export interface DeviceList {
   can: Allowed;
 }
 
-let client: TermixApp["api"] | null = null;
+type WakeApp = Pick<TermixApp, "api" | "apiFor" | "getHost">;
+let client: WakeApp | null = null;
 
-export function initApi(api: TermixApp["api"]): void {
-  client = api;
+export function initApi(app: WakeApp): void {
+  client = app;
 }
 
 function api(): TermixApp["api"] {
   if (!client) throw new Error("Wake-on-LAN API is not ready");
-  return client;
+  return client.api;
 }
 
 export function errorMessage(error: unknown, fallback: string): string {
@@ -59,8 +65,23 @@ export const addDevice = async (input: {
 
 export type PowerAction = "wake" | "shutdown" | "sleep";
 
-export const runAction = (hostId: number, action: PowerAction) =>
-  api().post(`/devices/${hostId}/${action}`);
+export async function runAction(hostId: number, action: PowerAction) {
+  const local = api();
+  if (action !== "wake" || !isElectron()) {
+    return local.post(`/devices/${hostId}/${action}`);
+  }
+  const app = client!;
+  const host = app.getHost(hostId);
+  if (!host) throw new Error("Host not found");
+  const origin = host.localOnly ? "local" : await resolveConnectionOrigin(host);
+  if (origin === "local") return local.post(`/devices/${hostId}/wake`);
+  const remoteId = await resolveRemoteHostId(host.syncId);
+  if (remoteId == null) {
+    throw new Error("The synced host does not exist on the remote server");
+  }
+  // Never fall back to this machine: its LAN may contain a different host.
+  return app.apiFor("remote").post(`/devices/${remoteId}/wake`);
+}
 
 export const testCommand = async (hostId: number, kind: CommandKind) =>
   (await api().post<TestResult>(`/devices/${hostId}/test`, { kind })).data;
