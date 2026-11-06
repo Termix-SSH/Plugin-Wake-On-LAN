@@ -1,8 +1,10 @@
+import type { ComponentType } from "react";
 import { Power, Settings2, Zap } from "lucide-react";
 import type { TabProps, TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { initApi } from "./api";
 import { hasMacAddress, macAddressOf, powerAction } from "./host-action";
 import { powerWidget } from "./HomepageWidget";
+import { PowerHostTile } from "./HostTile";
 import { PowerTab } from "./PowerTab";
 import {
   currentCan,
@@ -107,6 +109,18 @@ export function activate(app: TermixApp): void {
     defaultHeight: 220,
     frame: "framed",
     component: WakeCard,
+  });
+
+  app.registerSlotContribution("host-page.tiles", {
+    actionId: "wake-on-lan.hostTile",
+    titleKey: "tile.title",
+    icon: Power,
+    kind: "component",
+    component: PowerHostTile as unknown as ComponentType<
+      Record<string, unknown>
+    >,
+    when: (context?: { host?: { id: number | string } }) =>
+      !context?.host || !!device(context.host),
   });
 
   app.registerExtension("homepage.widgets", powerWidget(app.t));

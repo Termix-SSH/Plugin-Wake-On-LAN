@@ -95,6 +95,20 @@ describe(`${manifest.id} activate`, () => {
   });
 });
 
+describe("host page tile", () => {
+  it("shows the power state of the host", async () => {
+    rendered = await renderWithApp(plugin, {
+      manifest,
+      locales,
+      api: stubApi([device({ status: "online", canShutdown: true })]) as never,
+    });
+    expect(rendered.registered.slot("host-page.tiles")).toHaveLength(1);
+    await new Promise((done) => setTimeout(done, 20));
+    rendered.renderSlot("host-page.tiles", { hostId: 2, isVisible: true });
+    expect(await screen.findByText("Online")).toBeTruthy();
+  });
+});
+
 describe("power dashboard card", () => {
   it("wakes a device that is off", async () => {
     const api = stubApi([device()]);

@@ -49,6 +49,18 @@
     "name": "Wake-on-LAN",
     "description": "Wake, shut down and track your machines from one power dashboard."
   },
+  "tile": {
+    "title": "Power",
+    "none": "This host is not set up for power control.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Waking",
+      "stopping": "Shutting down",
+      "failed": "Failed",
+      "unknown": "Unknown"
+    }
+  },
   "card": {
     "title": "Power",
     "empty": "No machines yet. Open the Power tab to add one or scan your network."
