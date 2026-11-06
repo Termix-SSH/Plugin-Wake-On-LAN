@@ -12,7 +12,7 @@ import type { Allowed, PowerAction } from "./api";
 import { powerAction } from "./host-action";
 
 // Offline is idle here: a powered off machine is normal, not an error.
-const TONE: Record<DeviceSummary["status"], StatusTone> = {
+export const TONE: Record<DeviceSummary["status"], StatusTone> = {
   online: "ok",
   offline: "idle",
   unknown: "idle",

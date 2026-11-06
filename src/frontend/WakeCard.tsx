@@ -3,10 +3,24 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  ListRow,
+  PanelList,
+  StatusBadge,
+} from "@termix-ssh/plugin-sdk/ui";
 import { timeAgo } from "./format";
-import { PowerButton, StatusDot } from "./PowerButton";
+import { PowerButton, TONE } from "./PowerButton";
 import { useDevices } from "./status-store";
+
+const ROW_TONE = {
+  online: "brand",
+  offline: "muted",
+  unknown: "muted",
+  waking: "warning",
+  stopping: "warning",
+  failed: "destructive",
+} as const;
 
 /** Dashboard card: every device with its status and power button. */
 export function WakeCard({ isVisible, shell }: DashboardCardProps) {
@@ -32,7 +46,12 @@ export function WakeCard({ isVisible, shell }: DashboardCardProps) {
         <ListRow
           key={device.hostId}
           stripe={index}
-          icon={<StatusDot status={device.status} />}
+          tone={ROW_TONE[device.status]}
+          badges={
+            <StatusBadge tone={TONE[device.status]}>
+              {t(`status.${device.status}`)}
+            </StatusBadge>
+          }
           title={device.name}
           meta={
             device.status === "online"
