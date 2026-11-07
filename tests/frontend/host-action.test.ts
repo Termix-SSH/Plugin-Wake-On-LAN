@@ -61,7 +61,7 @@ describe("powerAction", () => {
 
   beforeEach(() => {
     api = stubApi();
-    initApi(api);
+    initApi({ api, apiFor: () => api, getHost: () => null });
   });
 
   it("wakes with no question when the device doesn't ask", async () => {
@@ -82,13 +82,12 @@ describe("powerAction", () => {
   });
 
   it("shows the server's error", async () => {
-    initApi(
-      stubApi({
-        post: vi.fn(async () => {
-          throw { response: { data: { error: "No route" } } };
-        }) as never,
-      }),
-    );
+    const failing = stubApi({
+      post: vi.fn(async () => {
+        throw { response: { data: { error: "No route" } } };
+      }) as never,
+    });
+    initApi({ api: failing, apiFor: () => failing, getHost: () => null });
     expect(await powerAction(device, "wake", t as never, vi.fn())).toBe(false);
     expect(toast.error).toHaveBeenCalledWith("No route");
   });
