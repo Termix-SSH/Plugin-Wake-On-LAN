@@ -36,6 +36,8 @@ Read the [docs](https://docs.termix.site/plugins/wake-on-lan) to set it up and u
 - A dashboard card and homepage widget with power buttons
 - Wake a host before a remote desktop connection
 - Wake a host from an automation
+- Power on and shut down through a BMC from the Out-of-band plugin
+- Power state as a status tile
 
 <br />
 
