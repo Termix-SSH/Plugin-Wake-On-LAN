@@ -29,6 +29,10 @@
 - The Wake-on-LAN host settings now sit behind a Power switch, turned on for hosts that already have a MAC
 - Automations and Mobile wake a host with its saved method
 
+### Fixed
+
+- Wake in the desktop app sends from the server when the host connects from the server, like it does in a browser
+
 ## 1.1.0
 
 ### Added
