@@ -204,7 +204,6 @@ export function ScanView({ onClose }: { onClose: () => void }) {
                         ))}
                       </Select2>
                       <Button
-                        size="sm"
                         variant="outline"
                         disabled={!result.mac}
                         onClick={() => void apply(result)}
