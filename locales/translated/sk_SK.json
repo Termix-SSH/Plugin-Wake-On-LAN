@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Prebudiť",
-    "sent": "Wake-on-LAN paket odoslaný",
-    "failed": "Nepodarilo sa odoslať Wake-on-LAN paket"
-  },
   "permissions": {
     "send": {
-      "title": "Odosielanie Wake-on-LAN paketov",
-      "description": "Prebudenie hosta odoslaním magického paketu na jeho MAC adresu."
+      "title": "Prebudiť stroje",
+      "description": "Prebudiť hostiteľa z karty Napájanie, jeho ponuky alebo automatizácie."
+    },
+    "shutdown": {
+      "title": "Vypnúť stroje",
+      "description": "Vypnúť hostiteľa alebo ho prepnúť do režimu spánku."
+    },
+    "scan": {
+      "title": "Skenovať siete",
+      "description": "Hľadať stroje z SSH hostiteľa, ku ktorému sa môžete pripojiť."
+    },
+    "serverCommands": {
+      "title": "Používať server Termix",
+      "description": "Ukladať príkazy, ktoré sa spúšťajú na serveri Termix, a skenovať z neho. Týmto sa môžu spustiť akékoľvek príkazy, ktoré server dokáže vykonať."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Napájanie",
+        "description": "Zobraziť tento hostiteľ na karte Napájanie."
+      },
       "macAddress": {
         "label": "MAC adresa",
-        "description": "Sieťová MAC adresa hosta, ktorá sa používa na odosielanie Wake-on-LAN paketov.",
+        "description": "MAC adresa sieťového portu, ktorý prebúdza tento hostiteľ.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Vysielacia adresa podsiete, na ktorú sa má paket odoslať. Ak je pole prázdne, použije sa 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interval kontroly stavu",
+        "description": "Sekundy medzi kontrolami stavu. Kontroly cez relay hostiteľa používajú pri každom pokuse SSH."
+      },
+      "allowServerCommands": {
+        "label": "Povoliť príkazy na serveri Termix",
+        "description": "Povoliť spúšťanie uložených príkazov ping, prebúdzania a vypínania na serveri Termix. Ukladať ich môžu iba používatelia s oprávnením Používať server Termix."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Prebúdzajte spiacie počítače odoslaním Wake-on-LAN paketu na ich MAC adresu."
+    "description": "Prebúdzať, vypínať a sledovať vaše stroje z jedného ovládacieho panela napájania."
+  },
+  "tile": {
+    "title": "Napájanie",
+    "none": "Tento hostiteľ nie je nastavený na ovládanie napájania.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Prebúdzanie",
+      "stopping": "Vypínanie",
+      "failed": "Zlyhalo",
+      "unknown": "Neznámy"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Žiadny hostiteľ zatiaľ nemá MAC adresu. Pridajte ju v nastaveniach hostiteľa."
+    "title": "Napájanie",
+    "empty": "Zatiaľ žiadne stroje. Otvorte kartu Napájanie a pridajte jeden alebo skenujte svoju sieť."
+  },
+  "tab": {
+    "title": "Napájanie",
+    "status": "{{online}} z {{total}} online",
+    "add": "Pridať",
+    "scan": "Skenovať",
+    "search": "Hľadať stroje",
+    "failed": "Nepodarilo sa načítať vaše stroje",
+    "empty": "Zatiaľ žiadne stroje",
+    "emptyHint": "Pridajte stroj alebo skenujte svoju sieť, aby ste ich našli.",
+    "noMatch": "Nič nevyhovuje vášmu vyhľadávaniu",
+    "noFolder": "Žiadna priečinok",
+    "wakeAll": "Prebudiť všetky",
+    "wakeAllConfirm": "Prebudiť {{count}} strojov v priečinku {{folder}}?"
+  },
+  "status": {
+    "unknown": "Zatiaľ nekontrolované",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Prebúdzanie",
+    "stopping": "Vypínanie",
+    "failed": "Neodpovedal včas"
+  },
+  "power": {
+    "wake": "Prebudiť",
+    "shutdown": "Vypnúť",
+    "sleep": "Spánok",
+    "settings": "Nastavenia napájania",
+    "confirm": {
+      "wake": "Prebudiť {{name}}?",
+      "shutdown": "Vypnúť {{name}}?",
+      "sleep": "Prepnúť {{name}} do režimu spánku?"
+    },
+    "sent": {
+      "wake": "Prebúdzanie {{name}}",
+      "shutdown": "Vypínanie {{name}}",
+      "sleep": "Prepínanie {{name}} do režimu spánku"
+    },
+    "failed": {
+      "wake": "Nepodarilo sa prebudiť tento stroj",
+      "shutdown": "Nepodarilo sa vypnúť tento stroj",
+      "sleep": "Nepodarilo sa prepnúť tento stroj do režimu spánku"
+    }
+  },
+  "device": {
+    "title": "Stroj",
+    "general": "Všeobecné",
+    "name": "Názov",
+    "mac": "MAC adresa",
+    "noMac": "Žiadna MAC adresa",
+    "lanIp": "LAN IP",
+    "lanIpHint": "Adresa v sieti zariadenia, ak sa líši od adresy hostiteľa.",
+    "netmask": "Sieťová maska",
+    "netmaskHint": "Používa sa na výpočet broadcastovej adresy.",
+    "description": "Popis",
+    "link": "Odkaz",
+    "linkHint": "Umožní kliknúť na názov, napríklad ako odkaz na dashboard.",
+    "autoOpen": "Otvoriť odkaz po prebudení",
+    "autoOpenHint": "Otvorí odkaz, keď je zariadenie online.",
+    "lastChange": "Posledná zmena",
+    "status": "Stav",
+    "statusFrom": "Kontrola z",
+    "statusFromHint": "Použite SSH hostiteľa v tej istej sieti, ak Termix nedokáže zariadenie dosiahnuť.",
+    "ports": "Porty",
+    "portsHint": "Otvorené porty sa zobrazia na karte. Server Termix kontroluje iba porty, preto pridajte ten, na ktorý zariadenie reaguje.",
+    "pingCommand": "Vlastná kontrola",
+    "pingCommandHint": "Voliteľné. Návratový kód 0 znamená, že zariadenie je zapnuté. {{ip}} a {{mac}} sa doplnia automaticky.",
+    "wake": "Prebudiť",
+    "wakeMode": "Prebudiť pomocou",
+    "wakeMagic": "Wake-on-LAN paket",
+    "commandMode": "Vlastný príkaz",
+    "wakeFrom": "Poslať z",
+    "wakeFromHint": "Paket musí byť odoslaný zo siete zariadenia. Ak Termix nie je v tejto sieti, vyberte SSH hostiteľa.",
+    "fromServer": "Server Termix",
+    "broadcast": "Broadcastová adresa",
+    "broadcastHint": "Nechajte prázdne, aby sa vypočítala z LAN IP a sieťovej masky.",
+    "wakePort": "Port",
+    "secureOn": "SecureON heslo",
+    "secureOnHint": "Voliteľné. 4 alebo 6 znakov, alebo hodnota v tvare MAC adresy.",
+    "secretSaved": "Uložené, nechajte prázdne pre zachovanie",
+    "wakeCommand": "Príkaz na prebudenie",
+    "placeholders": "{{ip}} a {{mac}} sa doplnia automaticky.",
+    "timeout": "Časový limit (sekundy)",
+    "timeoutHint": "Ako dlho čakať, kým sa označí ako nereagujúce.",
+    "cron": "Rozvrh (cron)",
+    "cronHint": "Voliteľné. Päť polí, v časovom pásme servera.",
+    "confirm": "Opýtať sa pred spustením",
+    "shutdown": "Vypnúť",
+    "shutdownMode": "Vypnúť pomocou",
+    "shutdownNone": "Nič",
+    "shutdownSsh": "SSH prihlásenie tohto hostiteľa",
+    "shutdownSshHint": "Vyžaduje root alebo sudo bez hesla na Linuxe a macOS.",
+    "shutdownCommand": "Príkaz na vypnutie",
+    "commands": "Vlastné príkazy",
+    "commandTarget": "Spustiť príkazy na",
+    "commandTargetHint": "Príkazy sa spúšťajú s prihlásením osoby, ktorá ich uložila.",
+    "targetHost": "Tento hostiteľ, cez SSH",
+    "targetRelay": "Iný hostiteľ, cez SSH",
+    "targetServer": "Server Termix",
+    "commandRelay": "Hostiteľ",
+    "pickHost": "Vyberte hostiteľa",
+    "bmc": "BMC",
+    "useBmc": "Použiť BMC, ak je dostupný",
+    "useBmcHint": "Zapnúť a vypnúť cez plugin Out-of-band, ak má tento hostiteľ prepojený BMC. Inak sa použijú vyššie uvedené metódy.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Použiť Sleep-On-LAN",
+    "solHint": "Vyžaduje nástroj Sleep-On-LAN na zariadení s HTTP listenerom.",
+    "solPort": "Port",
+    "solUser": "Meno používateľa",
+    "solPassword": "Heslo",
+    "test": "Test",
+    "testShutdownConfirm": "Toto spustí skutočný príkaz a môže vypnúť {{name}}. Pokračovať?",
+    "testFailed": "Test zlyhal",
+    "saveFirst": "Najprv uložte",
+    "exitCode": "Kód ukončenia {{code}}",
+    "loadFailed": "Tento stroj sa nepodarilo načítať",
+    "saveFailed": "Uloženie zlyhalo"
+  },
+  "add": {
+    "title": "Pridať stroj",
+    "host": "Hostiteľ",
+    "newHost": "Nový hostiteľ",
+    "hostHint": "Ak je tento stroj už hostiteľom, vyberte ho, aby sa nezobrazil dvakrát. Jeho adresa zostane nezmenená."
+  },
+  "scan": {
+    "title": "Skenovať sieť",
+    "where": "Kde skenovať",
+    "from": "Skenovať z",
+    "fromHint": "Vyberte SSH hostiteľa v tejto sieti. Použije nmap, ak je k dispozícii, inak ping.",
+    "range": "Rozsah",
+    "rangeHint": "Nechajte prázdne pre vlastné súkromné siete tohto hostiteľa.",
+    "rangeNeeded": "Vyžaduje sa pri skenovaní zo servera Termix.",
+    "start": "Skenovať",
+    "scanning": "Skenovanie...",
+    "note": "Skenovanie nájde stroje v sieti. Nemôže zistiť, či je pre ne zapnuté Wake-on-LAN.",
+    "none": "Nič sa nenašlo",
+    "failed": "Skenovanie zlyhalo",
+    "addFailed": "Tento stroj sa nepodarilo pridať",
+    "noMac": "MAC adresa sa nenašla",
+    "newHost": "Nový hostiteľ",
+    "attachTo": "Pripojiť k {{name}}",
+    "attach": "Pripojiť",
+    "add": "Pridať",
+    "added": "Hotovo",
+    "choose": "Kam tento stroj priradiť",
+    "match": {
+      "mac": "Rozdielna MAC adresa ako {{name}}",
+      "ip": "Rozdielna IP adresa ako {{name}}",
+      "name": "Rozdielny názov ako {{name}}"
+    },
+    "hint": {
+      "bridge": "Takmer nič sa nenašlo. Kontajner Termix v mostíkovej sieti nevidí vašu LAN, preto skenujte z SSH hostiteľa.",
+      "no-mac": "Niektoré stroje nemajú MAC adresu. Spustite skenovanie s nmap ako root, alebo skontrolujte, či hostiteľ vidí tieto stroje."
+    }
+  },
+  "widget": {
+    "name": "Napájanie",
+    "description": "Stroje s ich stavom a tlačidlami napájania.",
+    "pick": "Stroje na zobrazenie. Ak nič nevyberiete, zobrazia sa všetky."
+  },
+  "operations": {
+    "wake": {
+      "title": "Prebudiť stroj"
+    },
+    "shutdown": {
+      "title": "Vypnúť stroj"
+    },
+    "sleep": {
+      "title": "Uspať stroj"
+    },
+    "powerState": {
+      "title": "Stav napájania"
+    }
   }
 }

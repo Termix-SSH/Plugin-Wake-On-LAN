@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Wekker",
-    "sent": "Wake-on-LAN-pakket gestuur",
-    "failed": "Kon nie Wake-on-LAN-pakket stuur nie"
-  },
   "permissions": {
     "send": {
-      "title": "Stuur Wake-on-LAN-pakkette",
-      "description": "Weck 'n gasheer deur 'n magiese pakket na sy MAC-adres te stuur."
+      "title": "Weck masjiene",
+      "description": "Weck 'n gasheer vanaf die Krag-oortjie, sy kieslys of 'n outomatisering."
+    },
+    "shutdown": {
+      "title": "Skakel masjiene af",
+      "description": "Skakel 'n gasheer af of sit dit in slaapstand."
+    },
+    "scan": {
+      "title": "Deursoek netwerke",
+      "description": "Soek na masjiene vanaf 'n SSH-gasheer waarna jy kan verbind."
+    },
+    "serverCommands": {
+      "title": "Gebruik die Termix-bedienaar",
+      "description": "Stoor opdragte wat op die Termix-bedienaar loop, en deursoek vanaf dit. Dit kan enige ding uitvoer wat die bedienaar kan."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Krag",
+        "description": "Wys hierdie gasheer op die Krag-oortjie."
+      },
       "macAddress": {
         "label": "MAC-adres",
-        "description": "Die gasheer se netwerk-MAC-adres, gebruik om Wake-on-LAN-pakkette te stuur.",
+        "description": "Die MAC-adres van die netwerkpoort wat hierdie gasheer wek.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Die subnet-uitsaaiadres om die pakket na toe te stuur. Laat leeg vir 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Statuskontrole-tydsduur",
+        "description": "Sekondes tussen statuskontroles. Kontroles deur 'n relaisgasheer gebruik SSH elke keer."
+      },
+      "allowServerCommands": {
+        "label": "Laat opdragte op die Termix-bedienaar toe",
+        "description": "Laat gestoorde ping, wek- en afskakelopdragte op die Termix-bedienaar loop. Slegs gebruikers met die Gebruik die Termix-bedienaar-toestemming kan hulle stoor."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Wek slapende masjiene deur ’n Wake-on-LAN-pakket na hul MAC-adres te stuur."
+    "description": "Weck, skakel af en hou jou masjiene dop vanaf een kragdashboard."
+  },
+  "tile": {
+    "title": "Krag",
+    "none": "Hierdie gasheer is nie vir kragbeheer opgestel nie.",
+    "status": {
+      "online": "Aanlyn",
+      "offline": "Afweglyn",
+      "waking": "Aan die wek",
+      "stopping": "Aan die afskakel",
+      "failed": "Misluk",
+      "unknown": "Onbekend"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Geen gasheer het nog 'n MAC-adres nie. Voeg een by in 'n gasheer se instellings."
+    "title": "Krag",
+    "empty": "Nog geen masjiene nie. Maak die Krag-oortjie oop om een by te voeg of jou netwerk te deursoek."
+  },
+  "tab": {
+    "title": "Krag",
+    "status": "{{online}} van {{total}} aanlyn",
+    "add": "Voeg by",
+    "scan": "Deursoek",
+    "search": "Soek masjiene",
+    "failed": "Kon nie jou masjiene laai nie",
+    "empty": "Nog geen masjiene nie",
+    "emptyHint": "Voeg 'n masjien by, of deursoek jou netwerk om hulle te vind.",
+    "noMatch": "Niets pas by jou soektog nie",
+    "noFolder": "Geen vouer nie",
+    "wakeAll": "Weck almal",
+    "wakeAllConfirm": "Weck {{count}} masjiene in {{folder}}?"
+  },
+  "status": {
+    "unknown": "Nog nie gecontroleer nie",
+    "online": "Aanlyn",
+    "offline": "Afweglyn",
+    "waking": "Aan die wek",
+    "stopping": "Aan die afskakel",
+    "failed": "Het nie op tyd gereageer nie"
+  },
+  "power": {
+    "wake": "Weck",
+    "shutdown": "Skakel af",
+    "sleep": "Slaap",
+    "settings": "Kraginstellings",
+    "confirm": {
+      "wake": "Weck {{name}}?",
+      "shutdown": "Skakel {{name}} af?",
+      "sleep": "Sit {{name}} in slaapstand?"
+    },
+    "sent": {
+      "wake": "Weck {{name}}",
+      "shutdown": "Skakel {{name}} af",
+      "sleep": "Sit {{name}} in slaapstand"
+    },
+    "failed": {
+      "wake": "Kon nie hierdie masjien wek nie",
+      "shutdown": "Kon nie hierdie masjien afskakel nie",
+      "sleep": "Kon nie hierdie masjien in slaapstand sit nie"
+    }
+  },
+  "device": {
+    "title": "Masjien",
+    "general": "Algemeen",
+    "name": "Naam",
+    "mac": "MAC-adres",
+    "noMac": "Geen MAC-adres nie",
+    "lanIp": "LAN-IP",
+    "lanIpHint": "Die adres op die masjien se eie netwerk, as dit verskil van die gasheer se adres.",
+    "netmask": "Netmask",
+    "netmaskHint": "Word gebruik om die uitsaaiadres te bepaal.",
+    "description": "Beskrywing",
+    "link": "Skakel",
+    "linkHint": "Maak die naam klikbaar, soos 'n skakel na 'n dashboard.",
+    "autoOpen": "Maak skakel oop na wek",
+    "autoOpenHint": "Maak die skakel oop sodra die masjie aanlyn is.",
+    "lastChange": "Laaste verandering",
+    "status": "Status",
+    "statusFrom": "Toets vanaf",
+    "statusFromHint": "Gebruik 'n SSH-gasheer op dieselfde netwerk wanneer Termix nie die masjie kan bereik nie.",
+    "ports": "Porte",
+    "portsHint": "Oop porte word op die kaart getoon. Die Termix-bedienaar toets slegs porte, so voeg een by waarop die masjie antwoord.",
+    "pingCommand": "Aangepaste toets",
+    "pingCommandHint": "Opsioneel. Uitvoerkode 0 beteken die masjie is aan. {{ip}} en {{mac}} word ingevul.",
+    "wake": "Wek",
+    "wakeMode": "Wek met",
+    "wakeMagic": "Wake-on-LAN-pakket",
+    "commandMode": "Aangepaste opdrag",
+    "wakeFrom": "Stuur vanaf",
+    "wakeFromHint": "Die pakket moet op die masjie se eie netwerk begin. Kies 'n SSH-gasheer daar as Termix nie is nie.",
+    "fromServer": "Termix-bedienaar",
+    "broadcast": "Uitsaaiadres",
+    "broadcastHint": "Laat leeg om dit uit die LAN-IP en netmask te bereken.",
+    "wakePort": "Poort",
+    "secureOn": "SecureON-wagwoord",
+    "secureOnHint": "Opsioneel. 4 of 6 karakters, of 'n waarde soos 'n MAC-adres geskryf.",
+    "secretSaved": "Stoor, laat leeg om te behou",
+    "wakeCommand": "Wekopdrag",
+    "placeholders": "{{ip}} en {{mac}} word ingevul.",
+    "timeout": "Tydverstryking (sekondes)",
+    "timeoutHint": "Hoe lank om te wag voordat dit as nie-antwoordend gemerk word.",
+    "cron": "Rooster (cron)",
+    "cronHint": "Opsioneel. Vyf velde, in die bedienaar se tydsone.",
+    "confirm": "Vra voor uitvoering",
+    "shutdown": "Afskakel",
+    "shutdownMode": "Skakel af met",
+    "shutdownNone": "Niks",
+    "shutdownSsh": "Hierdie gasheer se SSH-aanmelding",
+    "shutdownSshHint": "Benodig root of wagwoordlose sudo op Linux en macOS.",
+    "shutdownCommand": "Afskakelopdrag",
+    "commands": "Aangepaste opdragte",
+    "commandTarget": "Voer opdragte uit op",
+    "commandTargetHint": "Opdragte word uitgevoer met die aanmelding van die persoon wat hulle gestoor het.",
+    "targetHost": "Hierdie gasheer, oor SSH",
+    "targetRelay": "'n Ander gasheer, oor SSH",
+    "targetServer": "Die Termix-bedienaar",
+    "commandRelay": "Gasheer",
+    "pickHost": "Kies 'n gasheer",
+    "bmc": "BMC",
+    "useBmc": "Gebruik die BMC wanneer daar een is",
+    "useBmcHint": "Skakel aan en skakel af deur die Out-of-band-plug-in as hierdie gasheer 'n BMC daar gekoppel het. Andersins word die metodes hierbo gebruik.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Gebruik Sleep-On-LAN",
+    "solHint": "Benodig die Sleep-On-LAN-hulpmiddel op die masjie met 'n HTTP-luisteraar.",
+    "solPort": "Poort",
+    "solUser": "Gebruikersnaam",
+    "solPassword": "Wagwoord",
+    "test": "Toets",
+    "testShutdownConfirm": "Dit voer die werklike opdrag uit en kan {{name}} afsluit. Gaan voort?",
+    "testFailed": "Die toets het misluk",
+    "saveFirst": "Stoor eers",
+    "exitCode": "Uitgangskode {{code}}",
+    "loadFailed": "Kon nie hierdie masjien laai nie",
+    "saveFailed": "Kon nie stoor nie"
+  },
+  "add": {
+    "title": "Voeg masjien by",
+    "host": "Gasheer",
+    "newHost": "Nuwe gasheer",
+    "hostHint": "As hierdie masjien reeds 'n gasheer is, kies dit sodat dit nie twee keer verskyn nie. Die adres bly soos dit is."
+  },
+  "scan": {
+    "title": "Deursoek netwerk",
+    "where": "Waar om te deursoek",
+    "from": "Deursoek vanaf",
+    "fromHint": "Kies 'n SSH-gasheer op daardie netwerk. Dit gebruik nmap as dit beskikbaar is, anders ping.",
+    "range": "Reeks",
+    "rangeHint": "Laat leeg vir daardie gasheer se eie privaat netwerke.",
+    "rangeNeeded": "Nodig wanneer jy vanaf die Termix-bedienaar deursoek.",
+    "start": "Deursoek",
+    "scanning": "Deursoek...",
+    "note": "'n Deursoek vind masjiene op die netwerk. Dit kan nie sê of Wake-on-LAN vir hulle aangeskakel is nie.",
+    "none": "Niks gevind nie",
+    "failed": "Die deursoek het misluk",
+    "addFailed": "Kon nie daardie masjien byvoeg nie",
+    "noMac": "Geen MAC gevind nie",
+    "newHost": "Nuwe gasheer",
+    "attachTo": "Maak vas aan {{name}}",
+    "attach": "Maak vas",
+    "add": "Voeg by",
+    "added": "Klaar",
+    "choose": "Waar hierdie masjien heen gaan",
+    "match": {
+      "mac": "Selfde MAC as {{name}}",
+      "ip": "Selfde IP as {{name}}",
+      "name": "Selfde naam as {{name}}"
+    },
+    "hint": {
+      "bridge": "Byna niks is gevind nie. 'n Termix-houer op 'n brugnetwerk kan jou LAN nie sien nie, so deursoek vanaf 'n SSH-gasheer in plaas daarvan.",
+      "no-mac": "Sommige masjiene het geen MAC nie. Voer die deursoek uit met nmap as root, of kontroleer of die gasheer hulle kan sien."
+    }
+  },
+  "widget": {
+    "name": "Krag",
+    "description": "Masjiene met hul status en kragknoppies.",
+    "pick": "Masjiene om te wys. Kies geen om almal te wys nie."
+  },
+  "operations": {
+    "wake": {
+      "title": "Wekker masjien"
+    },
+    "shutdown": {
+      "title": "Sluit masjien af"
+    },
+    "sleep": {
+      "title": "Stel masjien in slaapstand"
+    },
+    "powerState": {
+      "title": "Kragtoestand"
+    }
   }
 }

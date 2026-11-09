@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Herätä",
-    "sent": "Wake-on-LAN-paketti lähetetty",
-    "failed": "Wake-on-LAN-paketin lähettäminen epäonnistui"
-  },
   "permissions": {
     "send": {
-      "title": "Lähetä Wake-on-LAN-paketteja",
-      "description": "Herätä isäntä lähettämällä taikapaketti sen MAC-osoitteeseen."
+      "title": "Herätä koneet",
+      "description": "Herätä isäntä Voima-välilehdeltä, sen valikosta tai automaatiosta."
+    },
+    "shutdown": {
+      "title": "Sammuta koneet",
+      "description": "Sammuta isäntä tai laita se lepotilaan."
+    },
+    "scan": {
+      "title": "Skannaa verkot",
+      "description": "Etsi koneita SSH-isännältä, johon voit muodostaa yhteyden."
+    },
+    "serverCommands": {
+      "title": "Käytä Termix-palvelinta",
+      "description": "Tallenna komentoja, jotka suoritetaan Termix-palvelimella, ja skannaa verkkoa sen kautta. Tämä voi suorittaa mitä tahansa, mitä palvelin pystyy tekemään."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Voima",
+        "description": "Näytä tämä isäntä Voima-välilehdellä."
+      },
       "macAddress": {
         "label": "MAC-osoite",
-        "description": "Isännän verkkomac-osoite, jota käytetään Wake-on-LAN-pakettien lähettämiseen.",
+        "description": "Verkkoliitteen MAC-osoite, joka herättää tämän isännän.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Aliverkon laajalähetysosoite, johon paketti lähetetään. Jätä tyhjäksi, jos haluat käyttää osoitetta 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Tilan tarkistusväli",
+        "description": "Sekunteja tilan tarkistusten välillä. Välitysisäntää käyttävät tarkistukset käyttävät SSH-yhteyttä joka kerta."
+      },
+      "allowServerCommands": {
+        "label": "Salli komennot Termix-palvelimella",
+        "description": "Salli tallennettujen ping-, herätyksen ja sammutuskomentojen suorittaminen Termix-palvelimella. Vain käyttäjät, joilla on Käytä Termix-palvelinta -oikeus, voivat tallentaa niitä."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Herätä nukkuvat koneet lähettämällä Wake-on-LAN-paketti niiden MAC-osoitteeseen."
+    "description": "Herätä, sammuta ja seuraa koneitasi yhdellä voimataululla."
+  },
+  "tile": {
+    "title": "Voima",
+    "none": "Tälle isännälle ei ole määritetty virranhallintaa.",
+    "status": {
+      "online": "Yhteys muodostettu",
+      "offline": "Yhteys katkennut",
+      "waking": "Heräämässä",
+      "stopping": "Sammuttamassa",
+      "failed": "Epäonnistui",
+      "unknown": "Tuntematon"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Yhdenkään isäntälaitteen MAC-osoitetta ei ole vielä määritetty. Lisää se isäntälaitteen asetuksista."
+    "title": "Voima",
+    "empty": "Ei vielä koneita. Avaa Voima-välilehti lisätäksesi koneen tai skannaaksesi verkkoa."
+  },
+  "tab": {
+    "title": "Voima",
+    "status": "{{online}} / {{total}} yhteys muodostettu",
+    "add": "Lisää",
+    "scan": "Skannaa",
+    "search": "Hae koneita",
+    "failed": "Koneidesi lataaminen epäonnistui",
+    "empty": "Ei vielä koneita",
+    "emptyHint": "Lisää kone tai skannaa verkko löytääksesi niitä.",
+    "noMatch": "Hakuehdoillasi ei löytynyt tuloksia",
+    "noFolder": "Ei kansiota",
+    "wakeAll": "Herätä kaikki",
+    "wakeAllConfirm": "Herätetäänkö {{count}} konetta kansiossa {{folder}}?"
+  },
+  "status": {
+    "unknown": "Ei vielä tarkistettu",
+    "online": "Yhteys muodostettu",
+    "offline": "Yhteys katkennut",
+    "waking": "Heräämässä",
+    "stopping": "Sammuttamassa",
+    "failed": "Ei vastannut ajoissa"
+  },
+  "power": {
+    "wake": "Herätä",
+    "shutdown": "Sammuta",
+    "sleep": "Lepotila",
+    "settings": "Virranhallinta-asetukset",
+    "confirm": {
+      "wake": "Herätetäänkö {{name}}?",
+      "shutdown": "Sammutetaanko {{name}}?",
+      "sleep": "Laitetaanko {{name}} lepotilaan?"
+    },
+    "sent": {
+      "wake": "Herätetään {{name}}",
+      "shutdown": "Sammutetaan {{name}}",
+      "sleep": "Laitetaan {{name}} lepotilaan"
+    },
+    "failed": {
+      "wake": "Tämän koneen herätys epäonnistui",
+      "shutdown": "Tämän koneen sammutus epäonnistui",
+      "sleep": "Tämän koneen laitto lepotilaan epäonnistui"
+    }
+  },
+  "device": {
+    "title": "Kone",
+    "general": "Yleiset",
+    "name": "Nimi",
+    "mac": "MAC-osoite",
+    "noMac": "Ei MAC-osoitetta",
+    "lanIp": "LAN-IP",
+    "lanIpHint": "Laitteen oman verkon osoite, jos se poikkeaa isäntälaitteen osoitteesta.",
+    "netmask": "Aliverkkomaski",
+    "netmaskHint": "Käytetään laajennusosoitteen laskemiseen.",
+    "description": "Kuvaus",
+    "link": "Linkki",
+    "linkHint": "Tee nimestä napsautettava linkki, esimerkiksi kojelautaan.",
+    "autoOpen": "Avaa linkki herättyä",
+    "autoOpenHint": "Avaa linkki, kun laite on verkossa.",
+    "lastChange": "Viimeisin muutos",
+    "status": "Tila",
+    "statusFrom": "Tarkista kohteesta",
+    "statusFromHint": "Käytä samassa verkossa olevaa SSH-isäntää, jos Termix ei pääse laitteeseen.",
+    "ports": "Portit",
+    "portsHint": "Avoinna olevat portit näkyvät kortissa. Termix-palvelin tarkistaa vain portit, joten lisää yksi, johon laite vastaa.",
+    "pingCommand": "Mukautettu tarkistus",
+    "pingCommandHint": "Valinnainen. Poistumisarvo 0 tarkoittaa, että laite on päällä. {{ip}} ja {{mac}} täytetään automaattisesti.",
+    "wake": "Herätä",
+    "wakeMode": "Herätä käyttäen",
+    "wakeMagic": "Wake-on-LAN-paketti",
+    "commandMode": "Mukautettu komento",
+    "wakeFrom": "Lähetä kohteesta",
+    "wakeFromHint": "Paketin on lähdettävä laitteen omasta verkosta. Valitse sinne SSH-isäntä, jos Termix ei ole siellä.",
+    "fromServer": "Termix-palvelin",
+    "broadcast": "Laajennusosoite",
+    "broadcastHint": "Jätä tyhjäksi, jolloin se lasketaan LAN-IP:stä ja aliverkkomaskista.",
+    "wakePort": "Portti",
+    "secureOn": "SecureON-salasana",
+    "secureOnHint": "Valinnainen. 4 tai 6 merkkiä tai MAC-osoitteen muotoinen arvo.",
+    "secretSaved": "Tallennettu, jätä tyhjäksi säilyttääksesi",
+    "wakeCommand": "Herätysohje",
+    "placeholders": "{{ip}} ja {{mac}} täytetään automaattisesti.",
+    "timeout": "Aikakatkaisu (sekuntia)",
+    "timeoutHint": "Kuinka kauan odotetaan ennen kuin tila merkitään vastaamattomaksi.",
+    "cron": "Aikataulu (cron)",
+    "cronHint": "Valinnainen. Viisi kenttää palvelimen aikavyöhykkeellä.",
+    "confirm": "Kysy ennen suorittamista",
+    "shutdown": "Sammuta",
+    "shutdownMode": "Sammuta käyttäen",
+    "shutdownNone": "Ei mitään",
+    "shutdownSsh": "Tämän isännän SSH- kirjautuminen",
+    "shutdownSshHint": "Vaatii root-oikeudet tai salasanasuoran sudo:n Linuxissa ja macOS:ssä.",
+    "shutdownCommand": "Sammutuskomento",
+    "commands": "Mukautetut komennot",
+    "commandTarget": "Suorita komennot kohteessa",
+    "commandTargetHint": "Komennot suoritetaan henkilön kirjautumistunnuksilla, joka on tallentanut ne.",
+    "targetHost": "Tämä isäntä, SSH:n kautta",
+    "targetRelay": "Toinen isäntä, SSH:n kautta",
+    "targetServer": "Termix-palvelin",
+    "commandRelay": "Isäntä",
+    "pickHost": "Valitse isäntä",
+    "bmc": "BMC",
+    "useBmc": "Käytä BMC:tä, jos sellainen on olemassa",
+    "useBmcHint": "Käynnistä ja sammuta Out-of-band-lisäosan kautta, jos tällä isännällä on siellä linkitetty BMC. Muuten käytetään yllä olevia menetelmiä.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Käytä Sleep-On-LANia",
+    "solHint": "Vaatii Sleep-On-LAN-työkalun laitteessa HTTP-kuuntelijan kanssa.",
+    "solPort": "Portti",
+    "solUser": "Käyttäjänimi",
+    "solPassword": "Salasana",
+    "test": "Testaa",
+    "testShutdownConfirm": "Tämä suorittaa oikean komennon ja voi sammuttaa laitteen {{name}}. Haluatko jatkaa?",
+    "testFailed": "Testi epäonnistui",
+    "saveFirst": "Tallenna ensin",
+    "exitCode": "Poistumisarvo {{code}}",
+    "loadFailed": "Laitteen lataaminen epäonnistui",
+    "saveFailed": "Tallentaminen epäonnistui"
+  },
+  "add": {
+    "title": "Lisää laite",
+    "host": "Isäntä",
+    "newHost": "Uusi isäntä",
+    "hostHint": "Jos tämä laite on jo isäntä, valitse se, jotta se ei näy kahdesti. Sen osoite pysyy ennallaan."
+  },
+  "scan": {
+    "title": "Skannaa verkko",
+    "where": "Skannauskohde",
+    "from": "Skannauslähde",
+    "fromHint": "Valitse SSH-isäntä samalta verkolta. Se käyttää nmapia, jos se on saatavilla, muuten pingiä.",
+    "range": "Alue",
+    "rangeHint": "Jätä tyhjäksi, jos haluat skannata isännän omat yksityiset verkot.",
+    "rangeNeeded": "Tarvitaan, kun skannataan Termix-palvelimelta.",
+    "start": "Skannaa",
+    "scanning": "Skannataan...",
+    "note": "Skannaus löytää verkosta laitteita. Se ei kuitenkaan kerro, onko Wake-on-LAN päällä niissä.",
+    "none": "Ei löytynyt mitään",
+    "failed": "Skannaus epäonnistui",
+    "addFailed": "Laitteen lisääminen epäonnistui",
+    "noMac": "MAC-osoitetta ei löytynyt",
+    "newHost": "Uusi isäntä",
+    "attachTo": "Liitä kohteeseen {{name}}",
+    "attach": "Liitä",
+    "add": "Lisää",
+    "added": "Valmis",
+    "choose": "Mihin tämä laite sijoitetaan",
+    "match": {
+      "mac": "Sama MAC kuin {{name}}",
+      "ip": "Sama IP kuin {{name}}",
+      "name": "Sama nimi kuin {{name}}"
+    },
+    "hint": {
+      "bridge": "Lähes mitään ei löytynyt. Termix-kontaineri sillaverkossa ei näe LAN-verkkoasi, joten skannaa SSH-isännältä.",
+      "no-mac": "Joillakin laitteilla ei ole MAC-osoitetta. Suorita skannaus nmapilla root-käyttäjänä tai tarkista, näkeekö isäntä ne."
+    }
+  },
+  "widget": {
+    "name": "Virta",
+    "description": "Laitteet niiden tilan ja virtapainikkeiden kanssa.",
+    "pick": "Näytettävät laitteet. Älä valitse mitään, jos haluat näyttää kaikki."
+  },
+  "operations": {
+    "wake": {
+      "title": "Herätä laite"
+    },
+    "shutdown": {
+      "title": "Sammuta laite"
+    },
+    "sleep": {
+      "title": "Laita laite valmiustilaan"
+    },
+    "powerState": {
+      "title": "Virtatilanne"
+    }
   }
 }

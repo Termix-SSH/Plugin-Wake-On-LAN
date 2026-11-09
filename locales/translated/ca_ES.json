@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Despertar",
-    "sent": "Paquet Wake-on-LAN enviat",
-    "failed": "No s'ha pogut enviar el paquet Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Enviar paquets Wake-on-LAN",
-      "description": "Desperta un host enviant un paquet màgic a la seva adreça MAC."
+      "title": "Encendre equips",
+      "description": "Encendre un host des de la pestanya Alimentació, el seu menú o una automatització."
+    },
+    "shutdown": {
+      "title": "Apagar equips",
+      "description": "Apagar un host o posar-lo en suspensió."
+    },
+    "scan": {
+      "title": "Explorar xarxes",
+      "description": "Cercar equips des d'un host SSH al qual pugueu connectar-vos."
+    },
+    "serverCommands": {
+      "title": "Utilitzar el servidor Termix",
+      "description": "Desar comandes que s'executen al servidor Termix i explorar-lo. Això pot executar qualsevol cosa que el servidor pugui fer."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Alimentació",
+        "description": "Mostrar aquest host a la pestanya Alimentació."
+      },
       "macAddress": {
         "label": "Adreça MAC",
-        "description": "L'adreça MAC de xarxa del host, utilitzada per enviar paquets Wake-on-LAN.",
+        "description": "L'adreça MAC del port de xarxa que encén aquest host.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "L'adreça de difusió de la subxarxa on enviar el paquet. Deixa-ho buit per utilitzar 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interval de comprovació d'estat",
+        "description": "Segons entre comprovacions d'estat. Les comprovacions a través d'un host de relé utilitzen SSH cada vegada."
+      },
+      "allowServerCommands": {
+        "label": "Permetre comandes al servidor Termix",
+        "description": "Permetre que les comandes desades de ping, encès i apagat s'executin al servidor Termix. Només els usuaris amb el permís Utilitzar el servidor Termix poden desar-les."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Desperta equips en suspensió enviant un paquet Wake-on-LAN a la seva adreça MAC."
+    "description": "Encen, apaga i controla els teus equips des d'un sol tauler d'alimentació."
+  },
+  "tile": {
+    "title": "Alimentació",
+    "none": "Aquest host no està configurat per al control d'alimentació.",
+    "status": {
+      "online": "En línia",
+      "offline": "Fora de línia",
+      "waking": "Encenent",
+      "stopping": "Apagant",
+      "failed": "Ha fallat",
+      "unknown": "Desconegut"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Cap host no té una adreça MAC encara. Afegeix-ne una a la configuració d'un host."
+    "title": "Alimentació",
+    "empty": "Encara no hi ha equips. Obriu la pestanya Alimentació per afegir-ne un o explorar la vostra xarxa."
+  },
+  "tab": {
+    "title": "Alimentació",
+    "status": "{{online}} de {{total}} en línia",
+    "add": "Afegir",
+    "scan": "Explorar",
+    "search": "Cercar equips",
+    "failed": "No s'han pogut carregar els vostres equips",
+    "empty": "Encara no hi ha equips",
+    "emptyHint": "Afegiu un equip o exploreu la vostra xarxa per trobar-ne.",
+    "noMatch": "Res no coincideix amb la vostra cerca",
+    "noFolder": "Sense carpeta",
+    "wakeAll": "Encendre tots",
+    "wakeAllConfirm": "Voleu encendre {{count}} equips a {{folder}}?"
+  },
+  "status": {
+    "unknown": "Encara no s'ha comprovat",
+    "online": "En línia",
+    "offline": "Fora de línia",
+    "waking": "Encenent",
+    "stopping": "Apagant",
+    "failed": "No ha respost a temps"
+  },
+  "power": {
+    "wake": "Encendre",
+    "shutdown": "Apagar",
+    "sleep": "Suspensió",
+    "settings": "Configuració d'alimentació",
+    "confirm": {
+      "wake": "Voleu encendre {{name}}?",
+      "shutdown": "Voleu apagar {{name}}?",
+      "sleep": "Voleu posar {{name}} en suspensió?"
+    },
+    "sent": {
+      "wake": "Encenent {{name}}",
+      "shutdown": "Apagant {{name}}",
+      "sleep": "Posant {{name}} en suspensió"
+    },
+    "failed": {
+      "wake": "No s'ha pogut encendre aquest equip",
+      "shutdown": "No s'ha pogut apagar aquest equip",
+      "sleep": "No s'ha pogut posar aquest equip en suspensió"
+    }
+  },
+  "device": {
+    "title": "Equip",
+    "general": "General",
+    "name": "Nom",
+    "mac": "Adreça MAC",
+    "noMac": "Sense adreça MAC",
+    "lanIp": "IP de la LAN",
+    "lanIpHint": "L'adreça a la pròpia xarxa de la màquina, si difereix de l'adreça de l'amfitrió.",
+    "netmask": "Màscara de xarxa",
+    "netmaskHint": "S'utilitza per calcular l'adreça de difusió.",
+    "description": "Descripció",
+    "link": "Enllaç",
+    "linkHint": "Fa que el nom sigui clicable, com un enllaç a un tauler de control.",
+    "autoOpen": "Obrir l'enllaç després d'encendre",
+    "autoOpenHint": "Obre l'enllaç un cop la màquina està en línia.",
+    "lastChange": "Últim canvi",
+    "status": "Estat",
+    "statusFrom": "Comprovar des de",
+    "statusFromHint": "Utilitza un amfitrió SSH a la mateixa xarxa quan Termix no pot arribar a la màquina.",
+    "ports": "Ports",
+    "portsHint": "Els ports oberts es mostren a la targeta. El servidor Termix només comprova ports, així que afegeix-ne un en què la màquina respongui.",
+    "pingCommand": "Comprovació personalitzada",
+    "pingCommandHint": "Opcional. El codi de sortida 0 significa que la màquina està encesa. Es substitueixen {{ip}} i {{mac}}.",
+    "wake": "Encendre",
+    "wakeMode": "Encendre amb",
+    "wakeMagic": "Paquet Wake-on-LAN",
+    "commandMode": "Comanda personalitzada",
+    "wakeFrom": "Enviar des de",
+    "wakeFromHint": "El paquet ha d'originar-se a la pròpia xarxa de la màquina. Tria un amfitrió SSH allà si Termix no hi és.",
+    "fromServer": "Servidor Termix",
+    "broadcast": "Adreça de difusió",
+    "broadcastHint": "Deixa-ho en blanc per calcular-lo a partir de l'IP de la LAN i la màscara de xarxa.",
+    "wakePort": "Port",
+    "secureOn": "Contrasenya SecureON",
+    "secureOnHint": "Opcional. 4 o 6 caràcters, o un valor escrit com una adreça MAC.",
+    "secretSaved": "Desat, deixa-ho en blanc per mantenir-lo",
+    "wakeCommand": "Comanda d'encesa",
+    "placeholders": "Es substitueixen {{ip}} i {{mac}}.",
+    "timeout": "Temps d'espera (segons)",
+    "timeoutHint": "Quant de temps esperar abans de marcar-lo com a sense resposta.",
+    "cron": "Programació (cron)",
+    "cronHint": "Opcional. Cinc camps, a la zona horària del servidor.",
+    "confirm": "Preguntar abans d'executar",
+    "shutdown": "Apagar",
+    "shutdownMode": "Apagar amb",
+    "shutdownNone": "Res",
+    "shutdownSsh": "Inici de sessió SSH d'aquest amfitrió",
+    "shutdownSshHint": "Cal root o sudo sense contrasenya a Linux i macOS.",
+    "shutdownCommand": "Comanda d'apagat",
+    "commands": "Comandes personalitzades",
+    "commandTarget": "Executar comandes a",
+    "commandTargetHint": "Les comandes s'executen amb l'inici de sessió de la persona que les ha desat.",
+    "targetHost": "Aquest amfitrió, per SSH",
+    "targetRelay": "Un altre amfitrió, per SSH",
+    "targetServer": "El servidor Termix",
+    "commandRelay": "Amfitrió",
+    "pickHost": "Tria un amfitrió",
+    "bmc": "BMC",
+    "useBmc": "Utilitzar el BMC quan n'hi hagi un",
+    "useBmcHint": "Encendre i apagar a través del complement Out-of-band si aquest amfitrió té un BMC enllaçat allà. En cas contrari, s'utilitzen els mètodes anteriors.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Utilitzar Sleep-On-LAN",
+    "solHint": "Cal l'eina Sleep-On-LAN a la màquina amb un escoltador HTTP.",
+    "solPort": "Port",
+    "solUser": "Nom d'usuari",
+    "solPassword": "Contrasenya",
+    "test": "Prova",
+    "testShutdownConfirm": "Això executa l'ordre real i pot apagar {{name}}. Vols continuar?",
+    "testFailed": "La prova ha fallat",
+    "saveFirst": "Desa primer",
+    "exitCode": "Codi de sortida {{code}}",
+    "loadFailed": "No s'ha pogut carregar aquest ordinador",
+    "saveFailed": "No s'ha pogut desar"
+  },
+  "add": {
+    "title": "Afegeix un ordinador",
+    "host": "Amfitrió",
+    "newHost": "Amfitrió nou",
+    "hostHint": "Si aquest ordinador ja és un amfitrió, selecciona'l perquè no aparegui dues vegades. La seva adreça es mantindrà igual."
+  },
+  "scan": {
+    "title": "Escaneja la xarxa",
+    "where": "On escanejar",
+    "from": "Escaneja des de",
+    "fromHint": "Selecciona un amfitrió SSH d'aquesta xarxa. Utilitza nmap si el té, o sinó ping.",
+    "range": "Rang",
+    "rangeHint": "Deixa-ho en blanc per utilitzar les xarxes privades pròpies d'aquest amfitrió.",
+    "rangeNeeded": "Necessari quan s'escaneja des del servidor Termix.",
+    "start": "Escaneja",
+    "scanning": "Escanejant...",
+    "note": "Un escaneig troba ordinadors a la xarxa. No pot determinar si Wake-on-LAN està activat per a ells.",
+    "none": "No s'ha trobat res",
+    "failed": "L'escaneig ha fallat",
+    "addFailed": "No s'ha pogut afegir aquest ordinador",
+    "noMac": "No s'ha trobat cap MAC",
+    "newHost": "Amfitrió nou",
+    "attachTo": "Adjunta a {{name}}",
+    "attach": "Adjunta",
+    "add": "Afegeix",
+    "added": "Fet",
+    "choose": "On anirà aquest ordinador",
+    "match": {
+      "mac": "La mateixa MAC que {{name}}",
+      "ip": "La mateixa IP que {{name}}",
+      "name": "El mateix nom que {{name}}"
+    },
+    "hint": {
+      "bridge": "Gairebé no s'ha trobat res. Un contenidor Termix en una xarxa bridge no pot veure la teva LAN, així que escaneja des d'un amfitrió SSH en canvi.",
+      "no-mac": "Alguns ordinadors no tenen MAC. Executa l'escaneig amb nmap com a root, o comprova que l'amfitrió els pugui veure."
+    }
+  },
+  "widget": {
+    "name": "Energia",
+    "description": "Ordinadors amb el seu estat i botons d'encès/apagat.",
+    "pick": "Ordinadors a mostrar. No en seleccionis cap per mostrar-los tots."
+  },
+  "operations": {
+    "wake": {
+      "title": "Desperta l'ordinador"
+    },
+    "shutdown": {
+      "title": "Apaga l'ordinador"
+    },
+    "sleep": {
+      "title": "Posa l'ordinador en suspensió"
+    },
+    "powerState": {
+      "title": "Estat d'energia"
+    }
   }
 }

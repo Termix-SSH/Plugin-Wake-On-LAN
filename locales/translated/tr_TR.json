@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Uyandır",
-    "sent": "Wake-on-LAN paketi gönderildi",
-    "failed": "Wake-on-LAN paketi gönderilemedi"
-  },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN paketleri gönder",
-      "description": "MAC adresine bir sihirli paket göndererek bir ana bilgisayarı uyandırın."
+      "title": "Cihazları uyar",
+      "description": "Güç sekmesinden, menüsünden veya bir otomasyondan bir ana makineyi uyarın."
+    },
+    "shutdown": {
+      "title": "Cihazları kapat",
+      "description": "Bir ana makineyi kapatın veya uyku moduna alın."
+    },
+    "scan": {
+      "title": "Ağları tara",
+      "description": "Bağlanabileceğiniz bir SSH ana makinesinden cihazları arayın."
+    },
+    "serverCommands": {
+      "title": "Termix sunucusunu kullan",
+      "description": "Termix sunucusunda çalışan komutları kaydedin ve ondan tarama yapın. Bu, sunucunun yapabileceği her şeyi çalıştırabilir."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Güç",
+        "description": "Bu ana makineyi Güç sekmesinde göster."
+      },
       "macAddress": {
         "label": "MAC adresi",
-        "description": "Wake-on-LAN paketleri göndermek için kullanılan ana bilgisayarın ağ MAC adresi.",
+        "description": "Bu ana makineyi uyandıran ağ bağlantı noktasının MAC adresi.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Paketin gönderileceği alt ağ yayın adresi. 255.255.255.255 için boş bırakın.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Durum kontrolü aralığı",
+        "description": "Durum kontrolleri arasındaki saniye sayısı. Bir ara sunucu üzerinden yapılan kontroller her seferinde SSH kullanır."
+      },
+      "allowServerCommands": {
+        "label": "Termix sunucusunda komutlara izin ver",
+        "description": "Kayıtlı ping, uyanma ve kapatma komutlarının Termix sunucusunda çalışmasına izin ver. Sadece Termix sunucusunu kullan izni olan kullanıcılar bunları kaydedebilir."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Uyuyan makineleri MAC adreslerine Wake-on-LAN paketi göndererek uyandırın."
+    "description": "Tek bir güç kontrol panelinden cihazlarınızı uyandırın, kapatın ve takip edin."
+  },
+  "tile": {
+    "title": "Güç",
+    "none": "Bu ana makine güç kontrolü için yapılandırılmamış.",
+    "status": {
+      "online": "Çevrimiçi",
+      "offline": "Çevrimdışı",
+      "waking": "Uyanıyor",
+      "stopping": "Kapanıyor",
+      "failed": "Başarısız",
+      "unknown": "Bilinmiyor"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Henüz hiçbir ana bilgisayarın MAC adresi yok. Bir ana bilgisayarın ayarlarından ekleyin."
+    "title": "Güç",
+    "empty": "Henüz cihaz yok. Bir tane eklemek veya ağınızı taramak için Güç sekmesini açın."
+  },
+  "tab": {
+    "title": "Güç",
+    "status": "{{total}} cihazdan {{online}} çevrimiçi",
+    "add": "Ekle",
+    "scan": "Tara",
+    "search": "Cihazları ara",
+    "failed": "Cihazlarınız yüklenemedi",
+    "empty": "Henüz cihaz yok",
+    "emptyHint": "Bir cihaz ekleyin veya ağınızı tarayarak bulun.",
+    "noMatch": "Aramanızla eşleşen bir şey yok",
+    "noFolder": "Klasör yok",
+    "wakeAll": "Tümünü uyar",
+    "wakeAllConfirm": "{{folder}} klasöründeki {{count}} cihazı uyandırmak istiyor musunuz?"
+  },
+  "status": {
+    "unknown": "Henüz kontrol edilmedi",
+    "online": "Çevrimiçi",
+    "offline": "Çevrimdışı",
+    "waking": "Uyanıyor",
+    "stopping": "Kapanıyor",
+    "failed": "Zamanında yanıt vermedi"
+  },
+  "power": {
+    "wake": "Uyandır",
+    "shutdown": "Kapat",
+    "sleep": "Uyku",
+    "settings": "Güç ayarları",
+    "confirm": {
+      "wake": "{{name}} cihazını uyandırmak istiyor musunuz?",
+      "shutdown": "{{name}} cihazını kapatmak istiyor musunuz?",
+      "sleep": "{{name}} cihazını uyku moduna almak istiyor musunuz?"
+    },
+    "sent": {
+      "wake": "{{name}} cihazı uyanıyor",
+      "shutdown": "{{name}} cihazı kapanıyor",
+      "sleep": "{{name}} cihazı uyku moduna alınıyor"
+    },
+    "failed": {
+      "wake": "Bu cihazı uyandıramadı",
+      "shutdown": "Bu cihazı kapatamadı",
+      "sleep": "Bu cihazı uyku moduna alamadı"
+    }
+  },
+  "device": {
+    "title": "Cihaz",
+    "general": "Genel",
+    "name": "Ad",
+    "mac": "MAC adresi",
+    "noMac": "MAC adresi yok",
+    "lanIp": "LAN IP",
+    "lanIpHint": "Ana makinenin kendi ağındaki adres, ana makinenin adresinden farklıysa.",
+    "netmask": "Ağ maskesi",
+    "netmaskHint": "Yayın adresini hesaplamak için kullanılır.",
+    "description": "Açıklama",
+    "link": "Bağlantı",
+    "linkHint": "Adı, bir panoya bağlantı gibi tıklanabilir hale getirir.",
+    "autoOpen": "Uyandıktan sonra bağlantıyı aç",
+    "autoOpenHint": "Makine çevrimiçi olduğunda bağlantıyı açar.",
+    "lastChange": "Son değişiklik",
+    "status": "Durum",
+    "statusFrom": "Kontrol kaynağı",
+    "statusFromHint": "Termix makineye ulaşamadığında aynı ağdaki bir SSH ana makinesini kullanın.",
+    "ports": "Portlar",
+    "portsHint": "Açık portlar kartta gösterilir. Termix sunucusu yalnızca portları kontrol eder, bu nedenle makinenin yanıt verdiği bir port ekleyin.",
+    "pingCommand": "Özel kontrol",
+    "pingCommandHint": "İsteğe bağlı. Çıkış kodu 0, makinenin açık olduğunu gösterir. {{ip}} ve {{mac}} doldurulur.",
+    "wake": "Uyandır",
+    "wakeMode": "Uyandırma yöntemi",
+    "wakeMagic": "Wake-on-LAN paketi",
+    "commandMode": "Özel komut",
+    "wakeFrom": "Gönderme kaynağı",
+    "wakeFromHint": "Paket, makinenin kendi ağında başlamalıdır. Termix orada değilse, orada bir SSH ana makinesi seçin.",
+    "fromServer": "Termix sunucusu",
+    "broadcast": "Yayın adresi",
+    "broadcastHint": "LAN IP ve ağ maskesinden hesaplamak için boş bırakın.",
+    "wakePort": "Port",
+    "secureOn": "SecureON şifresi",
+    "secureOnHint": "İsteğe bağlı. 4 veya 6 karakter veya MAC adresi gibi yazılmış bir değer.",
+    "secretSaved": "Kaydedildi, korumak için boş bırakın",
+    "wakeCommand": "Uyandırma komutu",
+    "placeholders": "{{ip}} ve {{mac}} doldurulur.",
+    "timeout": "Zaman aşımı (saniye)",
+    "timeoutHint": "Yanıt vermiyor olarak işaretlenmeden önce ne kadar beklenmesi gerektiği.",
+    "cron": "Zamanlama (cron)",
+    "cronHint": "İsteğe bağlı. Sunucunun saat diliminde beş alan.",
+    "confirm": "Çalıştırmadan önce sor",
+    "shutdown": "Kapat",
+    "shutdownMode": "Kapatma yöntemi",
+    "shutdownNone": "Hiçbiri",
+    "shutdownSsh": "Bu ana makinenin SSH girişi",
+    "shutdownSshHint": "Linux ve macOS'ta root veya şifresiz sudo gerektirir.",
+    "shutdownCommand": "Kapatma komutu",
+    "commands": "Özel komutlar",
+    "commandTarget": "Komutları çalıştır",
+    "commandTargetHint": "Komutlar, onları kaydeden kişinin giriş bilgileriyle çalıştırılır.",
+    "targetHost": "Bu ana makine, SSH üzerinden",
+    "targetRelay": "Başka bir ana makine, SSH üzerinden",
+    "targetServer": "Termix sunucusu",
+    "commandRelay": "Ana makine",
+    "pickHost": "Bir ana makine seçin",
+    "bmc": "BMC",
+    "useBmc": "Varsa BMC'yi kullan",
+    "useBmcHint": "Bu ana makinenin BMC'si Out-of-band eklentisinde bağlıysa, güç açma ve kapatma işlemlerini bu eklenti üzerinden gerçekleştirin. Aksi takdirde yukarıdaki yöntemler kullanılır.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Sleep-On-LAN kullan",
+    "solHint": "Makinede HTTP dinleyicisi olan Sleep-On-LAN aracına ihtiyaç duyar.",
+    "solPort": "Port",
+    "solUser": "Kullanıcı adı",
+    "solPassword": "Şifre",
+    "test": "Test",
+    "testShutdownConfirm": "Bu gerçek komutu çalıştırır ve {{name}} cihazını kapatabilir. Devam edilsin mi?",
+    "testFailed": "Test başarısız oldu",
+    "saveFirst": "Önce kaydet",
+    "exitCode": "Çıkış kodu {{code}}",
+    "loadFailed": "Bu makine yüklenemedi",
+    "saveFailed": "Kaydedilemedi"
+  },
+  "add": {
+    "title": "Makine ekle",
+    "host": "Ana bilgisayar",
+    "newHost": "Yeni ana bilgisayar",
+    "hostHint": "Bu makine zaten bir ana bilgisayarsa, iki kez görünmemesi için onu seçin. Adresi olduğu gibi kalır."
+  },
+  "scan": {
+    "title": "Ağda tarama yap",
+    "where": "Tarama yapılacak yer",
+    "from": "Tarama kaynağı",
+    "fromHint": "O ağdaki bir SSH ana bilgisayarı seçin. Varsa nmap kullanır, yoksa ping kullanır.",
+    "range": "Aralık",
+    "rangeHint": "O ana bilgisayarın kendi özel ağları için boş bırakın.",
+    "rangeNeeded": "Termix sunucusundan tarama yaparken gereklidir.",
+    "start": "Tara",
+    "scanning": "Taranıyor...",
+    "note": "Bir tarama ağdaki makineleri bulur. Wake-on-LAN'ın onlar için açık olup olmadığını söyleyemez.",
+    "none": "Hiçbir şey bulunamadı",
+    "failed": "Tarama başarısız oldu",
+    "addFailed": "Bu makine eklenemedi",
+    "noMac": "MAC adresi bulunamadı",
+    "newHost": "Yeni ana bilgisayar",
+    "attachTo": "{{name}}'e bağla",
+    "attach": "Bağla",
+    "add": "Ekle",
+    "added": "Tamamlandı",
+    "choose": "Bu makinenin nereye gideceği",
+    "match": {
+      "mac": "{{name}} ile aynı MAC",
+      "ip": "{{name}} ile aynı IP",
+      "name": "{{name}} ile aynı ad"
+    },
+    "hint": {
+      "bridge": "Neredeyse hiçbir şey bulunamadı. Köprü ağındaki bir Termix konteyneri LAN'ınızı göremez, bu yüzden bunun yerine bir SSH ana bilgisayarından tarama yapın.",
+      "no-mac": "Bazı makinelerin MAC adresi yoktur. Taramayı root olarak nmap ile çalıştırın veya ana bilgisayarın onları görebilip göremediğini kontrol edin."
+    }
+  },
+  "widget": {
+    "name": "Güç",
+    "description": "Durumları ve güç düğmeleriyle makineler.",
+    "pick": "Gösterilecek makineler. Hiçbiri seçilmezse hepsi gösterilir."
+  },
+  "operations": {
+    "wake": {
+      "title": "Makineleri uyandır"
+    },
+    "shutdown": {
+      "title": "Makineleri kapat"
+    },
+    "sleep": {
+      "title": "Makineleri uyku moduna al"
+    },
+    "powerState": {
+      "title": "Güç durumu"
+    }
   }
 }

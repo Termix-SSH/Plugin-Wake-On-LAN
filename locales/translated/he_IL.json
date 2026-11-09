@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "הערה",
-    "sent": "חבילת Wake-on-LAN נשלחה",
-    "failed": "שליחת חבילת Wake-on-LAN נכשלה"
-  },
   "permissions": {
     "send": {
-      "title": "שליחת חבילות Wake-on-LAN",
-      "description": "הערת מארח על ידי שליחת חבילה קסומה לכתובת ה-MAC שלו."
+      "title": "הערת מכונות",
+      "description": "הערת מארח מתוך הלשונית חשמל, התפריט שלו או אוטומציה."
+    },
+    "shutdown": {
+      "title": "כיבוי מכונות",
+      "description": "כיבוי מארח או מעבר למצב שינה."
+    },
+    "scan": {
+      "title": "סריקת רשתות",
+      "description": "חיפוש מכונות ממארח SSH שאליו ניתן להתחבר."
+    },
+    "serverCommands": {
+      "title": "שימוש בשרת Termix",
+      "description": "שמירת פקודות שרצות על שרת ה-Termix וסריקה ממנו. זה יכול להריץ כל דבר שהשרת מסוגל להריץ."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "חשמל",
+        "description": "הצגת מארח זה בלשונית חשמל."
+      },
       "macAddress": {
         "label": "כתובת MAC",
-        "description": "כתובת ה-MAC הרשתית של המארח, המשמשת לשליחת חבילות Wake-on-LAN.",
+        "description": "כתובת ה-MAC של פורט הרשת שמעירה את המארח הזה.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "כתובת השידור של התת-רשת לשליחת החבילה אליה. השאר ריק עבור 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "מרווח בדיקת סטטוס",
+        "description": "שניות בין בדיקות סטטוס. בדיקות דרך מארח יחסים משתמשות ב-SSH בכל פעם."
+      },
+      "allowServerCommands": {
+        "label": "אפשר פקודות על שרת ה-Termix",
+        "description": "אפשר לפקודות ping, הערה וכיבוי שמורות לרוץ על שרת ה-Termix. רק משתמשים עם הרשאת שימוש בשרת Termix יכולים לשמור אותן."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "העברת מכונות ישנות על ידי שליחת חבילת Wake-on-LAN לכתובת ה-MAC שלהן."
+    "description": "הערה, כיבוי ומעקב אחר המכונות שלך מדשבורד חשמל אחד."
+  },
+  "tile": {
+    "title": "חשמל",
+    "none": "מארח זה לא מוגדר לשליטה בחשמל.",
+    "status": {
+      "online": "מחובר",
+      "offline": "מנותק",
+      "waking": "מתעורר",
+      "stopping": "נכבה",
+      "failed": "נכשל",
+      "unknown": "לא ידוע"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "עדיין אין לשרתים כתובת MAC. הוסף אחת בהגדרות של שרת."
+    "title": "חשמל",
+    "empty": "אין מכונות עדיין. פתח את לשונית החשמל כדי להוסיף אחת או לסרוק את הרשת שלך."
+  },
+  "tab": {
+    "title": "חשמל",
+    "status": "{{online}} מתוך {{total}} מחוברים",
+    "add": "הוסף",
+    "scan": "סרוק",
+    "search": "חיפוש מכונות",
+    "failed": "לא ניתן לטעון את המכונות שלך",
+    "empty": "אין מכונות עדיין",
+    "emptyHint": "הוסף מכונה, או סרוק את הרשת שלך כדי למצוא אותן.",
+    "noMatch": "אין תוצאות לחיפוש שלך",
+    "noFolder": "אין תיקייה",
+    "wakeAll": "הערת כולן",
+    "wakeAllConfirm": "להעיר {{count}} מכונות ב-{{folder}}?"
+  },
+  "status": {
+    "unknown": "לא נבדק עדיין",
+    "online": "מחובר",
+    "offline": "מנותק",
+    "waking": "מתעורר",
+    "stopping": "נכבה",
+    "failed": "לא הגיב בזמן"
+  },
+  "power": {
+    "wake": "הערה",
+    "shutdown": "כיבוי",
+    "sleep": "שינה",
+    "settings": "הגדרות חשמל",
+    "confirm": {
+      "wake": "להעיר את {{name}}?",
+      "shutdown": "לכבות את {{name}}?",
+      "sleep": "לשלוח את {{name}} לשינה?"
+    },
+    "sent": {
+      "wake": "מעיר את {{name}}",
+      "shutdown": "מכבה את {{name}}",
+      "sleep": "שולח את {{name}} לשינה"
+    },
+    "failed": {
+      "wake": "נכשל בהערת מכונה זו",
+      "shutdown": "נכשל בכיבוי מכונה זו",
+      "sleep": "נכשל בשליחת מכונה זו לשינה"
+    }
+  },
+  "device": {
+    "title": "מכונה",
+    "general": "כללי",
+    "name": "שם",
+    "mac": "כתובת MAC",
+    "noMac": "אין כתובת MAC",
+    "lanIp": "כתובת IP ברשת מקומית",
+    "lanIpHint": "הכתובת ברשת המקומית של המכשיר, אם היא שונה מכתובת המארח.",
+    "netmask": "מסכת רשת",
+    "netmaskHint": "משמשת לחישוב כתובת השידור.",
+    "description": "תיאור",
+    "link": "קישור",
+    "linkHint": "הופך את השם ללחיצה, כמו קישור ללוח בקרה.",
+    "autoOpen": "פתח קישור לאחר ההפעלה",
+    "autoOpenHint": "פותח את הקישור ברגע שהמכשיר מחובר לאינטרנט.",
+    "lastChange": "שינוי אחרון",
+    "status": "סטטוס",
+    "statusFrom": "בדוק מ-",
+    "statusFromHint": "השתמש במארח SSH ברשת המקומית כאשר ל- Termix אין גישה למכשיר.",
+    "ports": "יציאות",
+    "portsHint": "יציאות פתוחות מופיעות על הכרטיס. שרת Termix בודק רק יציאות, אז הוסף אחת שהמכשיר מגיב עליה.",
+    "pingCommand": "בדיקה מותאמת אישית",
+    "pingCommandHint": "אופציונלי. קוד יציאה 0 אומר שהמכשיר דלוק. {{ip}} ו-{{mac}} מתמלאים אוטומטית.",
+    "wake": "הפעל",
+    "wakeMode": "הפעל באמצעות",
+    "wakeMagic": "חבילת Wake-on-LAN",
+    "commandMode": "פקודה מותאמת אישית",
+    "wakeFrom": "שלח מ-",
+    "wakeFromHint": "החבילה חייבת להתחיל ברשת המקומית של המכשיר. בחר מארח SSH שם אם Termix לא נמצא שם.",
+    "fromServer": "שרת Termix",
+    "broadcast": "כתובת שידור",
+    "broadcastHint": "השאר ריק כדי לחשב אותה מה- IP המקומי ומסכת הרשת.",
+    "wakePort": "יציאה",
+    "secureOn": "סיסמת SecureON",
+    "secureOnHint": "אופציונלי. 4 או 6 תווים, או ערך שכתוב כמו כתובת MAC.",
+    "secretSaved": "נשמר, השאר ריק כדי לשמור על הקיים",
+    "wakeCommand": "פקודת הפעלה",
+    "placeholders": "{{ip}} ו-{{mac}} מתמלאים אוטומטית.",
+    "timeout": "זמן תגובה (שניות)",
+    "timeoutHint": "כמה זמן להמתין לפני סימון כלא מגיב.",
+    "cron": "לוח זמנים (cron)",
+    "cronHint": "אופציונלי. חמש שדות, באזור הזמן של השרת.",
+    "confirm": "שאל לפני הרצה",
+    "shutdown": "כיבוי",
+    "shutdownMode": "כבה באמצעות",
+    "shutdownNone": "כלום",
+    "shutdownSsh": "התחברות SSH של מארח זה",
+    "shutdownSshHint": "דורש root או sudo ללא סיסמה ב- Linux וב- macOS.",
+    "shutdownCommand": "פקודת כיבוי",
+    "commands": "פקודות מותאמות אישית",
+    "commandTarget": "הרץ פקודות על",
+    "commandTargetHint": "פקודות מורצות עם פרטי ההתחברות של האדם ששמר אותן.",
+    "targetHost": "מארח זה, דרך SSH",
+    "targetRelay": "מארח אחר, דרך SSH",
+    "targetServer": "שרת Termix",
+    "commandRelay": "מארח",
+    "pickHost": "בחר מארח",
+    "bmc": "BMC",
+    "useBmc": "השתמש ב- BMC אם קיים",
+    "useBmcHint": "הפעל וכבה דרך תוסף Out-of-band אם למארח זה יש BMC מקושר שם. אחרת, השיטות למעלה ייעשו שימוש.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "השתמש ב- Sleep-On-LAN",
+    "solHint": "דורש את כלי Sleep-On-LAN על המכשיר עם מאזין HTTP.",
+    "solPort": "יציאה",
+    "solUser": "שם משתמש",
+    "solPassword": "סיסמה",
+    "test": "בדיקה",
+    "testShutdownConfirm": "פעולה זו מריצה את הפקודה האמיתית ועלולה לכבות את {{name}}. להמשיך?",
+    "testFailed": "הבדיקה נכשלה",
+    "saveFirst": "יש לשמור תחילה",
+    "exitCode": "קוד יציאה {{code}}",
+    "loadFailed": "לא ניתן לטעון מכונה זו",
+    "saveFailed": "לא ניתן לשמור"
+  },
+  "add": {
+    "title": "הוספת מכונה",
+    "host": "מארח",
+    "newHost": "מארח חדש",
+    "hostHint": "אם מכונה זו כבר מוגדרת כמארח, בחר אותה כדי שלא תופיע פעמיים. הכתובת שלה תישאר כפי שהיא."
+  },
+  "scan": {
+    "title": "סריקת רשת",
+    "where": "איפה לסרוק",
+    "from": "סריקה מ-",
+    "fromHint": "בחר מארח SSH ברשת זו. הוא משתמש ב-nmap אם זמין, אחרת ב-ping.",
+    "range": "טווח",
+    "rangeHint": "השאר ריק כדי לסרוק את הרשתות הפרטיות של המארח הזה.",
+    "rangeNeeded": "נדרש בעת סריקה מהשרת של Termix.",
+    "start": "סריקה",
+    "scanning": "מבצע סריקה...",
+    "note": "סריקה מזהה מכונות ברשת. היא אינה יכולה לקבוע האם Wake-on-LAN מופעל עבורן.",
+    "none": "לא נמצא כלום",
+    "failed": "הסריקה נכשלה",
+    "addFailed": "לא ניתן להוסיף מכונה זו",
+    "noMac": "לא נמצא כתובת MAC",
+    "newHost": "מארח חדש",
+    "attachTo": "חיבור ל-{{name}}",
+    "attach": "חיבור",
+    "add": "הוספה",
+    "added": "הושלם",
+    "choose": "לאן להוסיף מכונה זו",
+    "match": {
+      "mac": "אותה כתובת MAC כמו {{name}}",
+      "ip": "אותה כתובת IP כמו {{name}}",
+      "name": "אותו שם כמו {{name}}"
+    },
+    "hint": {
+      "bridge": "כמעט ולא נמצא כלום. מיכל Termix ברשת bridge אינו רואה את הרשת המקומית שלך, לכן עדיף לבצע סריקה ממארח SSH.",
+      "no-mac": "לחלק מהמכונות אין כתובת MAC. הרץ את הסריקה עם nmap כמשתמש root, או בדוק שהמארח רואה אותן."
+    }
+  },
+  "widget": {
+    "name": "הפעלה",
+    "description": "מכונות עם סטטוס וכפתורי הפעלה.",
+    "pick": "מכונות להצגה. בחר אף אחת כדי להציג את כולן."
+  },
+  "operations": {
+    "wake": {
+      "title": "הערת מכונה"
+    },
+    "shutdown": {
+      "title": "כיבוי מכונה"
+    },
+    "sleep": {
+      "title": "המתנת מכונה"
+    },
+    "powerState": {
+      "title": "מצב הפעלה"
+    }
   }
 }

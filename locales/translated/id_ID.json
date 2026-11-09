@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Bangunkan",
-    "sent": "Paket Wake-on-LAN terkirim",
-    "failed": "Gagal mengirim paket Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Kirim paket Wake-on-LAN",
-      "description": "Bangunkan host dengan mengirim paket ajaib ke alamat MAC-nya."
+      "title": "Nyalakan mesin",
+      "description": "Nyalakan host dari tab Daya, menunya, atau otomatisasi."
+    },
+    "shutdown": {
+      "title": "Matikan mesin",
+      "description": "Matikan host atau masukkan ke mode tidur."
+    },
+    "scan": {
+      "title": "Pindai jaringan",
+      "description": "Cari mesin dari host SSH yang dapat Anda sambungkan."
+    },
+    "serverCommands": {
+      "title": "Gunakan server Termix",
+      "description": "Simpan perintah yang berjalan di server Termix, dan pindai darinya. Ini dapat menjalankan apa pun yang dapat dilakukan server."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Daya",
+        "description": "Tampilkan host ini di tab Daya."
+      },
       "macAddress": {
         "label": "Alamat MAC",
-        "description": "Alamat MAC jaringan host, digunakan untuk mengirim paket Wake-on-LAN.",
+        "description": "Alamat MAC dari port jaringan yang menyalakan host ini.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Alamat broadcast subnet untuk mengirim paket. Kosongkan untuk 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interval pengecekan status",
+        "description": "Detik antara pengecekan status. Pengecekan melalui host relay menggunakan SSH setiap kali."
+      },
+      "allowServerCommands": {
+        "label": "Izinkan perintah di server Termix",
+        "description": "Biarkan perintah ping, nyalakan, dan matikan yang disimpan berjalan di server Termix. Hanya pengguna dengan izin Gunakan server Termix yang dapat menyimpannya."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Bangunkan mesin yang sedang tidur dengan mengirimkan paket Wake-on-LAN ke alamat MAC mereka."
+    "description": "Nyalakan, matikan, dan lacak mesin Anda dari satu dasbor daya."
+  },
+  "tile": {
+    "title": "Daya",
+    "none": "Host ini tidak diatur untuk kontrol daya.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Sedang dinyalakan",
+      "stopping": "Sedang dimatikan",
+      "failed": "Gagal",
+      "unknown": "Tidak diketahui"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Belum ada host dengan alamat MAC. Tambahkan di pengaturan host."
+    "title": "Daya",
+    "empty": "Belum ada mesin. Buka tab Daya untuk menambahkan atau memindai jaringan Anda."
+  },
+  "tab": {
+    "title": "Daya",
+    "status": "{{online}} dari {{total}} online",
+    "add": "Tambah",
+    "scan": "Pindai",
+    "search": "Cari mesin",
+    "failed": "Tidak dapat memuat mesin Anda",
+    "empty": "Belum ada mesin",
+    "emptyHint": "Tambahkan mesin, atau pindai jaringan Anda untuk menemukannya.",
+    "noMatch": "Tidak ada yang cocok dengan pencarian Anda",
+    "noFolder": "Tidak ada folder",
+    "wakeAll": "Nyalakan semua",
+    "wakeAllConfirm": "Nyalakan {{count}} mesin di {{folder}}?"
+  },
+  "status": {
+    "unknown": "Belum diperiksa",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Sedang dinyalakan",
+    "stopping": "Sedang dimatikan",
+    "failed": "Tidak merespons dalam waktu"
+  },
+  "power": {
+    "wake": "Nyalakan",
+    "shutdown": "Matikan",
+    "sleep": "Tidur",
+    "settings": "Pengaturan daya",
+    "confirm": {
+      "wake": "Nyalakan {{name}}?",
+      "shutdown": "Matikan {{name}}?",
+      "sleep": "Masukkan {{name}} ke mode tidur?"
+    },
+    "sent": {
+      "wake": "Menyalakan {{name}}",
+      "shutdown": "Mematikan {{name}}",
+      "sleep": "Memasukkan {{name}} ke mode tidur"
+    },
+    "failed": {
+      "wake": "Gagal menyalakan mesin ini",
+      "shutdown": "Gagal mematikan mesin ini",
+      "sleep": "Gagal memasukkan mesin ini ke mode tidur"
+    }
+  },
+  "device": {
+    "title": "Mesin",
+    "general": "Umum",
+    "name": "Nama",
+    "mac": "Alamat MAC",
+    "noMac": "Tidak ada alamat MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "Alamat di jaringan lokal mesin tersebut, jika berbeda dari alamat host.",
+    "netmask": "Netmask",
+    "netmaskHint": "Digunakan untuk menentukan alamat broadcast.",
+    "description": "Deskripsi",
+    "link": "Tautan",
+    "linkHint": "Membuat nama dapat diklik, seperti tautan ke dasbor.",
+    "autoOpen": "Buka tautan setelah bangun",
+    "autoOpenHint": "Membuka tautan setelah mesin online.",
+    "lastChange": "Perubahan terakhir",
+    "status": "Status",
+    "statusFrom": "Periksa dari",
+    "statusFromHint": "Gunakan host SSH di jaringan yang sama jika Termix tidak dapat menjangkau mesin.",
+    "ports": "Port",
+    "portsHint": "Port terbuka ditampilkan di kartu. Server Termix hanya memeriksa port, jadi tambahkan satu port yang direspons oleh mesin.",
+    "pingCommand": "Pemeriksaan kustom",
+    "pingCommandHint": "Opsional. Kode keluar 0 berarti mesin menyala. {{ip}} dan {{mac}} akan diisi otomatis.",
+    "wake": "Bangunkan",
+    "wakeMode": "Bangunkan dengan",
+    "wakeMagic": "Paket Wake-on-LAN",
+    "commandMode": "Perintah kustom",
+    "wakeFrom": "Kirim dari",
+    "wakeFromHint": "Paket harus dikirim dari jaringan lokal mesin. Pilih host SSH di sana jika Termix tidak berada di jaringan yang sama.",
+    "fromServer": "Server Termix",
+    "broadcast": "Alamat broadcast",
+    "broadcastHint": "Kosongkan untuk menghitungnya dari IP LAN dan netmask.",
+    "wakePort": "Port",
+    "secureOn": "Kata sandi SecureON",
+    "secureOnHint": "Opsional. 4 atau 6 karakter, atau nilai yang ditulis seperti alamat MAC.",
+    "secretSaved": "Tersimpan, kosongkan untuk tetap menggunakan yang lama",
+    "wakeCommand": "Perintah bangunkan",
+    "placeholders": "{{ip}} dan {{mac}} akan diisi otomatis.",
+    "timeout": "Batas waktu (detik)",
+    "timeoutHint": "Lama menunggu sebelum menandainya sebagai tidak merespons.",
+    "cron": "Jadwal (cron)",
+    "cronHint": "Opsional. Lima bidang, dalam zona waktu server.",
+    "confirm": "Tanya sebelum menjalankan",
+    "shutdown": "Matikan",
+    "shutdownMode": "Matikan dengan",
+    "shutdownNone": "Tidak ada",
+    "shutdownSsh": "Login SSH host ini",
+    "shutdownSshHint": "Memerlukan root atau sudo tanpa kata sandi di Linux dan macOS.",
+    "shutdownCommand": "Perintah matikan",
+    "commands": "Perintah kustom",
+    "commandTarget": "Jalankan perintah di",
+    "commandTargetHint": "Perintah dijalankan dengan login orang yang menyimpannya.",
+    "targetHost": "Host ini, melalui SSH",
+    "targetRelay": "Host lain, melalui SSH",
+    "targetServer": "Server Termix",
+    "commandRelay": "Host",
+    "pickHost": "Pilih host",
+    "bmc": "BMC",
+    "useBmc": "Gunakan BMC jika tersedia",
+    "useBmcHint": "Nyalakan dan matikan melalui plugin Out-of-band jika host ini memiliki BMC yang terhubung di sana. Jika tidak, metode di atas akan digunakan.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Gunakan Sleep-On-LAN",
+    "solHint": "Memerlukan alat Sleep-On-LAN di mesin dengan pendengar HTTP.",
+    "solPort": "Port",
+    "solUser": "Nama pengguna",
+    "solPassword": "Kata sandi",
+    "test": "Uji",
+    "testShutdownConfirm": "Ini menjalankan perintah asli dan dapat mematikan {{name}}. Lanjutkan?",
+    "testFailed": "Pengujian gagal",
+    "saveFirst": "Simpan terlebih dahulu",
+    "exitCode": "Kode keluar {{code}}",
+    "loadFailed": "Tidak dapat memuat mesin ini",
+    "saveFailed": "Tidak dapat menyimpan"
+  },
+  "add": {
+    "title": "Tambah mesin",
+    "host": "Host",
+    "newHost": "Host baru",
+    "hostHint": "Jika mesin ini sudah menjadi host, pilih agar tidak muncul dua kali. Alamatnya tetap sama."
+  },
+  "scan": {
+    "title": "Pindai jaringan",
+    "where": "Wilayah pindaian",
+    "from": "Pindai dari",
+    "fromHint": "Pilih host SSH di jaringan tersebut. Ini menggunakan nmap jika tersedia, atau ping jika tidak.",
+    "range": "Rentang",
+    "rangeHint": "Kosongkan untuk jaringan pribadi host tersebut.",
+    "rangeNeeded": "Diperlukan saat memindai dari server Termix.",
+    "start": "Pindai",
+    "scanning": "Memindai...",
+    "note": "Pindaian menemukan mesin di jaringan. Ini tidak dapat menentukan apakah Wake-on-LAN diaktifkan untuk mereka.",
+    "none": "Tidak ada yang ditemukan",
+    "failed": "Pindaian gagal",
+    "addFailed": "Tidak dapat menambahkan mesin tersebut",
+    "noMac": "Tidak ada MAC yang ditemukan",
+    "newHost": "Host baru",
+    "attachTo": "Lampirkan ke {{name}}",
+    "attach": "Lampirkan",
+    "add": "Tambah",
+    "added": "Selesai",
+    "choose": "Tempat mesin ini ditempatkan",
+    "match": {
+      "mac": "MAC sama dengan {{name}}",
+      "ip": "IP sama dengan {{name}}",
+      "name": "Nama sama dengan {{name}}"
+    },
+    "hint": {
+      "bridge": "Hampir tidak ada yang ditemukan. Kontainer Termix di jaringan bridge tidak dapat melihat LAN Anda, jadi pindai dari host SSH sebagai gantinya.",
+      "no-mac": "Beberapa mesin tidak memiliki MAC. Jalankan pindaian dengan nmap sebagai root, atau periksa apakah host dapat melihat mereka."
+    }
+  },
+  "widget": {
+    "name": "Daya",
+    "description": "Mesin dengan status dan tombol daya mereka.",
+    "pick": "Mesin yang ditampilkan. Pilih tidak ada untuk menampilkan semua."
+  },
+  "operations": {
+    "wake": {
+      "title": "Nyalakan mesin"
+    },
+    "shutdown": {
+      "title": "Matikan mesin"
+    },
+    "sleep": {
+      "title": "Tidurkan mesin"
+    },
+    "powerState": {
+      "title": "Status daya"
+    }
   }
 }

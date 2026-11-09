@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Réveiller",
-    "sent": "Paquet Wake-on-LAN envoyé",
-    "failed": "Échec de l'envoi du paquet Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Envoyer des paquets Wake-on-LAN",
-      "description": "Réveiller un hôte en envoyant un paquet magique à son adresse MAC."
+      "title": "Réveiller les machines",
+      "description": "Réveiller un hôte depuis l'onglet Alimentation, son menu ou une automatisation."
+    },
+    "shutdown": {
+      "title": "Éteindre les machines",
+      "description": "Éteindre un hôte ou le mettre en veille."
+    },
+    "scan": {
+      "title": "Scanner les réseaux",
+      "description": "Rechercher des machines depuis un hôte SSH auquel vous pouvez vous connecter."
+    },
+    "serverCommands": {
+      "title": "Utiliser le serveur Termix",
+      "description": "Enregistrer des commandes qui s'exécutent sur le serveur Termix et scanner depuis celui-ci. Cela peut exécuter tout ce que le serveur peut faire."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Alimentation",
+        "description": "Afficher cet hôte sur l'onglet Alimentation."
+      },
       "macAddress": {
         "label": "Adresse MAC",
-        "description": "L'adresse MAC réseau de l'hôte, utilisée pour envoyer des paquets Wake-on-LAN.",
+        "description": "L'adresse MAC du port réseau qui réveille cet hôte.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "L'adresse de diffusion du sous-réseau vers laquelle envoyer le paquet. Laissez vide pour 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Intervalle de vérification de l'état",
+        "description": "Secondes entre les vérifications d'état. Les vérifications via un hôte relais utilisent SSH à chaque fois."
+      },
+      "allowServerCommands": {
+        "label": "Autoriser les commandes sur le serveur Termix",
+        "description": "Permettre aux commandes ping, réveil et extinction enregistrées de s'exécuter sur le serveur Termix. Seuls les utilisateurs ayant la permission Utiliser le serveur Termix peuvent les enregistrer."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Réveillez les machines en veille en envoyant un paquet Wake-on-LAN à leur adresse MAC."
+    "description": "Réveillez, éteignez et suivez vos machines depuis un tableau de bord d'alimentation unique."
+  },
+  "tile": {
+    "title": "Alimentation",
+    "none": "Cet hôte n'est pas configuré pour le contrôle de l'alimentation.",
+    "status": {
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "waking": "En cours de réveil",
+      "stopping": "En cours d'extinction",
+      "failed": "Échoué",
+      "unknown": "Inconnu"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Aucun hôte n'a encore d'adresse MAC. Ajoutez-en une dans les paramètres d'un hôte."
+    "title": "Alimentation",
+    "empty": "Aucune machine pour le moment. Ouvrez l'onglet Alimentation pour en ajouter une ou scanner votre réseau."
+  },
+  "tab": {
+    "title": "Alimentation",
+    "status": "{{online}} sur {{total}} en ligne",
+    "add": "Ajouter",
+    "scan": "Scanner",
+    "search": "Rechercher des machines",
+    "failed": "Impossible de charger vos machines",
+    "empty": "Aucune machine pour le moment",
+    "emptyHint": "Ajoutez une machine ou scannez votre réseau pour en trouver.",
+    "noMatch": "Rien ne correspond à votre recherche",
+    "noFolder": "Aucun dossier",
+    "wakeAll": "Tout réveiller",
+    "wakeAllConfirm": "Réveiller {{count}} machines dans {{folder}} ?"
+  },
+  "status": {
+    "unknown": "Pas encore vérifié",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "waking": "En cours de réveil",
+    "stopping": "En cours d'extinction",
+    "failed": "N'a pas répondu à temps"
+  },
+  "power": {
+    "wake": "Réveiller",
+    "shutdown": "Éteindre",
+    "sleep": "Veille",
+    "settings": "Paramètres d'alimentation",
+    "confirm": {
+      "wake": "Réveiller {{name}} ?",
+      "shutdown": "Éteindre {{name}} ?",
+      "sleep": "Mettre {{name}} en veille ?"
+    },
+    "sent": {
+      "wake": "Réveil de {{name}} en cours",
+      "shutdown": "Extinction de {{name}} en cours",
+      "sleep": "Mise en veille de {{name}} en cours"
+    },
+    "failed": {
+      "wake": "Échec du réveil de cette machine",
+      "shutdown": "Échec de l'extinction de cette machine",
+      "sleep": "Échec de la mise en veille de cette machine"
+    }
+  },
+  "device": {
+    "title": "Machine",
+    "general": "Général",
+    "name": "Nom",
+    "mac": "Adresse MAC",
+    "noMac": "Aucune adresse MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "L'adresse sur le réseau local de la machine, si elle diffère de l'adresse de l'hôte.",
+    "netmask": "Masque de sous-réseau",
+    "netmaskHint": "Utilisé pour déterminer l'adresse de diffusion.",
+    "description": "Description",
+    "link": "Lien",
+    "linkHint": "Rend le nom cliquable, comme un lien vers un tableau de bord.",
+    "autoOpen": "Ouvrir le lien après l'allumage",
+    "autoOpenHint": "Ouvre le lien une fois la machine en ligne.",
+    "lastChange": "Dernière modification",
+    "status": "État",
+    "statusFrom": "Vérifier depuis",
+    "statusFromHint": "Utilisez un hôte SSH sur le même réseau lorsque Termix ne peut pas atteindre la machine.",
+    "ports": "Ports",
+    "portsHint": "Les ports ouverts s'affichent sur la carte. Le serveur Termix ne vérifie que les ports, alors ajoutez-en un auquel la machine répond.",
+    "pingCommand": "Vérification personnalisée",
+    "pingCommandHint": "Facultatif. Un code de sortie 0 signifie que la machine est allumée. {{ip}} et {{mac}} sont remplacés.",
+    "wake": "Allumer",
+    "wakeMode": "Allumer avec",
+    "wakeMagic": "Paquet Wake-on-LAN",
+    "commandMode": "Commande personnalisée",
+    "wakeFrom": "Envoyer depuis",
+    "wakeFromHint": "Le paquet doit être envoyé depuis le réseau local de la machine. Choisissez un hôte SSH sur ce réseau si Termix n'y est pas.",
+    "fromServer": "Serveur Termix",
+    "broadcast": "Adresse de diffusion",
+    "broadcastHint": "Laissez vide pour la calculer à partir de l'IP LAN et du masque de sous-réseau.",
+    "wakePort": "Port",
+    "secureOn": "Mot de passe SecureON",
+    "secureOnHint": "Facultatif. 4 ou 6 caractères, ou une valeur écrite comme une adresse MAC.",
+    "secretSaved": "Enregistré, laissez vide pour conserver",
+    "wakeCommand": "Commande d'allumage",
+    "placeholders": "{{ip}} et {{mac}} sont remplacés.",
+    "timeout": "Délai d'attente (secondes)",
+    "timeoutHint": "Durée d'attente avant de marquer la machine comme non réactive.",
+    "cron": "Planification (cron)",
+    "cronHint": "Facultatif. Cinq champs, dans le fuseau horaire du serveur.",
+    "confirm": "Demander confirmation avant d'exécuter",
+    "shutdown": "Éteindre",
+    "shutdownMode": "Éteindre avec",
+    "shutdownNone": "Rien",
+    "shutdownSsh": "Connexion SSH de cet hôte",
+    "shutdownSshHint": "Nécessite root ou sudo sans mot de passe sur Linux et macOS.",
+    "shutdownCommand": "Commande d'extinction",
+    "commands": "Commandes personnalisées",
+    "commandTarget": "Exécuter les commandes sur",
+    "commandTargetHint": "Les commandes s'exécutent avec les identifiants de la personne qui les a enregistrées.",
+    "targetHost": "Cet hôte, via SSH",
+    "targetRelay": "Un autre hôte, via SSH",
+    "targetServer": "Le serveur Termix",
+    "commandRelay": "Hôte",
+    "pickHost": "Choisir un hôte",
+    "bmc": "BMC",
+    "useBmc": "Utiliser le BMC s'il en existe un",
+    "useBmcHint": "Allumer et éteindre via le plugin Out-of-band si cet hôte a un BMC lié. Sinon, les méthodes ci-dessus sont utilisées.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Utiliser Sleep-On-LAN",
+    "solHint": "Nécessite l'outil Sleep-On-LAN sur la machine avec un écouteur HTTP.",
+    "solPort": "Port",
+    "solUser": "Nom d'utilisateur",
+    "solPassword": "Mot de passe",
+    "test": "Tester",
+    "testShutdownConfirm": "Cela exécute la commande réelle et peut éteindre {{name}}. Continuer ?",
+    "testFailed": "Le test a échoué",
+    "saveFirst": "Enregistrer d'abord",
+    "exitCode": "Code de sortie {{code}}",
+    "loadFailed": "Impossible de charger cette machine",
+    "saveFailed": "Impossible d'enregistrer"
+  },
+  "add": {
+    "title": "Ajouter une machine",
+    "host": "Hôte",
+    "newHost": "Nouvel hôte",
+    "hostHint": "Si cette machine est déjà un hôte, sélectionnez-la pour éviter qu'elle n'apparaisse deux fois. Son adresse reste inchangée."
+  },
+  "scan": {
+    "title": "Analyser le réseau",
+    "where": "Zone à analyser",
+    "from": "Analyser depuis",
+    "fromHint": "Sélectionnez un hôte SSH sur ce réseau. Il utilise nmap si disponible, sinon ping.",
+    "range": "Plage",
+    "rangeHint": "Laissez vide pour utiliser les réseaux privés de cet hôte.",
+    "rangeNeeded": "Requis lors de l'analyse depuis le serveur Termix.",
+    "start": "Analyser",
+    "scanning": "Analyse en cours...",
+    "note": "Une analyse détecte les machines sur le réseau. Elle ne peut pas déterminer si Wake-on-LAN est activé pour elles.",
+    "none": "Rien trouvé",
+    "failed": "L'analyse a échoué",
+    "addFailed": "Impossible d'ajouter cette machine",
+    "noMac": "Aucune adresse MAC trouvée",
+    "newHost": "Nouvel hôte",
+    "attachTo": "Attacher à {{name}}",
+    "attach": "Attacher",
+    "add": "Ajouter",
+    "added": "Terminé",
+    "choose": "Emplacement de cette machine",
+    "match": {
+      "mac": "Même adresse MAC que {{name}}",
+      "ip": "Même adresse IP que {{name}}",
+      "name": "Même nom que {{name}}"
+    },
+    "hint": {
+      "bridge": "Presque rien n'a été trouvé. Un conteneur Termix sur un réseau bridge ne peut pas voir votre LAN, analysez donc depuis un hôte SSH à la place.",
+      "no-mac": "Certaines machines n'ont pas d'adresse MAC. Exécutez l'analyse avec nmap en tant que root, ou vérifiez que l'hôte peut les voir."
+    }
+  },
+  "widget": {
+    "name": "Alimentation",
+    "description": "Machines avec leur état et leurs boutons d'alimentation.",
+    "pick": "Machines à afficher. Ne sélectionnez aucune pour tout afficher."
+  },
+  "operations": {
+    "wake": {
+      "title": "Réveiller la machine"
+    },
+    "shutdown": {
+      "title": "Éteindre la machine"
+    },
+    "sleep": {
+      "title": "Mettre la machine en veille"
+    },
+    "powerState": {
+      "title": "État d'alimentation"
+    }
   }
 }

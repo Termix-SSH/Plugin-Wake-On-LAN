@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Obudź",
-    "sent": "Pakiet Wake-on-LAN został wysłany",
-    "failed": "Nie udało się wysłać pakietu Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Wysyłanie pakietów Wake-on-LAN",
-      "description": "Obudź host, wysyłając magiczny pakiet na jego adres MAC."
+      "title": "Wybudzaj maszyny",
+      "description": "Wybudź host z karty Zasilanie, z menu lub z automatyzacji."
+    },
+    "shutdown": {
+      "title": "Wyłączaj maszyny",
+      "description": "Wyłącz host lub ustaw go w tryb uśpienia."
+    },
+    "scan": {
+      "title": "Skanuj sieci",
+      "description": "Szukaj maszyn z hosta SSH, do którego możesz się połączyć."
+    },
+    "serverCommands": {
+      "title": "Używaj serwera Termix",
+      "description": "Zapisuj polecenia uruchamiane na serwerze Termix i skanuj z niego. Może to uruchomić wszystko, co serwer jest w stanie wykonać."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Zasilanie",
+        "description": "Pokaż ten host na karcie Zasilanie."
+      },
       "macAddress": {
         "label": "Adres MAC",
-        "description": "Adres MAC hosta używany do wysyłania pakietów Wake-on-LAN.",
+        "description": "Adres MAC portu sieciowego, który wybudza ten host.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Adres rozgłoszeniowy podsieci, na który ma zostać wysłany pakiet. Pozostaw puste, aby użyć 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interwał sprawdzania statusu",
+        "description": "Sekundy między sprawdzaniem statusu. Sprawdzania przez host przekaźnikowy używają SSH za każdym razem."
+      },
+      "allowServerCommands": {
+        "label": "Zezwól na polecenia na serwerze Termix",
+        "description": "Pozwól na uruchamianie zapisanych poleceń ping, wybudzania i wyłączania na serwerze Termix. Tylko użytkownicy z uprawnieniem Używaj serwera Termix mogą je zapisywać."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Wybudzaj uśpienie maszyny, wysyłając pakiet Wake-on-LAN na jej adres MAC."
+    "description": "Wybudzaj, wyłączaj i śledź swoje maszyny z jednego panelu zasilania."
+  },
+  "tile": {
+    "title": "Zasilanie",
+    "none": "Ten host nie jest skonfigurowany do sterowania zasilaniem.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Wybudzanie",
+      "stopping": "Wyłączanie",
+      "failed": "Nieudane",
+      "unknown": "Nieznany"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Żaden host nie ma jeszcze adresu MAC. Dodaj go w ustawieniach hosta."
+    "title": "Zasilanie",
+    "empty": "Brak maszyn. Otwórz kartę Zasilanie, aby dodać maszynę lub zeskanować sieć."
+  },
+  "tab": {
+    "title": "Zasilanie",
+    "status": "{{online}} z {{total}} online",
+    "add": "Dodaj",
+    "scan": "Skanuj",
+    "search": "Szukaj maszyn",
+    "failed": "Nie udało się załadować Twoich maszyn",
+    "empty": "Brak maszyn",
+    "emptyHint": "Dodaj maszynę lub zeskanuj sieć, aby je znaleźć.",
+    "noMatch": "Nic nie pasuje do Twojego wyszukiwania",
+    "noFolder": "Brak folderu",
+    "wakeAll": "Wybudź wszystkie",
+    "wakeAllConfirm": "Wybudzić {{count}} maszyn w {{folder}}?"
+  },
+  "status": {
+    "unknown": "Nie sprawdzono jeszcze",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Wybudzanie",
+    "stopping": "Wyłączanie",
+    "failed": "Nie odpowiedział na czas"
+  },
+  "power": {
+    "wake": "Wybudź",
+    "shutdown": "Wyłącz",
+    "sleep": "Uśpienie",
+    "settings": "Ustawienia zasilania",
+    "confirm": {
+      "wake": "Wybudzić {{name}}?",
+      "shutdown": "Wyłączyć {{name}}?",
+      "sleep": "Uśpić {{name}}?"
+    },
+    "sent": {
+      "wake": "Wybudzanie {{name}}",
+      "shutdown": "Wyłączanie {{name}}",
+      "sleep": "Uśpienie {{name}}"
+    },
+    "failed": {
+      "wake": "Nie udało się wybudzić tej maszyny",
+      "shutdown": "Nie udało się wyłączyć tej maszyny",
+      "sleep": "Nie udało się uśpić tej maszyny"
+    }
+  },
+  "device": {
+    "title": "Maszyna",
+    "general": "Ogólne",
+    "name": "Nazwa",
+    "mac": "Adres MAC",
+    "noMac": "Brak adresu MAC",
+    "lanIp": "Adres IP LAN",
+    "lanIpHint": "Adres w sieci lokalnej urządzenia, jeśli różni się od adresu hosta.",
+    "netmask": "Maska podsieci",
+    "netmaskHint": "Służy do wyliczenia adresu rozgłoszeniowego.",
+    "description": "Opis",
+    "link": "Link",
+    "linkHint": "Umożliwia kliknięcie nazwy, np. jako odnośnik do panelu sterowania.",
+    "autoOpen": "Otwórz link po uruchomieniu",
+    "autoOpenHint": "Otwiera link, gdy urządzenie jest online.",
+    "lastChange": "Ostatnia zmiana",
+    "status": "Status",
+    "statusFrom": "Sprawdzaj z",
+    "statusFromHint": "Użyj hosta SSH w tej samej sieci, jeśli Termix nie może się połączyć z urządzeniem.",
+    "ports": "Porty",
+    "portsHint": "Otwarte porty są wyświetlane na karcie. Serwer Termix sprawdza tylko porty, więc dodaj ten, na którym urządzenie odpowiada.",
+    "pingCommand": "Niestandardowe sprawdzenie",
+    "pingCommandHint": "Opcjonalnie. Kod wyjścia 0 oznacza, że urządzenie jest włączone. Miejsca {{ip}} i {{mac}} są uzupełniane automatycznie.",
+    "wake": "Uruchom",
+    "wakeMode": "Uruchom za pomocą",
+    "wakeMagic": "Pakiet Wake-on-LAN",
+    "commandMode": "Niestandardowe polecenie",
+    "wakeFrom": "Wyślij z",
+    "wakeFromHint": "Pakiet musi zostać wysłany z sieci lokalnej urządzenia. Wybierz hosta SSH w tej sieci, jeśli Termix nie znajduje się w niej.",
+    "fromServer": "Serwer Termix",
+    "broadcast": "Adres rozgłoszeniowy",
+    "broadcastHint": "Pozostaw puste, aby wyliczyć go na podstawie adresu IP LAN i maski podsieci.",
+    "wakePort": "Port",
+    "secureOn": "Hasło SecureON",
+    "secureOnHint": "Opcjonalnie. 4 lub 6 znaków lub wartość zapisana jak adres MAC.",
+    "secretSaved": "Zapisano, pozostaw puste, aby zachować",
+    "wakeCommand": "Polecenie uruchamiania",
+    "placeholders": "Miejsca {{ip}} i {{mac}} są uzupełniane automatycznie.",
+    "timeout": "Limit czasu (sekundy)",
+    "timeoutHint": "Jak długo czekać, zanim urządzenie zostanie oznaczone jako nieodpowiadające.",
+    "cron": "Harmonogram (cron)",
+    "cronHint": "Opcjonalnie. Pięć pól, w strefie czasowej serwera.",
+    "confirm": "Pytaj przed uruchomieniem",
+    "shutdown": "Wyłącz",
+    "shutdownMode": "Wyłącz za pomocą",
+    "shutdownNone": "Nic",
+    "shutdownSsh": "Logowanie SSH tego hosta",
+    "shutdownSshHint": "Wymaga uprawnień root lub sudo bez hasła na systemach Linux i macOS.",
+    "shutdownCommand": "Polecenie wyłączania",
+    "commands": "Niestandardowe polecenia",
+    "commandTarget": "Wykonuj polecenia na",
+    "commandTargetHint": "Polecenia są wykonywane z uprawnieniami osoby, która je zapisała.",
+    "targetHost": "Ten host, przez SSH",
+    "targetRelay": "Inny host, przez SSH",
+    "targetServer": "Serwer Termix",
+    "commandRelay": "Host",
+    "pickHost": "Wybierz hosta",
+    "bmc": "BMC",
+    "useBmc": "Używaj BMC, jeśli jest dostępny",
+    "useBmcHint": "Włączaj i wyłączaj zasilanie przez wtyczkę Out-of-band, jeśli ten host ma powiązany BMC. W przeciwnym razie używane są powyższe metody.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Używaj Sleep-On-LAN",
+    "solHint": "Wymaga narzędzia Sleep-On-LAN na urządzeniu z nasłuchiwaczem HTTP.",
+    "solPort": "Port",
+    "solUser": "Nazwa użytkownika",
+    "solPassword": "Hasło",
+    "test": "Test",
+    "testShutdownConfirm": "To uruchomi prawdziwe polecenie i może wyłączyć {{name}}. Kontynuować?",
+    "testFailed": "Test nie powiódł się",
+    "saveFirst": "Najpierw zapisz",
+    "exitCode": "Kod zakończenia {{code}}",
+    "loadFailed": "Nie udało się załadować tego urządzenia",
+    "saveFailed": "Nie udało się zapisać"
+  },
+  "add": {
+    "title": "Dodaj urządzenie",
+    "host": "Host",
+    "newHost": "Nowy host",
+    "hostHint": "Jeśli to urządzenie jest już hostem, wybierz je, aby nie pojawiało się dwukrotnie. Jego adres pozostanie bez zmian."
+  },
+  "scan": {
+    "title": "Skanuj sieć",
+    "where": "Co skanować",
+    "from": "Skanuj z",
+    "fromHint": "Wybierz hosta SSH w tej sieci. Użyje nmap, jeśli jest dostępny, w przeciwnym razie ping.",
+    "range": "Zakres",
+    "rangeHint": "Pozostaw puste, aby użyć prywatnych sieci tego hosta.",
+    "rangeNeeded": "Wymagane przy skanowaniu z serwera Termix.",
+    "start": "Skanuj",
+    "scanning": "Skanowanie...",
+    "note": "Skanowanie znajduje urządzenia w sieci. Nie może określić, czy Wake-on-LAN jest dla nich włączone.",
+    "none": "Nic nie znaleziono",
+    "failed": "Skanowanie nie powiodło się",
+    "addFailed": "Nie udało się dodać tego urządzenia",
+    "noMac": "Nie znaleziono adresu MAC",
+    "newHost": "Nowy host",
+    "attachTo": "Dołącz do {{name}}",
+    "attach": "Dołącz",
+    "add": "Dodaj",
+    "added": "Gotowe",
+    "choose": "Gdzie ma znaleźć się to urządzenie",
+    "match": {
+      "mac": "Ten sam adres MAC co {{name}}",
+      "ip": "Ten sam adres IP co {{name}}",
+      "name": "Ta sama nazwa co {{name}}"
+    },
+    "hint": {
+      "bridge": "Znaleziono bardzo mało. Kontener Termix w sieci bridge nie widzi Twojej sieci LAN, więc skanuj zamiast tego z hosta SSH.",
+      "no-mac": "Niektóre urządzenia nie mają adresu MAC. Uruchom skanowanie z nmap jako root lub sprawdź, czy host może je zobaczyć."
+    }
+  },
+  "widget": {
+    "name": "Zasilanie",
+    "description": "Urządzenia z ich stanem i przyciskami zasilania.",
+    "pick": "Urządzenia do wyświetlenia. Nie wybieraj żadnego, aby wyświetlić wszystkie."
+  },
+  "operations": {
+    "wake": {
+      "title": "Wybudź urządzenie"
+    },
+    "shutdown": {
+      "title": "Wyłącz urządzenie"
+    },
+    "sleep": {
+      "title": "Uśpij urządzenie"
+    },
+    "powerState": {
+      "title": "Stan zasilania"
+    }
   }
 }

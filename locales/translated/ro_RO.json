@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Trezire",
-    "sent": "Pachetul Wake-on-LAN a fost trimis",
-    "failed": "Nu s-a putut trimite pachetul Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Trimitere pachete Wake-on-LAN",
-      "description": "Trezirea unui gazdă prin trimiterea unui pachet magic către adresa sa MAC."
+      "title": "Trezirea mașinilor",
+      "description": "Trezirea unui gazdă din fila Putere, meniul său sau o automatizare."
+    },
+    "shutdown": {
+      "title": "Oprirea mașinilor",
+      "description": "Oprirea unui gazdă sau punerea sa în repaus."
+    },
+    "scan": {
+      "title": "Scanarea rețelelor",
+      "description": "Căutarea mașinilor dintr-un gazdă SSH la care vă puteți conecta."
+    },
+    "serverCommands": {
+      "title": "Utilizarea serverului Termix",
+      "description": "Salvarea comenzilor care rulează pe serverul Termix și scanarea de pe acesta. Aceasta poate executa orice poate serverul."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Putere",
+        "description": "Afișarea acestei gazde în fila Putere."
+      },
       "macAddress": {
         "label": "Adresă MAC",
-        "description": "Adresa MAC de rețea a gazdei, folosită pentru a trimite pachete Wake-on-LAN.",
+        "description": "Adresa MAC a portului de rețea care trezește această gazdă.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Adresa de broadcast a subrețelei către care se va trimite pachetul. Lăsați gol pentru 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Intervalul de verificare a stării",
+        "description": "Secunde între verificările de stare. Verificările prin intermediul unui gazdă relay folosesc SSH de fiecare dată."
+      },
+      "allowServerCommands": {
+        "label": "Permiterea comenzilor pe serverul Termix",
+        "description": "Permiteți ca comenzile salvate de ping, trezire și oprire să ruleze pe serverul Termix. Doar utilizatorii cu permisiunea Utilizarea serverului Termix le pot salva."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Repornește mașinile în repaus prin trimiterea unui pachet Wake-on-LAN către adresa lor MAC."
+    "description": "Trezirea, oprirea și monitorizarea mașinilor dvs. dintr-un singur panou de control al puterii."
+  },
+  "tile": {
+    "title": "Putere",
+    "none": "Această gazdă nu este configurată pentru controlul puterii.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Se trezește",
+      "stopping": "Se oprește",
+      "failed": "Eșuat",
+      "unknown": "Necunoscut"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Niciun host nu are încă o adresă MAC. Adăugați una în setările unui host."
+    "title": "Putere",
+    "empty": "Încă nu există mașini. Deschideți fila Putere pentru a adăuga una sau pentru a scana rețeaua."
+  },
+  "tab": {
+    "title": "Putere",
+    "status": "{{online}} din {{total}} online",
+    "add": "Adăugare",
+    "scan": "Scanare",
+    "search": "Căutarea mașinilor",
+    "failed": "Nu s-au putut încărca mașinile dvs.",
+    "empty": "Încă nu există mașini",
+    "emptyHint": "Adăugați o mașină sau scanați rețeaua pentru a le găsi.",
+    "noMatch": "Nimic nu se potrivește cu căutarea dvs.",
+    "noFolder": "Fără dosar",
+    "wakeAll": "Trezirea tuturor",
+    "wakeAllConfirm": "Trezirea a {{count}} mașini din {{folder}}?"
+  },
+  "status": {
+    "unknown": "Nu a fost verificat încă",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Se trezește",
+    "stopping": "Se oprește",
+    "failed": "Nu a răspuns la timp"
+  },
+  "power": {
+    "wake": "Trezire",
+    "shutdown": "Oprire",
+    "sleep": "Repaus",
+    "settings": "Setări de putere",
+    "confirm": {
+      "wake": "Trezirea {{name}}?",
+      "shutdown": "Oprirea {{name}}?",
+      "sleep": "Punerea {{name}} în repaus?"
+    },
+    "sent": {
+      "wake": "Se trezește {{name}}",
+      "shutdown": "Se oprește {{name}}",
+      "sleep": "Se pune {{name}} în repaus"
+    },
+    "failed": {
+      "wake": "Nu s-a putut trezi această mașină",
+      "shutdown": "Nu s-a putut opri această mașină",
+      "sleep": "Nu s-a putut pune această mașină în repaus"
+    }
+  },
+  "device": {
+    "title": "Mașină",
+    "general": "General",
+    "name": "Nume",
+    "mac": "Adresă MAC",
+    "noMac": "Fără adresă MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "Adresa din rețeaua locală a dispozitivului, dacă diferă de adresa gazdei.",
+    "netmask": "Masca de rețea",
+    "netmaskHint": "Folosită pentru a determina adresa de broadcast.",
+    "description": "Descriere",
+    "link": "Link",
+    "linkHint": "Face numele clicabil, ca un link către un dashboard.",
+    "autoOpen": "Deschide link-ul după trezire",
+    "autoOpenHint": "Deschide link-ul odată ce dispozitivul este online.",
+    "lastChange": "Ultima modificare",
+    "status": "Stare",
+    "statusFrom": "Verifică de la",
+    "statusFromHint": "Folosește o gazdă SSH din aceeași rețea când Termix nu poate ajunge la dispozitiv.",
+    "ports": "Porturi",
+    "portsHint": "Porturile deschise apar pe card. Serverul Termix verifică doar porturile, așa că adaugă unul la care răspunde dispozitivul.",
+    "pingCommand": "Verificare personalizată",
+    "pingCommandHint": "Opțional. Codul de ieșire 0 înseamnă că dispozitivul este pornit. {{ip}} și {{mac}} sunt completate automat.",
+    "wake": "Trezire",
+    "wakeMode": "Trezire cu",
+    "wakeMagic": "Pachet Wake-on-LAN",
+    "commandMode": "Comandă personalizată",
+    "wakeFrom": "Trimite de la",
+    "wakeFromHint": "Pachetul trebuie să pornească din rețeaua locală a dispozitivului. Alege o gazdă SSH de acolo dacă Termix nu este.",
+    "fromServer": "Server Termix",
+    "broadcast": "Adresă de broadcast",
+    "broadcastHint": "Lasă gol pentru a fi calculată din IP-ul LAN și masca de rețea.",
+    "wakePort": "Port",
+    "secureOn": "Parolă SecureON",
+    "secureOnHint": "Opțional. 4 sau 6 caractere, sau o valoare scrisă ca o adresă MAC.",
+    "secretSaved": "Salvat, lasă gol pentru a păstra",
+    "wakeCommand": "Comandă de trezire",
+    "placeholders": "{{ip}} și {{mac}} sunt completate automat.",
+    "timeout": "Timeout (secunde)",
+    "timeoutHint": "Cât timp să aștepte înainte de a marca ca nefuncțional.",
+    "cron": "Programare (cron)",
+    "cronHint": "Opțional. Cinci câmpuri, în fusul orar al serverului.",
+    "confirm": "Întreabă înainte de executare",
+    "shutdown": "Oprire",
+    "shutdownMode": "Oprire cu",
+    "shutdownNone": "Nimic",
+    "shutdownSsh": "Autentificare SSH a acestei gazde",
+    "shutdownSshHint": "Necesită root sau sudo fără parolă pe Linux și macOS.",
+    "shutdownCommand": "Comandă de oprire",
+    "commands": "Comenzi personalizate",
+    "commandTarget": "Execută comenzi pe",
+    "commandTargetHint": "Comenzile se execută cu autentificarea persoanei care le-a salvat.",
+    "targetHost": "Această gazdă, prin SSH",
+    "targetRelay": "O altă gazdă, prin SSH",
+    "targetServer": "Serverul Termix",
+    "commandRelay": "Gazdă",
+    "pickHost": "Alege o gazdă",
+    "bmc": "BMC",
+    "useBmc": "Folosește BMC-ul când există unul",
+    "useBmcHint": "Pornește și oprește prin plugin-ul Out-of-band dacă această gazdă are un BMC legat acolo. Altfel, se folosesc metodele de mai sus.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Folosește Sleep-On-LAN",
+    "solHint": "Necesită instrumentul Sleep-On-LAN pe dispozitiv cu un ascultător HTTP.",
+    "solPort": "Port",
+    "solUser": "Nume de utilizator",
+    "solPassword": "Parolă",
+    "test": "Testare",
+    "testShutdownConfirm": "Aceasta execută comanda reală și poate opri {{name}}. Continuați?",
+    "testFailed": "Testarea a eșuat",
+    "saveFirst": "Salvați mai întâi",
+    "exitCode": "Cod de ieșire {{code}}",
+    "loadFailed": "Nu s-a putut încărca acest dispozitiv",
+    "saveFailed": "Nu s-a putut salva"
+  },
+  "add": {
+    "title": "Adăugare dispozitiv",
+    "host": "Gazdă",
+    "newHost": "Gazdă nouă",
+    "hostHint": "Dacă acest dispozitiv este deja o gazdă, selectați-o pentru a nu apărea de două ori. Adresa sa rămâne neschimbată."
+  },
+  "scan": {
+    "title": "Scanare rețea",
+    "where": "Unde să se scaneze",
+    "from": "Scanare din",
+    "fromHint": "Selectați o gazdă SSH din acea rețea. Aceasta va folosi nmap dacă este disponibil, altfel ping.",
+    "range": "Interval",
+    "rangeHint": "Lăsați gol pentru rețelele private ale acelei gazde.",
+    "rangeNeeded": "Necesar când se scanează de pe serverul Termix.",
+    "start": "Scanare",
+    "scanning": "Se scanează...",
+    "note": "O scanare găsește dispozitive în rețea. Nu poate determina dacă Wake-on-LAN este activat pentru ele.",
+    "none": "Nu s-a găsit nimic",
+    "failed": "Scanarea a eșuat",
+    "addFailed": "Nu s-a putut adăuga acel dispozitiv",
+    "noMac": "Nu s-a găsit nicio adresă MAC",
+    "newHost": "Gazdă nouă",
+    "attachTo": "Atașare la {{name}}",
+    "attach": "Atașare",
+    "add": "Adăugare",
+    "added": "Finalizat",
+    "choose": "Unde se va plasa acest dispozitiv",
+    "match": {
+      "mac": "Aceeași adresă MAC ca {{name}}",
+      "ip": "Aceeași adresă IP ca {{name}}",
+      "name": "Același nume ca {{name}}"
+    },
+    "hint": {
+      "bridge": "A fost găsit aproape nimic. Un container Termix pe o rețea bridge nu poate vedea rețeaua LAN, așa că scanați dintr-o gazdă SSH.",
+      "no-mac": "Unele dispozitive nu au adresă MAC. Rulați scanarea cu nmap ca root sau verificați dacă gazda le poate vedea."
+    }
+  },
+  "widget": {
+    "name": "Alimentare",
+    "description": "Dispozitive cu starea lor și butoanele de alimentare.",
+    "pick": "Dispozitive de afișat. Nu selectați nimic pentru a afișa toate."
+  },
+  "operations": {
+    "wake": {
+      "title": "Pornire dispozitiv"
+    },
+    "shutdown": {
+      "title": "Oprire dispozitiv"
+    },
+    "sleep": {
+      "title": "Adormire dispozitiv"
+    },
+    "powerState": {
+      "title": "Stare alimentare"
+    }
   }
 }

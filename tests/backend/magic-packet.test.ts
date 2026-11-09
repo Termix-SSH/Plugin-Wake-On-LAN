@@ -13,8 +13,10 @@ vi.mock("dgram", () => {
 
 import dgram from "dgram";
 import {
+  broadcastFor,
   isValidMac,
   buildMagicPacket,
+  parseSecureOn,
   sendMagicPacket,
 } from "../../src/backend/magic-packet.js";
 
@@ -133,5 +135,43 @@ describe("sendMagicPacket", () => {
       "192.168.1.255",
       expect.any(Function),
     );
+  });
+});
+
+describe("SecureON", () => {
+  const MAC = "aa:bb:cc:dd:ee:ff";
+
+  it("appends a text password", () => {
+    const packet = buildMagicPacket(MAC, "abcd");
+    expect(packet).toHaveLength(106);
+    expect(packet.subarray(102).toString()).toBe("abcd");
+  });
+
+  it("reads a MAC style password as bytes", () => {
+    const packet = buildMagicPacket(MAC, "01:02:03:04:05:06");
+    expect(packet).toHaveLength(108);
+    expect([...packet.subarray(102)]).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it("leaves the packet alone with no password", () => {
+    expect(buildMagicPacket(MAC)).toHaveLength(102);
+  });
+
+  it("only takes 4 or 6 characters", () => {
+    expect(parseSecureOn("abc")).toBeNull();
+    expect(parseSecureOn("abcde")).toBeNull();
+    expect(parseSecureOn("abcdef")).toHaveLength(6);
+  });
+});
+
+describe("broadcastFor", () => {
+  it("works out a subnet's broadcast address", () => {
+    expect(broadcastFor("192.168.1.2", "255.255.255.0")).toBe("192.168.1.255");
+    expect(broadcastFor("10.1.2.3", "255.255.0.0")).toBe("10.1.255.255");
+  });
+
+  it("answers null without both values", () => {
+    expect(broadcastFor("", "255.255.255.0")).toBeNull();
+    expect(broadcastFor("192.168.1.2", "")).toBeNull();
   });
 });

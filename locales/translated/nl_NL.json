@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Wekken",
-    "sent": "Wake-on-LAN-pakket verzonden",
-    "failed": "Wake-on-LAN-pakket kon niet worden verzonden"
-  },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN-pakketten verzenden",
-      "description": "Wek een host door een magic packet naar het MAC-adres te sturen."
+      "title": "Machines opstarten",
+      "description": "Start een host op via het tabblad Voeding, het menu of een automatisering."
+    },
+    "shutdown": {
+      "title": "Machines afsluiten",
+      "description": "Sluit een host af of zet deze in de slaapstand."
+    },
+    "scan": {
+      "title": "Netwerken scannen",
+      "description": "Zoek naar machines vanaf een SSH-host waarnaar je verbinding kunt maken."
+    },
+    "serverCommands": {
+      "title": "De Termix-server gebruiken",
+      "description": "Sla commando's op die op de Termix-server worden uitgevoerd en scan vanaf deze server. Hiermee kan alles worden uitgevoerd wat de server kan."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Voeding",
+        "description": "Toon deze host op het tabblad Voeding."
+      },
       "macAddress": {
         "label": "MAC-adres",
-        "description": "Het netwerk-MAC-adres van de host, gebruikt voor het verzenden van Wake-on-LAN-pakketten.",
+        "description": "Het MAC-adres van de netwerkpoort die deze host opstart.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Het subnet-broadcastadres om het pakket naar te sturen. Laat leeg voor 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interval statuscontrole",
+        "description": "Seconden tussen statuscontroles. Controles via een relay-host gebruiken elke keer SSH."
+      },
+      "allowServerCommands": {
+        "label": "Commando's op de Termix-server toestaan",
+        "description": "Sta opgeslagen ping-, wake- en shutdown-commando's toe om op de Termix-server te worden uitgevoerd. Alleen gebruikers met de machtiging 'De Termix-server gebruiken' kunnen deze opslaan."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Wek slapende machines op door een Wake-on-LAN-packet naar hun MAC-adres te sturen."
+    "description": "Start machines op, sluit ze af en houd ze bij vanuit één voedingsdashboard."
+  },
+  "tile": {
+    "title": "Voeding",
+    "none": "Deze host is niet ingesteld voor voedingsbeheer.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Opstarten",
+      "stopping": "Afsluiten",
+      "failed": "Mislukt",
+      "unknown": "Onbekend"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Er zijn nog geen hosts met een MAC-adres. Voeg er een toe in de instellingen van een host."
+    "title": "Voeding",
+    "empty": "Nog geen machines. Open het tabblad Voeding om er een toe te voegen of je netwerk te scannen."
+  },
+  "tab": {
+    "title": "Voeding",
+    "status": "{{online}} van {{total}} online",
+    "add": "Toevoegen",
+    "scan": "Scannen",
+    "search": "Machines zoeken",
+    "failed": "Kon je machines niet laden",
+    "empty": "Nog geen machines",
+    "emptyHint": "Voeg een machine toe of scan je netwerk om ze te vinden.",
+    "noMatch": "Niets komt overeen met je zoekopdracht",
+    "noFolder": "Geen map",
+    "wakeAll": "Alles opstarten",
+    "wakeAllConfirm": "{{count}} machines in {{folder}} opstarten?"
+  },
+  "status": {
+    "unknown": "Nog niet gecontroleerd",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Opstarten",
+    "stopping": "Afsluiten",
+    "failed": "Heeft niet op tijd gereageerd"
+  },
+  "power": {
+    "wake": "Opstarten",
+    "shutdown": "Afsluiten",
+    "sleep": "Slaapstand",
+    "settings": "Voedingsinstellingen",
+    "confirm": {
+      "wake": "{{name}} opstarten?",
+      "shutdown": "{{name}} afsluiten?",
+      "sleep": "{{name}} in de slaapstand zetten?"
+    },
+    "sent": {
+      "wake": "{{name}} wordt opgestart",
+      "shutdown": "{{name}} wordt afgesloten",
+      "sleep": "{{name}} wordt in de slaapstand gezet"
+    },
+    "failed": {
+      "wake": "Het is niet gelukt om deze machine op te starten",
+      "shutdown": "Het is niet gelukt om deze machine af te sluiten",
+      "sleep": "Het is niet gelukt om deze machine in de slaapstand te zetten"
+    }
+  },
+  "device": {
+    "title": "Machine",
+    "general": "Algemeen",
+    "name": "Naam",
+    "mac": "MAC-adres",
+    "noMac": "Geen MAC-adres",
+    "lanIp": "LAN-IP",
+    "lanIpHint": "Het adres op het eigen netwerk van de machine, als dit verschilt van het adres van de host.",
+    "netmask": "Netmasker",
+    "netmaskHint": "Wordt gebruikt om het broadcast-adres te bepalen.",
+    "description": "Beschrijving",
+    "link": "Link",
+    "linkHint": "Maakt de naam klikbaar, bijvoorbeeld als link naar een dashboard.",
+    "autoOpen": "Link openen na opstarten",
+    "autoOpenHint": "Opent de link zodra de machine online is.",
+    "lastChange": "Laatste wijziging",
+    "status": "Status",
+    "statusFrom": "Controleren vanaf",
+    "statusFromHint": "Gebruik een SSH-host op hetzelfde netwerk als Termix de machine niet kan bereiken.",
+    "ports": "Poorten",
+    "portsHint": "Open poorten worden op de kaart weergegeven. De Termix-server controleert alleen poorten, dus voeg er een toe waarop de machine reageert.",
+    "pingCommand": "Aangepaste controle",
+    "pingCommandHint": "Optioneel. Exitcode 0 betekent dat de machine aan staat. {{ip}} en {{mac}} worden ingevuld.",
+    "wake": "Opstarten",
+    "wakeMode": "Opstarten met",
+    "wakeMagic": "Wake-on-LAN-pakket",
+    "commandMode": "Aangepast commando",
+    "wakeFrom": "Verzenden vanaf",
+    "wakeFromHint": "Het pakket moet op het eigen netwerk van de machine worden verzonden. Kies daar een SSH-host als Termix zich niet op dat netwerk bevindt.",
+    "fromServer": "Termix-server",
+    "broadcast": "Broadcast-adres",
+    "broadcastHint": "Laat leeg om dit te berekenen op basis van het LAN-IP-adres en het netmasker.",
+    "wakePort": "Poort",
+    "secureOn": "SecureON-wachtwoord",
+    "secureOnHint": "Optioneel. 4 of 6 tekens, of een waarde in het formaat van een MAC-adres.",
+    "secretSaved": "Opgeslagen, laat leeg om te behouden",
+    "wakeCommand": "Opstartcommando",
+    "placeholders": "{{ip}} en {{mac}} worden ingevuld.",
+    "timeout": "Time-out (seconden)",
+    "timeoutHint": "Hoe lang er moet worden gewacht voordat de machine als niet-reagerend wordt gemarkeerd.",
+    "cron": "Schema (cron)",
+    "cronHint": "Optioneel. Vijven velden, in de tijdzone van de server.",
+    "confirm": "Vragen voor uitvoering",
+    "shutdown": "Afsluiten",
+    "shutdownMode": "Afsluiten met",
+    "shutdownNone": "Niets",
+    "shutdownSsh": "SSH-inlog van deze host",
+    "shutdownSshHint": "Vereist root of sudo zonder wachtwoord op Linux en macOS.",
+    "shutdownCommand": "Afsluitcommando",
+    "commands": "Aangepaste commando's",
+    "commandTarget": "Commando's uitvoeren op",
+    "commandTargetHint": "Commando's worden uitgevoerd met de inloggegevens van de persoon die ze heeft opgeslagen.",
+    "targetHost": "Deze host, via SSH",
+    "targetRelay": "Een andere host, via SSH",
+    "targetServer": "De Termix-server",
+    "commandRelay": "Host",
+    "pickHost": "Kies een host",
+    "bmc": "BMC",
+    "useBmc": "BMC gebruiken als er een is",
+    "useBmcHint": "Inschakelen en uitschakelen via de Out-of-band-plugin als deze host een BMC heeft die daar is gekoppeld. Anders worden de bovenstaande methoden gebruikt.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Sleep-On-LAN gebruiken",
+    "solHint": "Vereist het Sleep-On-LAN-hulpprogramma op de machine met een HTTP-listener.",
+    "solPort": "Poort",
+    "solUser": "Gebruikersnaam",
+    "solPassword": "Wachtwoord",
+    "test": "Testen",
+    "testShutdownConfirm": "Dit voert het echte commando uit en kan {{name}} uitschakelen. Doorgaan?",
+    "testFailed": "De test is mislukt",
+    "saveFirst": "Eerst opslaan",
+    "exitCode": "Exitcode {{code}}",
+    "loadFailed": "Kon deze machine niet laden",
+    "saveFailed": "Kon niet opslaan"
+  },
+  "add": {
+    "title": "Machine toevoegen",
+    "host": "Host",
+    "newHost": "Nieuwe host",
+    "hostHint": "Als deze machine al een host is, selecteer hem dan zodat hij niet twee keer verschijnt. Het adres blijft zoals het is."
+  },
+  "scan": {
+    "title": "Netwerk scannen",
+    "where": "Waar te scannen",
+    "from": "Scannen vanaf",
+    "fromHint": "Selecteer een SSH-host op dat netwerk. Deze gebruikt nmap als die beschikbaar is, anders ping.",
+    "range": "Bereik",
+    "rangeHint": "Laat leeg voor de eigen privé-netwerken van die host.",
+    "rangeNeeded": "Vereist bij het scannen vanaf de Termix-server.",
+    "start": "Scannen",
+    "scanning": "Bezig met scannen...",
+    "note": "Een scan vindt machines op het netwerk. Het kan niet bepalen of Wake-on-LAN voor hen is ingeschakeld.",
+    "none": "Niets gevonden",
+    "failed": "De scan is mislukt",
+    "addFailed": "Kon die machine niet toevoegen",
+    "noMac": "Geen MAC-adres gevonden",
+    "newHost": "Nieuwe host",
+    "attachTo": "Koppelen aan {{name}}",
+    "attach": "Koppelen",
+    "add": "Toevoegen",
+    "added": "Klaar",
+    "choose": "Waar deze machine naartoe gaat",
+    "match": {
+      "mac": "Zelfde MAC als {{name}}",
+      "ip": "Zelfde IP als {{name}}",
+      "name": "Zelfde naam als {{name}}"
+    },
+    "hint": {
+      "bridge": "Er is bijna niets gevonden. Een Termix-container op een bridge-netwerk kan je LAN niet zien, dus scan in plaats daarvan vanaf een SSH-host.",
+      "no-mac": "Sommige machines hebben geen MAC-adres. Voer de scan uit met nmap als root, of controleer of de host ze kan zien."
+    }
+  },
+  "widget": {
+    "name": "Voeding",
+    "description": "Machines met hun status en aan/uit-knoppen.",
+    "pick": "Machines om weer te geven. Selecteer er geen om ze allemaal weer te geven."
+  },
+  "operations": {
+    "wake": {
+      "title": "Machine wekken"
+    },
+    "shutdown": {
+      "title": "Machine uitschakelen"
+    },
+    "sleep": {
+      "title": "Machine in slaapstand zetten"
+    },
+    "powerState": {
+      "title": "Voedingsstatus"
+    }
   }
 }

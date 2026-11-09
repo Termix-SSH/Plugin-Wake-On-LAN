@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "喚醒",
-    "sent": "已傳送 Wake-on-LAN 封包",
-    "failed": "無法傳送 Wake-on-LAN 封包"
-  },
   "permissions": {
     "send": {
-      "title": "傳送 Wake-on-LAN 封包",
-      "description": "透過向主機的 MAC 位址傳送魔法封包來喚醒主機。"
+      "title": "喚醒機器",
+      "description": "從電源分頁、選單或自動化流程中喚醒主機。"
+    },
+    "shutdown": {
+      "title": "關閉機器",
+      "description": "關閉主機或將其設為睡眠。"
+    },
+    "scan": {
+      "title": "掃描網路",
+      "description": "從可連線的 SSH 主機尋找機器。"
+    },
+    "serverCommands": {
+      "title": "使用 Termix 伺服器",
+      "description": "儲存會在 Termix 伺服器上執行的指令，並從該伺服器進行掃描。這可以執行伺服器能執行的任何操作。"
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "電源",
+        "description": "在電源分頁中顯示此主機。"
+      },
       "macAddress": {
         "label": "MAC 位址",
-        "description": "主機的網路 MAC 位址，用於傳送 Wake-on-LAN 封包。",
+        "description": "用於喚醒此主機的網路埠 MAC 位址。",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "用於傳送封包的子網路廣播位址。留空則預設為 255.255.255.255。",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "狀態檢查間隔",
+        "description": "狀態檢查之間的秒數。透過中繼主機進行的檢查每次都會使用 SSH。"
+      },
+      "allowServerCommands": {
+        "label": "允許在 Termix 伺服器上執行指令",
+        "description": "允許儲存的 ping、喚醒和關閉指令在 Termix 伺服器上執行。只有擁有「使用 Termix 伺服器」權限的使用者才能儲存這些指令。"
+      }
     }
   },
   "plugin": {
     "name": "網路喚醒",
-    "description": "向機器的 MAC 位址傳送網路喚醒封包，喚醒處於休眠狀態的機器。"
+    "description": "從單一電源儀表板喚醒、關閉並追蹤您的機器。"
+  },
+  "tile": {
+    "title": "電源",
+    "none": "此主機未設定電源控制。",
+    "status": {
+      "online": "線上",
+      "offline": "離線",
+      "waking": "喚醒中",
+      "stopping": "關閉中",
+      "failed": "失敗",
+      "unknown": "未知"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "目前沒有任何主機設定 MAC 位址。請前往主機設定中新增。"
+    "title": "電源",
+    "empty": "尚無機器。開啟電源分頁以新增或掃描您的網路。"
+  },
+  "tab": {
+    "title": "電源",
+    "status": "{{online}} / {{total}} 線上",
+    "add": "新增",
+    "scan": "掃描",
+    "search": "搜尋機器",
+    "failed": "無法載入您的機器",
+    "empty": "尚無機器",
+    "emptyHint": "新增機器，或掃描您的網路以尋找機器。",
+    "noMatch": "沒有符合您搜尋的結果",
+    "noFolder": "無資料夾",
+    "wakeAll": "全部喚醒",
+    "wakeAllConfirm": "要喚醒 {{folder}} 中的 {{count}} 台機器嗎？"
+  },
+  "status": {
+    "unknown": "尚未檢查",
+    "online": "線上",
+    "offline": "離線",
+    "waking": "喚醒中",
+    "stopping": "關閉中",
+    "failed": "未在時間內回應"
+  },
+  "power": {
+    "wake": "喚醒",
+    "shutdown": "關閉",
+    "sleep": "睡眠",
+    "settings": "電源設定",
+    "confirm": {
+      "wake": "要喚醒 {{name}} 嗎？",
+      "shutdown": "要關閉 {{name}} 嗎？",
+      "sleep": "要將 {{name}} 設為睡眠嗎？"
+    },
+    "sent": {
+      "wake": "正在喚醒 {{name}}",
+      "shutdown": "正在關閉 {{name}}",
+      "sleep": "正在將 {{name}} 設為睡眠"
+    },
+    "failed": {
+      "wake": "無法喚醒此機器",
+      "shutdown": "無法關閉此機器",
+      "sleep": "無法將此機器設為睡眠"
+    }
+  },
+  "device": {
+    "title": "機器",
+    "general": "一般",
+    "name": "名稱",
+    "mac": "MAC 位址",
+    "noMac": "無 MAC 位址",
+    "lanIp": "區域網路 IP",
+    "lanIpHint": "若與主機位址不同，則為該機器自身網路上的位址。",
+    "netmask": "子網路遮罩",
+    "netmaskHint": "用於計算廣播位址。",
+    "description": "說明",
+    "link": "連結",
+    "linkHint": "使名稱可點擊，例如連結至儀表板。",
+    "autoOpen": "喚醒後開啟連結",
+    "autoOpenHint": "機器上線後開啟連結。",
+    "lastChange": "最後變更",
+    "status": "狀態",
+    "statusFrom": "檢查來源",
+    "statusFromHint": "當 Termix 無法連線至該機器時，使用同一網路上的 SSH 主機進行檢查。",
+    "ports": "連接埠",
+    "portsHint": "開啟的連接埠會顯示在卡片上。Termix 伺服器僅檢查連接埠，因此請新增一個該機器會回應的連接埠。",
+    "pingCommand": "自訂檢查",
+    "pingCommandHint": "選填。退出碼 0 表示機器已開啟。{{ip}} 與 {{mac}} 會自動填入。",
+    "wake": "喚醒",
+    "wakeMode": "喚醒方式",
+    "wakeMagic": "Wake-on-LAN 封包",
+    "commandMode": "自訂指令",
+    "wakeFrom": "發送來源",
+    "wakeFromHint": "封包必須從機器自身的網路發送。若 Termix 不在該網路上，請選擇該網路上的 SSH 主機。",
+    "fromServer": "Termix 伺服器",
+    "broadcast": "廣播位址",
+    "broadcastHint": "留空將根據區域網路 IP 與子網路遮罩自動計算。",
+    "wakePort": "連接埠",
+    "secureOn": "SecureON 密碼",
+    "secureOnHint": "選填。4 或 6 個字元，或寫成 MAC 位址格式的數值。",
+    "secretSaved": "已儲存，留空則保留原值",
+    "wakeCommand": "喚醒指令",
+    "placeholders": "{{ip}} 與 {{mac}} 會自動填入。",
+    "timeout": "逾時（秒）",
+    "timeoutHint": "在標記為無回應前等待的時間。",
+    "cron": "排程（cron）",
+    "cronHint": "選填。五個欄位，使用伺服器時區。",
+    "confirm": "執行前確認",
+    "shutdown": "關機",
+    "shutdownMode": "關機方式",
+    "shutdownNone": "無",
+    "shutdownSsh": "此主機的 SSH 登入",
+    "shutdownSshHint": "需要 Linux 與 macOS 上的 root 權限或免密碼 sudo。",
+    "shutdownCommand": "關機指令",
+    "commands": "自訂指令",
+    "commandTarget": "在以下位置執行指令",
+    "commandTargetHint": "指令會以儲存者的登入身分執行。",
+    "targetHost": "此主機，透過 SSH",
+    "targetRelay": "其他主機，透過 SSH",
+    "targetServer": "Termix 伺服器",
+    "commandRelay": "主機",
+    "pickHost": "選擇主機",
+    "bmc": "BMC",
+    "useBmc": "若有 BMC 則使用",
+    "useBmcHint": "若此主機在 Out-of-band 外掛中連結了 BMC，則透過該外掛進行開機與關機。否則使用上述方法。",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "使用 Sleep-On-LAN",
+    "solHint": "需要在該機器上安裝 Sleep-On-LAN 工具並啟用 HTTP 監聽。",
+    "solPort": "連接埠",
+    "solUser": "使用者名稱",
+    "solPassword": "密碼",
+    "test": "測試",
+    "testShutdownConfirm": "這將執行實際指令，可能會關閉 {{name}}。是否繼續？",
+    "testFailed": "測試失敗",
+    "saveFirst": "請先儲存",
+    "exitCode": "結束代碼 {{code}}",
+    "loadFailed": "無法載入此機器",
+    "saveFailed": "無法儲存"
+  },
+  "add": {
+    "title": "新增機器",
+    "host": "主機",
+    "newHost": "新增主機",
+    "hostHint": "如果此機器已是主機，請選取它以避免重複顯示。其位址將保持不變。"
+  },
+  "scan": {
+    "title": "掃描網路",
+    "where": "掃描範圍",
+    "from": "掃描來源",
+    "fromHint": "選取該網路上的 SSH 主機。若該主機有安裝 nmap 則使用 nmap，否則使用 ping。",
+    "range": "範圍",
+    "rangeHint": "留空則掃描該主機所在的私有網路。",
+    "rangeNeeded": "從 Termix 伺服器掃描時需要指定。",
+    "start": "掃描",
+    "scanning": "掃描中...",
+    "note": "掃描可找出網路上的機器，但無法判斷它們是否啟用了 Wake-on-LAN。",
+    "none": "未找到任何項目",
+    "failed": "掃描失敗",
+    "addFailed": "無法新增該機器",
+    "noMac": "未找到 MAC 位址",
+    "newHost": "新增主機",
+    "attachTo": "附加至 {{name}}",
+    "attach": "附加",
+    "add": "新增",
+    "added": "完成",
+    "choose": "選擇此機器的存放位置",
+    "match": {
+      "mac": "與 {{name}} 相同的 MAC",
+      "ip": "與 {{name}} 相同的 IP",
+      "name": "與 {{name}} 相同的名称"
+    },
+    "hint": {
+      "bridge": "幾乎沒有找到任何項目。使用橋接網路的 Termix 容器無法看到您的區域網路，請改為從 SSH 主機進行掃描。",
+      "no-mac": "部分機器沒有 MAC 位址。請以 root 身分執行 nmap 掃描，或確認主機能否看到這些機器。"
+    }
+  },
+  "widget": {
+    "name": "電源",
+    "description": "顯示機器狀態與電源按鈕。",
+    "pick": "選擇要顯示的機器。不選取則顯示全部。"
+  },
+  "operations": {
+    "wake": {
+      "title": "喚醒機器"
+    },
+    "shutdown": {
+      "title": "關閉機器"
+    },
+    "sleep": {
+      "title": "讓機器進入睡眠模式"
+    },
+    "powerState": {
+      "title": "電源狀態"
+    }
   }
 }

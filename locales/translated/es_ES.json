@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Despertar",
-    "sent": "Paquete Wake-on-LAN enviado",
-    "failed": "Error al enviar el paquete Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Enviar paquetes Wake-on-LAN",
-      "description": "Despierta un host enviando un paquete mágico a su dirección MAC."
+      "title": "Encender equipos",
+      "description": "Encender un host desde la pestaña Energía, su menú o una automatización."
+    },
+    "shutdown": {
+      "title": "Apagar equipos",
+      "description": "Apagar un host o ponerlo en suspensión."
+    },
+    "scan": {
+      "title": "Escanear redes",
+      "description": "Buscar equipos desde un host SSH al que puedas conectarte."
+    },
+    "serverCommands": {
+      "title": "Usar el servidor de Termix",
+      "description": "Guardar comandos que se ejecutan en el servidor de Termix y escanear desde él. Esto puede ejecutar cualquier cosa que el servidor pueda."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Energía",
+        "description": "Mostrar este host en la pestaña Energía."
+      },
       "macAddress": {
         "label": "Dirección MAC",
-        "description": "La dirección MAC de red del host, utilizada para enviar paquetes Wake-on-LAN.",
+        "description": "La dirección MAC del puerto de red que enciende este host.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "La dirección de difusión de la subred a la que enviar el paquete. Déjalo en blanco para usar 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Intervalo de comprobación de estado",
+        "description": "Segundos entre comprobaciones de estado. Las comprobaciones a través de un host de retransmisión usan SSH cada vez."
+      },
+      "allowServerCommands": {
+        "label": "Permitir comandos en el servidor de Termix",
+        "description": "Permitir que los comandos guardados de ping, encendido y apagado se ejecuten en el servidor de Termix. Solo los usuarios con el permiso Usar el servidor de Termix pueden guardarlos."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Despierta máquinas en suspensión enviando un paquete Wake-on-LAN a su dirección MAC."
+    "description": "Enciende, apaga y supervisa tus equipos desde un único panel de energía."
+  },
+  "tile": {
+    "title": "Energía",
+    "none": "Este host no está configurado para el control de energía.",
+    "status": {
+      "online": "En línea",
+      "offline": "Desconectado",
+      "waking": "Encendiendo",
+      "stopping": "Apagando",
+      "failed": "Error",
+      "unknown": "Desconocido"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Aún no hay hosts con dirección MAC. Añade una en la configuración de un host."
+    "title": "Energía",
+    "empty": "Aún no hay equipos. Abre la pestaña Energía para añadir uno o escanear tu red."
+  },
+  "tab": {
+    "title": "Energía",
+    "status": "{{online}} de {{total}} en línea",
+    "add": "Añadir",
+    "scan": "Escanear",
+    "search": "Buscar equipos",
+    "failed": "No se han podido cargar tus equipos",
+    "empty": "Aún no hay equipos",
+    "emptyHint": "Añade un equipo o escanea tu red para encontrarlos.",
+    "noMatch": "Nada coincide con tu búsqueda",
+    "noFolder": "Sin carpeta",
+    "wakeAll": "Encender todos",
+    "wakeAllConfirm": "¿Encender {{count}} equipos en {{folder}}?"
+  },
+  "status": {
+    "unknown": "Aún no comprobado",
+    "online": "En línea",
+    "offline": "Desconectado",
+    "waking": "Encendiendo",
+    "stopping": "Apagando",
+    "failed": "No respondió a tiempo"
+  },
+  "power": {
+    "wake": "Encender",
+    "shutdown": "Apagar",
+    "sleep": "Suspender",
+    "settings": "Configuración de energía",
+    "confirm": {
+      "wake": "¿Encender {{name}}?",
+      "shutdown": "¿Apagar {{name}}?",
+      "sleep": "¿Poner {{name}} en suspensión?"
+    },
+    "sent": {
+      "wake": "Encendiendo {{name}}",
+      "shutdown": "Apagando {{name}}",
+      "sleep": "Poniendo {{name}} en suspensión"
+    },
+    "failed": {
+      "wake": "Error al encender este equipo",
+      "shutdown": "Error al apagar este equipo",
+      "sleep": "Error al poner este equipo en suspensión"
+    }
+  },
+  "device": {
+    "title": "Equipo",
+    "general": "General",
+    "name": "Nombre",
+    "mac": "Dirección MAC",
+    "noMac": "Sin dirección MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "La dirección en la red propia del equipo, si difiere de la dirección del host.",
+    "netmask": "Máscara de red",
+    "netmaskHint": "Se usa para calcular la dirección de difusión.",
+    "description": "Descripción",
+    "link": "Enlace",
+    "linkHint": "Hace que el nombre sea clicable, como un enlace a un panel de control.",
+    "autoOpen": "Abrir enlace tras el encendido",
+    "autoOpenHint": "Abre el enlace una vez que el equipo está en línea.",
+    "lastChange": "Último cambio",
+    "status": "Estado",
+    "statusFrom": "Comprobar desde",
+    "statusFromHint": "Usa un host SSH en la misma red cuando Termix no puede alcanzar el equipo.",
+    "ports": "Puertos",
+    "portsHint": "Los puertos abiertos se muestran en la tarjeta. El servidor de Termix solo comprueba puertos, así que añade uno en el que el equipo responda.",
+    "pingCommand": "Comprobación personalizada",
+    "pingCommandHint": "Opcional. El código de salida 0 significa que el equipo está encendido. Se rellenan {{ip}} y {{mac}}.",
+    "wake": "Encender",
+    "wakeMode": "Encender con",
+    "wakeMagic": "Paquete Wake-on-LAN",
+    "commandMode": "Comando personalizado",
+    "wakeFrom": "Enviar desde",
+    "wakeFromHint": "El paquete debe iniciarse en la red propia del equipo. Elige un host SSH allí si Termix no está en ella.",
+    "fromServer": "Servidor de Termix",
+    "broadcast": "Dirección de difusión",
+    "broadcastHint": "Déjalo en blanco para calcularlo a partir de la IP LAN y la máscara de red.",
+    "wakePort": "Puerto",
+    "secureOn": "Contraseña SecureON",
+    "secureOnHint": "Opcional. 4 o 6 caracteres, o un valor escrito como una dirección MAC.",
+    "secretSaved": "Guardado, déjalo en blanco para mantenerlo",
+    "wakeCommand": "Comando de encendido",
+    "placeholders": "Se rellenan {{ip}} y {{mac}}.",
+    "timeout": "Tiempo de espera (segundos)",
+    "timeoutHint": "Cuánto tiempo esperar antes de marcarlo como sin respuesta.",
+    "cron": "Programación (cron)",
+    "cronHint": "Opcional. Cinco campos, en la zona horaria del servidor.",
+    "confirm": "Preguntar antes de ejecutar",
+    "shutdown": "Apagar",
+    "shutdownMode": "Apagar con",
+    "shutdownNone": "Nada",
+    "shutdownSsh": "Inicio de sesión SSH de este host",
+    "shutdownSshHint": "Requiere root o sudo sin contraseña en Linux y macOS.",
+    "shutdownCommand": "Comando de apagado",
+    "commands": "Comandos personalizados",
+    "commandTarget": "Ejecutar comandos en",
+    "commandTargetHint": "Los comandos se ejecutan con la sesión del usuario que los guardó.",
+    "targetHost": "Este host, por SSH",
+    "targetRelay": "Otro host, por SSH",
+    "targetServer": "El servidor de Termix",
+    "commandRelay": "Host",
+    "pickHost": "Elige un host",
+    "bmc": "BMC",
+    "useBmc": "Usar el BMC cuando haya uno",
+    "useBmcHint": "Encender y apagar a través del complemento Out-of-band si este host tiene un BMC vinculado allí. De lo contrario, se usan los métodos anteriores.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Usar Sleep-On-LAN",
+    "solHint": "Requiere la herramienta Sleep-On-LAN en el equipo con un servidor HTTP.",
+    "solPort": "Puerto",
+    "solUser": "Nombre de usuario",
+    "solPassword": "Contraseña",
+    "test": "Probar",
+    "testShutdownConfirm": "Esto ejecutará el comando real y podría apagar {{name}}. ¿Continuar?",
+    "testFailed": "La prueba ha fallado",
+    "saveFirst": "Guardar primero",
+    "exitCode": "Código de salida {{code}}",
+    "loadFailed": "No se ha podido cargar este equipo",
+    "saveFailed": "No se ha podido guardar"
+  },
+  "add": {
+    "title": "Añadir equipo",
+    "host": "Host",
+    "newHost": "Nuevo host",
+    "hostHint": "Si este equipo ya es un host, selecciónalo para que no aparezca dos veces. Su dirección se mantendrá igual."
+  },
+  "scan": {
+    "title": "Escanear red",
+    "where": "Dónde escanear",
+    "from": "Escanear desde",
+    "fromHint": "Selecciona un host SSH en esa red. Usará nmap si está disponible, o ping en caso contrario.",
+    "range": "Rango",
+    "rangeHint": "Déjalo en blanco para usar las redes privadas propias de ese host.",
+    "rangeNeeded": "Necesario al escanear desde el servidor de Termix.",
+    "start": "Escanear",
+    "scanning": "Escaneando...",
+    "note": "Un escaneo busca equipos en la red. No puede determinar si Wake-on-LAN está activado para ellos.",
+    "none": "No se ha encontrado nada",
+    "failed": "El escaneo ha fallado",
+    "addFailed": "No se ha podido añadir ese equipo",
+    "noMac": "No se ha encontrado ninguna MAC",
+    "newHost": "Nuevo host",
+    "attachTo": "Adjuntar a {{name}}",
+    "attach": "Adjuntar",
+    "add": "Añadir",
+    "added": "Hecho",
+    "choose": "Dónde colocar este equipo",
+    "match": {
+      "mac": "Misma MAC que {{name}}",
+      "ip": "Misma IP que {{name}}",
+      "name": "Mismo nombre que {{name}}"
+    },
+    "hint": {
+      "bridge": "Casi no se ha encontrado nada. Un contenedor de Termix en una red bridge no puede ver tu LAN, así que escanea desde un host SSH en su lugar.",
+      "no-mac": "Algunos equipos no tienen MAC. Ejecuta el escaneo con nmap como root, o verifica que el host pueda verlos."
+    }
+  },
+  "widget": {
+    "name": "Encendido",
+    "description": "Equipos con su estado y botones de encendido.",
+    "pick": "Equipos a mostrar. No selecciones ninguno para mostrarlos todos."
+  },
+  "operations": {
+    "wake": {
+      "title": "Encender equipo"
+    },
+    "shutdown": {
+      "title": "Apagar equipo"
+    },
+    "sleep": {
+      "title": "Poner equipo en suspensión"
+    },
+    "powerState": {
+      "title": "Estado de encendido"
+    }
   }
 }

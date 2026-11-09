@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Ébresztés",
-    "sent": "Wake-on-LAN csomag elküldve",
-    "failed": "Nem sikerült elküldeni a Wake-on-LAN csomagot"
-  },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN csomagok küldése",
-      "description": "Egy gép felébresztése egy varázscsomag elküldésével a MAC-címére."
+      "title": "Gépek felébresztése",
+      "description": "Gép felébresztése a Tápellátás fülön, a menüjében vagy egy automatizálásból."
+    },
+    "shutdown": {
+      "title": "Gépek leállítása",
+      "description": "Gép leállítása vagy alvó állapotba helyezése."
+    },
+    "scan": {
+      "title": "Hálózatok szkennelése",
+      "description": "Gépek keresése egy olyan SSH hosztról, amelyhez csatlakozni tud."
+    },
+    "serverCommands": {
+      "title": "A Termix szerver használata",
+      "description": "Parancsok mentése, amelyek a Termix szerveren futnak, és szkennelés indítása onnan. Ez bármit futtathat, amit a szerver."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Tápellátás",
+        "description": "Ennek a hosztnak a megjelenítése a Tápellátás fülön."
+      },
       "macAddress": {
         "label": "MAC-cím",
-        "description": "A gép hálózati MAC-címe, amelyet a Wake-on-LAN csomagok küldéséhez használunk.",
+        "description": "A hálózati port MAC-címe, amely felébreszti ezt a gépet.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "A subnet broadcast címe, ahová a csomagot elküldjük. Hagyd üresen, ha 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Állapotellenőrzési intervallum",
+        "description": "Másodpercek az állapotellenőrzések között. A relay hoszton keresztüli ellenőrzések minden alkalommal SSH-t használnak."
+      },
+      "allowServerCommands": {
+        "label": "Parancsok engedélyezése a Termix szerveren",
+        "description": "Mentett ping, felébresztési és leállítási parancsok futtatásának engedélyezése a Termix szerveren. Csak azok a felhasználók menthetik el ezeket, akiknek megvan a Termix szerver használata engedély."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Ébreszd fel az alvó gépeket egy Wake-on-LAN csomag elküldésével a MAC-címükre."
+    "description": "Gépek felébresztése, leállítása és nyomon követése egyetlen tápellátási irányítópultból."
+  },
+  "tile": {
+    "title": "Tápellátás",
+    "none": "Ez a hoszt nincs beállítva tápellátás-vezérlésre.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Felébredés",
+      "stopping": "Leállítás",
+      "failed": "Sikertelen",
+      "unknown": "Ismeretlen"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Még egyik hosztnak sincs MAC-címe. Adjon hozzá egyet a hoszt beállításaiban."
+    "title": "Tápellátás",
+    "empty": "Még nincsenek gépek. Nyisd meg a Tápellátás fület, és adj hozzá egyet, vagy szkenneld a hálózatot."
+  },
+  "tab": {
+    "title": "Tápellátás",
+    "status": "{{online}}/{{total}} online",
+    "add": "Hozzáadás",
+    "scan": "Szkennelés",
+    "search": "Gépek keresése",
+    "failed": "Nem sikerült betölteni a gépeket",
+    "empty": "Még nincsenek gépek",
+    "emptyHint": "Adj hozzá egy gépet, vagy szkenneld a hálózatot a megtalálásukhoz.",
+    "noMatch": "Nincs találat a keresésre",
+    "noFolder": "Nincs mappa",
+    "wakeAll": "Összes felébresztése",
+    "wakeAllConfirm": "Felébreszti a(z) {{folder}} mappában lévő {{count}} gépet?"
+  },
+  "status": {
+    "unknown": "Még nem ellenőrizve",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Felébredés",
+    "stopping": "Leállítás",
+    "failed": "Nem válaszolt időben"
+  },
+  "power": {
+    "wake": "Felébresztés",
+    "shutdown": "Leállítás",
+    "sleep": "Alvó mód",
+    "settings": "Tápellátási beállítások",
+    "confirm": {
+      "wake": "Felébreszti a(z) {{name}} gépet?",
+      "shutdown": "Leállítja a(z) {{name}} gépet?",
+      "sleep": "Alvó állapotba helyezi a(z) {{name}} gépet?"
+    },
+    "sent": {
+      "wake": "{{name}} felébresztése",
+      "shutdown": "{{name}} leállítása",
+      "sleep": "{{name}} alvó állapotba helyezése"
+    },
+    "failed": {
+      "wake": "Nem sikerült felébreszteni ezt a gépet",
+      "shutdown": "Nem sikerült leállítani ezt a gépet",
+      "sleep": "Nem sikerült alvó állapotba helyezni ezt a gépet"
+    }
+  },
+  "device": {
+    "title": "Gép",
+    "general": "Általános",
+    "name": "Név",
+    "mac": "MAC-cím",
+    "noMac": "Nincs MAC-cím",
+    "lanIp": "LAN IP",
+    "lanIpHint": "A gép saját hálózati címe, ha eltér a host címétől.",
+    "netmask": "Hálózati maszk",
+    "netmaskHint": "A szélesítés (broadcast) cím kiszámításához szükséges.",
+    "description": "Leírás",
+    "link": "Hivatkozás",
+    "linkHint": "Kattinthatóvá teszi a nevet, például egy irányítópult hivatkozása.",
+    "autoOpen": "Hivatkozás megnyitása felébresztés után",
+    "autoOpenHint": "Megnyitja a hivatkozást, amint a gép elérhetővé válik.",
+    "lastChange": "Utolsó módosítás",
+    "status": "Állapot",
+    "statusFrom": "Ellenőrzés innen",
+    "statusFromHint": "Használj egy ugyanazon a hálózaton lévő SSH hostot, ha a Termix nem éri el a gépet.",
+    "ports": "Portok",
+    "portsHint": "A nyitott portok megjelennek a kártyán. A Termix szerver csak a portokat ellenőrzi, ezért adj hozzá egyet, amelyen a gép válaszol.",
+    "pingCommand": "Egyedi ellenőrzés",
+    "pingCommandHint": "Opcionális. A 0 kimeneti kód azt jelenti, hogy a gép be van kapcsolva. A {{ip}} és {{mac}} helyére a megfelelő értékek kerülnek.",
+    "wake": "Felébresztés",
+    "wakeMode": "Felébresztés módja",
+    "wakeMagic": "Wake-on-LAN csomag",
+    "commandMode": "Egyedi parancs",
+    "wakeFrom": "Küldés innen",
+    "wakeFromHint": "A csomagot a gép saját hálózatáról kell indítani. Ha a Termix nincs ezen a hálózaton, válassz egy SSH hostot onnan.",
+    "fromServer": "Termix szerver",
+    "broadcast": "Broadcast cím",
+    "broadcastHint": "Hagyd üresen, ha a LAN IP és a hálózati maszk alapján szeretnéd kiszámolni.",
+    "wakePort": "Port",
+    "secureOn": "SecureON jelszó",
+    "secureOnHint": "Opcionális. 4 vagy 6 karakter, vagy egy MAC-cím formátumú érték.",
+    "secretSaved": "Mentve, hagyd üresen a megtartáshoz",
+    "wakeCommand": "Felébresztő parancs",
+    "placeholders": "A {{ip}} és {{mac}} helyére a megfelelő értékek kerülnek.",
+    "timeout": "Időtúllépés (másodperc)",
+    "timeoutHint": "Mennyi ideig várjunk, mielőtt nem válaszolónak jelöljük.",
+    "cron": "Ütemezés (cron)",
+    "cronHint": "Opcionális. Öt mező, a szerver időzónájában.",
+    "confirm": "Kérdezzen futtatás előtt",
+    "shutdown": "Leállítás",
+    "shutdownMode": "Leállítás módja",
+    "shutdownNone": "Semmi",
+    "shutdownSsh": "Ez a host SSH bejelentkezése",
+    "shutdownSshHint": "Root jogosultságot vagy jelszómentes sudo-t igényel Linuxon és macOS-on.",
+    "shutdownCommand": "Leállító parancs",
+    "commands": "Egyedi parancsok",
+    "commandTarget": "Parancsok futtatása ezen",
+    "commandTargetHint": "A parancsokat a mentő felhasználó bejelentkezési adataival futtatjuk.",
+    "targetHost": "Ez a host, SSH-n keresztül",
+    "targetRelay": "Egy másik host, SSH-n keresztül",
+    "targetServer": "A Termix szerver",
+    "commandRelay": "Host",
+    "pickHost": "Válassz egy hostot",
+    "bmc": "BMC",
+    "useBmc": "BMC használata, ha elérhető",
+    "useBmcHint": "Bekapcsolás és leállítás az Out-of-band bővítményen keresztül, ha ehhez a hosthoz van BMC kapcsolva. Egyébként a fenti módszerek kerülnek felhasználásra.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Sleep-On-LAN használata",
+    "solHint": "A gépen telepített Sleep-On-LAN eszközt és HTTP hallgatót igényel.",
+    "solPort": "Port",
+    "solUser": "Felhasználónév",
+    "solPassword": "Jelszó",
+    "test": "Teszt",
+    "testShutdownConfirm": "Ez a valós parancsot hajtja végre, és leállíthatja a(z) {{name}} gépet. Folytatja?",
+    "testFailed": "A teszt sikertelen volt",
+    "saveFirst": "Először mentse el",
+    "exitCode": "Kilépési kód: {{code}}",
+    "loadFailed": "Nem sikerült betölteni ezt a gépet",
+    "saveFailed": "Nem sikerült menteni"
+  },
+  "add": {
+    "title": "Gép hozzáadása",
+    "host": "Host",
+    "newHost": "Új host",
+    "hostHint": "Ha ez a gép már szerepel hostként, válassza ki, hogy ne jelenjen meg kétszer. A címe változatlan marad."
+  },
+  "scan": {
+    "title": "Hálózat szkennelése",
+    "where": "Szkennelés helye",
+    "from": "Szkennelés innen",
+    "fromHint": "Válasszon egy SSH hostot ezen a hálózaton. Ha van rá lehetőség, az nmapot használja, egyébként a pinget.",
+    "range": "Tartomány",
+    "rangeHint": "Hagyja üresen a host saját privát hálózatainak használatához.",
+    "rangeNeeded": "Szükséges, ha a Termix szerverről történik a szkennelés.",
+    "start": "Szkennelés",
+    "scanning": "Szkennelés...",
+    "note": "A szkennelés a hálózaton lévő gépeket keresi. Nem tudja megállapítani, hogy a Wake-on-LAN be van-e kapcsolva rajtuk.",
+    "none": "Nem talált semmit",
+    "failed": "A szkennelés sikertelen volt",
+    "addFailed": "Nem sikerült hozzáadni ezt a gépet",
+    "noMac": "Nem található MAC-cím",
+    "newHost": "Új host",
+    "attachTo": "Csatolás a(z) {{name}} hosthoz",
+    "attach": "Csatolás",
+    "add": "Hozzáadás",
+    "added": "Kész",
+    "choose": "Hova kerüljön ez a gép",
+    "match": {
+      "mac": "Ugyanaz a MAC-cím, mint a(z) {{name}}",
+      "ip": "Ugyanaz az IP-cím, mint a(z) {{name}}",
+      "name": "Ugyanaz a név, mint a(z) {{name}}"
+    },
+    "hint": {
+      "bridge": "Szinte semmit nem talált. Egy bridge hálózaton lévő Termix konténer nem látja a LAN-t, ezért szkenneljen inkább egy SSH hostról.",
+      "no-mac": "Néhány gépnek nincs MAC-címe. Futtassa a szkennelést nmap-ként root jogosultsággal, vagy ellenőrizze, hogy a host látja-e ezeket a gépeket."
+    }
+  },
+  "widget": {
+    "name": "Bekapcsolás",
+    "description": "Gépek állapotukkal és be-/kikapcsoló gombokkal.",
+    "pick": "Mely gépeket jelenítse meg. Ha egyiket sem választja, az összes megjelenik."
+  },
+  "operations": {
+    "wake": {
+      "title": "Gép felébresztése"
+    },
+    "shutdown": {
+      "title": "Gép leállítása"
+    },
+    "sleep": {
+      "title": "Gép alvó módba helyezése"
+    },
+    "powerState": {
+      "title": "Bekapcsolt állapot"
+    }
   }
 }

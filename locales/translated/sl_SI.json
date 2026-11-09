@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Prebudi",
-    "sent": "Paket za prebujanje prek omrežja je bil poslan",
-    "failed": "Pošiljanje paketa za prebujanje prek omrežja ni uspelo"
-  },
   "permissions": {
     "send": {
-      "title": "Pošiljanje paketov za prebujanje prek omrežja",
-      "description": "Prebudite gostitelja s pošiljanjem magičnega paketa na njegov MAC naslov."
+      "title": "Prebudi naprave",
+      "description": "Prebudi gostitelja z zavihka Napajanje, iz menija ali z avtomatizacije."
+    },
+    "shutdown": {
+      "title": "Izklopi naprave",
+      "description": "Izklopi gostitelja ali ga prespi."
+    },
+    "scan": {
+      "title": "Skeniraj omrežja",
+      "description": "Išči naprave prek SSH gostitelja, na katerega se lahko povežeš."
+    },
+    "serverCommands": {
+      "title": "Uporabi strežnik Termix",
+      "description": "Shrani ukaze, ki se izvajajo na strežniku Termix, in skeniraj od njega. To lahko izvede vse, kar zmore strežnik."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Napajanje",
+        "description": "Prikaži tega gostitelja na zavihku Napajanje."
+      },
       "macAddress": {
         "label": "MAC naslov",
-        "description": "Omrežni MAC naslov gostitelja, ki se uporablja za pošiljanje paketov za prebujanje prek omrežja.",
+        "description": "MAC naslov omrežnega vmesnika, ki prebudi tega gostitelja.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Naslov za razširjeno pošiljanje podomrežja, na katerega se bo paket poslal. Pustite prazno za 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Interval preverjanja stanja",
+        "description": "Sekunde med preverjanji stanja. Preverjanja prek posredniškega gostitelja vsakič uporabljajo SSH."
+      },
+      "allowServerCommands": {
+        "label": "Dovoli ukaze na strežniku Termix",
+        "description": "Dovoli izvajanje shranjenih ukazov za ping, prebujanje in izklop na strežniku Termix. Shraniti jih lahko le uporabniki z dovoljenjem Uporabi strežnik Termix."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Prebudite mirujoče naprave z pošiljanjem Wake-on-LAN paketa na njihovo MAC naslov."
+    "description": "Prebujaj, izklapljaj in spremljaj svoje naprave z enega nadzornega pulta za napajanje."
+  },
+  "tile": {
+    "title": "Napajanje",
+    "none": "Ta gostitelj ni nastavljen za nadzor napajanja.",
+    "status": {
+      "online": "Na spletu",
+      "offline": "Izven spleta",
+      "waking": "Prebujanje",
+      "stopping": "Izklop",
+      "failed": "Napaka",
+      "unknown": "Neznano"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Noben gostitelj še nima MAC naslova. Dodajte ga v nastavitvah gostitelja."
+    "title": "Napajanje",
+    "empty": "Še ni naprav. Odpri zavihek Napajanje, da dodaš napravo ali skeniraš omrežje."
+  },
+  "tab": {
+    "title": "Napajanje",
+    "status": "{{online}} od {{total}} na spletu",
+    "add": "Dodaj",
+    "scan": "Skeniraj",
+    "search": "Išči naprave",
+    "failed": "Naprav ni bilo mogoče naložiti",
+    "empty": "Še ni naprav",
+    "emptyHint": "Dodaj napravo ali skeniraj omrežje, da jih najdeš.",
+    "noMatch": "Nič ne ustreza tvoji iskalni poizvedbi",
+    "noFolder": "Brez mape",
+    "wakeAll": "Prebudi vse",
+    "wakeAllConfirm": "Prebuditi {{count}} naprave v {{folder}}?"
+  },
+  "status": {
+    "unknown": "Še ni preverjeno",
+    "online": "Na spletu",
+    "offline": "Izven spleta",
+    "waking": "Prebujanje",
+    "stopping": "Izklop",
+    "failed": "Ni odgovoril pravočasno"
+  },
+  "power": {
+    "wake": "Prebudi",
+    "shutdown": "Izklopi",
+    "sleep": "Prespi",
+    "settings": "Nastavitve napajanja",
+    "confirm": {
+      "wake": "Prebuditi {{name}}?",
+      "shutdown": "Izklopiti {{name}}?",
+      "sleep": "Prespiti {{name}}?"
+    },
+    "sent": {
+      "wake": "Prebujanje {{name}}",
+      "shutdown": "Izklop {{name}}",
+      "sleep": "Prespanje {{name}}"
+    },
+    "failed": {
+      "wake": "Te naprave ni bilo mogoče prebuditi",
+      "shutdown": "Te naprave ni bilo mogoče izklopiti",
+      "sleep": "Te naprave ni bilo mogoče prespiti"
+    }
+  },
+  "device": {
+    "title": "Naprava",
+    "general": "Splošno",
+    "name": "Ime",
+    "mac": "MAC naslov",
+    "noMac": "Ni MAC naslova",
+    "lanIp": "LAN IP",
+    "lanIpHint": "Naslov v lastnem omrežju naprave, če se razlikuje od naslova gostitelja.",
+    "netmask": "Omrežna maska",
+    "netmaskHint": "Uporablja se za izračun naslova za razširjanje.",
+    "description": "Opis",
+    "link": "Povezava",
+    "linkHint": "Ime postane klikljiva povezava, na primer do nadzorne plošče.",
+    "autoOpen": "Odpri povezavo po zagonu",
+    "autoOpenHint": "Povezava se odpre, ko je naprava na mreži.",
+    "lastChange": "Zadnja sprememba",
+    "status": "Stanje",
+    "statusFrom": "Preveri prek",
+    "statusFromHint": "Uporabi SSH gostitelja v istem omrežju, če Termix ne more doseči naprave.",
+    "ports": "Vrata",
+    "portsHint": "Odprta vrata se prikažejo na kartici. Strežnik Termix preverja le vrata, zato dodajte tisto, na katerem naprava odgovarja.",
+    "pingCommand": "Prilagojena preverba",
+    "pingCommandHint": "Neobvezno. Izhodna koda 0 pomeni, da je naprava vklopljena. Vstavita se {{ip}} in {{mac}}.",
+    "wake": "Zagon",
+    "wakeMode": "Zaženi z",
+    "wakeMagic": "Wake-on-LAN paket",
+    "commandMode": "Prilagojen ukaz",
+    "wakeFrom": "Pošlji iz",
+    "wakeFromHint": "Paket mora biti poslan iz lastnega omrežja naprave. Če Termix ni v tem omrežju, izberite SSH gostitelja tam.",
+    "fromServer": "Strežnik Termix",
+    "broadcast": "Naslov za razširjanje",
+    "broadcastHint": "Pustite prazno, da se izračuna iz LAN IP in omrežne maske.",
+    "wakePort": "Vrata",
+    "secureOn": "Geslo SecureON",
+    "secureOnHint": "Neobvezno. 4 ali 6 znakov ali vrednost, zapisana kot MAC naslov.",
+    "secretSaved": "Shranjeno, pustite prazno za ohranitev",
+    "wakeCommand": "Ukaz za zagon",
+    "placeholders": "Vstavita se {{ip}} in {{mac}}.",
+    "timeout": "Časovna omejitev (sekunde)",
+    "timeoutHint": "Kako dolgo čakati, preden se označi kot neodziven.",
+    "cron": "Razpored (cron)",
+    "cronHint": "Neobvezno. Pet polj, v časovni coni strežnika.",
+    "confirm": "Vprašaj pred izvajanjem",
+    "shutdown": "Izklop",
+    "shutdownMode": "Izklopi z",
+    "shutdownNone": "Ničesar",
+    "shutdownSsh": "SSH prijava tega gostitelja",
+    "shutdownSshHint": "Zahteva root ali sudo brez gesla na Linuxu in macOS.",
+    "shutdownCommand": "Ukaz za izklop",
+    "commands": "Prilagojeni ukazi",
+    "commandTarget": "Izvedi ukaze na",
+    "commandTargetHint": "Ukazi se izvedejo s prijavo osebe, ki jih je shranila.",
+    "targetHost": "Ta gostitelj, prek SSH",
+    "targetRelay": "Drug gostitelj, prek SSH",
+    "targetServer": "Strežnik Termix",
+    "commandRelay": "Gostitelj",
+    "pickHost": "Izberite gostitelja",
+    "bmc": "BMC",
+    "useBmc": "Uporabi BMC, če je na voljo",
+    "useBmcHint": "Vklop in izklop prek vtičnika Out-of-band, če ima ta gostitelj povezan BMC. Sicer se uporabijo zgoraj navedene metode.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Uporabi Sleep-On-LAN",
+    "solHint": "Zahteva orodje Sleep-On-LAN na napravi s poslušalcem HTTP.",
+    "solPort": "Vrata",
+    "solUser": "Uporabniško ime",
+    "solPassword": "Geslo",
+    "test": "Preizkus",
+    "testShutdownConfirm": "To izvede dejanski ukaz in lahko izklopi {{name}}. Nadaljuj?",
+    "testFailed": "Preizkus ni uspel",
+    "saveFirst": "Najprej shrani",
+    "exitCode": "Izhodna koda {{code}}",
+    "loadFailed": "Te naprave ni bilo mogoče naložiti",
+    "saveFailed": "Shranjevanje ni uspelo"
+  },
+  "add": {
+    "title": "Dodaj napravo",
+    "host": "Gostitelj",
+    "newHost": "Nov gostitelj",
+    "hostHint": "Če je ta naprava že gostitelj, jo izberi, da se ne bo pojavila dvakrat. Naslov ostane nespremenjen."
+  },
+  "scan": {
+    "title": "Skeniraj omrežje",
+    "where": "Kje skenirati",
+    "from": "Skeniraj od",
+    "fromHint": "Izberi SSH gostitelja v tem omrežju. Uporabi nmap, če ga ima, sicer ping.",
+    "range": "Območje",
+    "rangeHint": "Pusti prazno za zasebna omrežja tega gostitelja.",
+    "rangeNeeded": "Potrebno pri skeniranju s strežnika Termix.",
+    "start": "Skeniraj",
+    "scanning": "Skeniranje...",
+    "note": "Skeniranje najde naprave v omrežju. Ne more ugotoviti, ali je za njih vklopljen Wake-on-LAN.",
+    "none": "Ničesar ni bilo najdeno",
+    "failed": "Skeniranje ni uspelo",
+    "addFailed": "Te naprave ni bilo mogoče dodati",
+    "noMac": "MAC naslov ni bil najden",
+    "newHost": "Nov gostitelj",
+    "attachTo": "Poveži z {{name}}",
+    "attach": "Poveži",
+    "add": "Dodaj",
+    "added": "Končano",
+    "choose": "Kje bo ta naprava",
+    "match": {
+      "mac": "Enak MAC kot {{name}}",
+      "ip": "Enak IP kot {{name}}",
+      "name": "Enako ime kot {{name}}"
+    },
+    "hint": {
+      "bridge": "Skoraj ničesar ni bilo najdeno. Termix kontejner v mostnem omrežju ne more videti vašega LAN-a, zato skenirajte namesto tega s SSH gostitelja.",
+      "no-mac": "Nekatere naprave nimajo MAC naslova. Zaženite skeniranje z nmap kot root ali preverite, ali gostitelj lahko vidi te naprave."
+    }
+  },
+  "widget": {
+    "name": "Napajanje",
+    "description": "Naprave z njihovim stanjem in gumbi za napajanje.",
+    "pick": "Naprave za prikaz. Če ne izberete nobene, se prikažejo vse."
+  },
+  "operations": {
+    "wake": {
+      "title": "Zbudi napravo"
+    },
+    "shutdown": {
+      "title": "Izklopi napravo"
+    },
+    "sleep": {
+      "title": "Postavi napravo v mirovanje"
+    },
+    "powerState": {
+      "title": "Stanje napajanja"
+    }
   }
 }

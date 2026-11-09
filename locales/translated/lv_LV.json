@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Pamodināt",
-    "sent": "Wake-on-LAN pakete nosūtīta",
-    "failed": "Neizdevās nosūtīt Wake-on-LAN paketi"
-  },
   "permissions": {
     "send": {
-      "title": "Nosūtīt Wake-on-LAN paketes",
-      "description": "Pamodiniet hostu, nosūtot maģisko paketi tā MAC adresē."
+      "title": "Pamodināt ierīces",
+      "description": "Pamodināt hostu no barošanas cilnes, izvēlnes vai automatizācijas."
+    },
+    "shutdown": {
+      "title": "Izslēgt ierīces",
+      "description": "Izslēgt hostu vai pāriet miega režīmā."
+    },
+    "scan": {
+      "title": "Skenēt tīklus",
+      "description": "Meklēt ierīces no SSH hosta, pie kura varat pieslēgties."
+    },
+    "serverCommands": {
+      "title": "Izmantot Termix serveri",
+      "description": "Saglabāt komandas, kas tiek izpildītas Termix serverī, un skenēt no tā. Tas var izpildīt jebko, ko spēj serveris."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Barošana",
+        "description": "Rādīt šo hostu Barošanas cilnē."
+      },
       "macAddress": {
         "label": "MAC adrese",
-        "description": "Hosta tīkla MAC adrese, kas tiek izmantota Wake-on-LAN paketu nosūtīšanai.",
+        "description": "Tīkla porta MAC adrese, kas pamodina šo hostu.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Apakštīkla plašsārauta adrese, kurai nosūtīt paketi. Atstājiet tukšu, lai izmantotu 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Statusa pārbaudes intervāls",
+        "description": "Sekundes starp statusa pārbaudēm. Pārbaudes caur starpniekhostu katru reizi izmanto SSH."
+      },
+      "allowServerCommands": {
+        "label": "Atļaut komandas Termix serverī",
+        "description": "Ļaut saglabātām ping, pamodināšanas un izslēgšanas komandām izpildīties Termix serverī. Tās var saglabāt tikai lietotāji ar atļauju Izmantot Termix serveri."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Pamodiniet miega režīmā esošās ierīces, nosūtot Wake-on-LAN paketi to MAC adresēm."
+    "description": "Pamodiniet, izslēdziet un uzraugiet savas ierīces no vienas barošanas panelis."
+  },
+  "tile": {
+    "title": "Barošana",
+    "none": "Šim hostam nav iestatīta barošanas vadība.",
+    "status": {
+      "online": "Tiešsaistē",
+      "offline": "Bezsaistē",
+      "waking": "Pamodināšana",
+      "stopping": "Izslēgšana",
+      "failed": "Neizdevās",
+      "unknown": "Nezināms"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Pavisam nav hostu ar MAC adresi. Pievienojiet vienu hosta iestatījumos."
+    "title": "Barošana",
+    "empty": "Vēl nav ierīču. Atveriet Barošanas cilni, lai pievienotu vienu vai skenētu savu tīklu."
+  },
+  "tab": {
+    "title": "Barošana",
+    "status": "{{online}} no {{total}} tiešsaistē",
+    "add": "Pievienot",
+    "scan": "Skenēt",
+    "search": "Meklēt ierīces",
+    "failed": "Neizdevās ielādēt jūsu ierīces",
+    "empty": "Vēl nav ierīču",
+    "emptyHint": "Pievienojiet ierīci vai skenējiet savu tīklu, lai tās atrastu.",
+    "noMatch": "Nekas neatbilst jūsu meklējumam",
+    "noFolder": "Nav mapes",
+    "wakeAll": "Pamodināt visas",
+    "wakeAllConfirm": "Pamodināt {{count}} ierīces mapē {{folder}}?"
+  },
+  "status": {
+    "unknown": "Vēl nav pārbaudīts",
+    "online": "Tiešsaistē",
+    "offline": "Bezsaistē",
+    "waking": "Pamodināšana",
+    "stopping": "Izslēgšana",
+    "failed": "Neatbildēja laikā"
+  },
+  "power": {
+    "wake": "Pamodināt",
+    "shutdown": "Izslēgt",
+    "sleep": "Miega režīms",
+    "settings": "Barošanas iestatījumi",
+    "confirm": {
+      "wake": "Pamodināt {{name}}?",
+      "shutdown": "Izslēgt {{name}}?",
+      "sleep": "Pāriet miega režīmā {{name}}?"
+    },
+    "sent": {
+      "wake": "Pamodina {{name}}",
+      "shutdown": "Izslēdz {{name}}",
+      "sleep": "Pārvērš {{name}} miega režīmā"
+    },
+    "failed": {
+      "wake": "Neizdevās pamodināt šo ierīci",
+      "shutdown": "Neizdevās izslēgt šo ierīci",
+      "sleep": "Neizdevās pārvērst šo ierīci miega režīmā"
+    }
+  },
+  "device": {
+    "title": "Ierīce",
+    "general": "Vispārīgi",
+    "name": "Nosaukums",
+    "mac": "MAC adrese",
+    "noMac": "Nav MAC adreses",
+    "lanIp": "LAN IP",
+    "lanIpHint": "Adrese ierīces pašā tīklā, ja tā atšķiras no hosta adreses.",
+    "netmask": "Tīkla maska",
+    "netmaskHint": "Izmanto, lai aprēķinātu plašsūtījuma adresi.",
+    "description": "Apraksts",
+    "link": "Saite",
+    "linkHint": "Padara nosaukumu par noklikšķināmu, piemēram, saiti uz pārskata paneli.",
+    "autoOpen": "Atvērt saiti pēc pamodināšanas",
+    "autoOpenHint": "Atver saiti, tiklīdz ierīce ir tiešsaistē.",
+    "lastChange": "Pēdējā izmaiņa",
+    "status": "Statuss",
+    "statusFrom": "Pārbaudīt no",
+    "statusFromHint": "Izmantojiet SSH hostu tajā pašā tīklā, ja Termix nevar sasniegt ierīci.",
+    "ports": "Porti",
+    "portsHint": "Atvērtie porti tiek rādīti kartītē. Termix serveris pārbauda tikai portus, tāpēc pievienojiet vienu, uz kura ierīce atbild.",
+    "pingCommand": "Pielāgota pārbaude",
+    "pingCommandHint": "Neobligāts. Izpildes kods 0 nozīmē, ka ierīce ir ieslēgta. {{ip}} un {{mac}} tiek aizpildīti automātiski.",
+    "wake": "Pamodināt",
+    "wakeMode": "Pamodināt ar",
+    "wakeMagic": "Wake-on-LAN pakete",
+    "commandMode": "Pielāgota komanda",
+    "wakeFrom": "Sūtīt no",
+    "wakeFromHint": "Paketes sūtīšanai ir jānotiek ierīces pašā tīklā. Izvēlieties SSH hostu tur, ja Termix nav tajā pašā tīklā.",
+    "fromServer": "Termix serveris",
+    "broadcast": "Plašsūtījuma adrese",
+    "broadcastHint": "Atstājiet tukšu, lai aprēķinātu no LAN IP un tīkla maskas.",
+    "wakePort": "Ports",
+    "secureOn": "SecureON parole",
+    "secureOnHint": "Neobligāts. 4 vai 6 rakstzīmes, vai vērtība, kas uzrakstīta kā MAC adrese.",
+    "secretSaved": "Saglabāts, atstājiet tukšu, lai saglabātu esošo",
+    "wakeCommand": "Pamodināšanas komanda",
+    "placeholders": "{{ip}} un {{mac}} tiek aizpildīti automātiski.",
+    "timeout": "Laika limits (sekundes)",
+    "timeoutHint": "Cik ilgi gaidīt, pirms atzīmēt kā neatbildošo.",
+    "cron": "Grafiks (cron)",
+    "cronHint": "Neobligāts. Pieci lauki, servera laika joslā.",
+    "confirm": "Jautāt pirms izpildes",
+    "shutdown": "Izslēgt",
+    "shutdownMode": "Izslēgt ar",
+    "shutdownNone": "Nekas",
+    "shutdownSsh": "Šī hosta SSH pieteikšanās",
+    "shutdownSshHint": "Nepieciešams root vai paroles sudo Linux un macOS.",
+    "shutdownCommand": "Izslēgšanas komanda",
+    "commands": "Pielāgotas komandas",
+    "commandTarget": "Izpildīt komandas uz",
+    "commandTargetHint": "Komandas tiek izpildītas ar personas, kas tās saglabāja, pieteikšanās datiem.",
+    "targetHost": "Šis hostis, caur SSH",
+    "targetRelay": "Cits hostis, caur SSH",
+    "targetServer": "Termix serveris",
+    "commandRelay": "Hosts",
+    "pickHost": "Izvēlieties hostu",
+    "bmc": "BMC",
+    "useBmc": "Izmantot BMC, ja tāds ir",
+    "useBmcHint": "Ieslēgt un izslēgt caur Out-of-band spraudni, ja šim hostim tur ir saistīts BMC. Pretējā gadījumā tiek izmantotas iepriekš minētās metodes.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Izmantot Sleep-On-LAN",
+    "solHint": "Nepieciešams Sleep-On-LAN rīks ierīcē ar HTTP klausītāju.",
+    "solPort": "Ports",
+    "solUser": "Lietotājvārds",
+    "solPassword": "Parole",
+    "test": "Testēt",
+    "testShutdownConfirm": "Tiks izpildīta reāla komanda, kas var izslēgt {{name}}. Turpināt?",
+    "testFailed": "Tests neizdevās",
+    "saveFirst": "Vispirms saglabājiet",
+    "exitCode": "Izejas kods {{code}}",
+    "loadFailed": "Neizdevās ielādēt šo ierīci",
+    "saveFailed": "Neizdevās saglabāt"
+  },
+  "add": {
+    "title": "Pievienot ierīci",
+    "host": "Resursdators",
+    "newHost": "Jauns resursdators",
+    "hostHint": "Ja šī ierīce jau ir resursdators, izvēlieties to, lai tā neparādītos divreiz. Tās adrese paliks nemainīga."
+  },
+  "scan": {
+    "title": "Skenēt tīklu",
+    "where": "Kur skenēt",
+    "from": "Skenēt no",
+    "fromHint": "Izvēlieties SSH resursdatoru šajā tīklā. Tas izmantos nmap, ja tas ir pieejams, pretējā gadījumā ping.",
+    "range": "Diapazons",
+    "rangeHint": "Atstājiet tukšu, lai izmantotu šī resursdatora privātos tīklus.",
+    "rangeNeeded": "Nepieciešams, skenējot no Termix servera.",
+    "start": "Skenēt",
+    "scanning": "Notiek skenēšana...",
+    "note": "Skenēšana atrod ierīces tīklā. Tā nevar noteikt, vai tām ir ieslēgta Wake-on-LAN.",
+    "none": "Nekas nav atrasts",
+    "failed": "Skenēšana neizdevās",
+    "addFailed": "Neizdevās pievienot šo ierīci",
+    "noMac": "MAC adrese nav atrasta",
+    "newHost": "Jauns resursdators",
+    "attachTo": "Pievienot pie {{name}}",
+    "attach": "Pievienot",
+    "add": "Pievienot",
+    "added": "Pabeigts",
+    "choose": "Kur šī ierīce tiks novietota",
+    "match": {
+      "mac": "Tāda pati MAC adrese kā {{name}}",
+      "ip": "Tāda pati IP adrese kā {{name}}",
+      "name": "Tāds pats nosaukums kā {{name}}"
+    },
+    "hint": {
+      "bridge": "Gandrīz nekas nav atrasts. Termix konteiners tiltveida tīklā neredz jūsu LAN, tāpēc skenējiet no SSH resursdatora.",
+      "no-mac": "Dažām ierīcēm nav MAC adreses. Palaist skenēšanu ar nmap kā root lietotājs, vai pārbaudiet, vai resursdators tās redz."
+    }
+  },
+  "widget": {
+    "name": "Barošana",
+    "description": "Ierīces ar to statusu un barošanas pogām.",
+    "pick": "Kādas ierīces rādīt. Neizvēlieties nevienu, lai rādītu visas."
+  },
+  "operations": {
+    "wake": {
+      "title": "Pamodināt ierīci"
+    },
+    "shutdown": {
+      "title": "Izslēgt ierīci"
+    },
+    "sleep": {
+      "title": "Ievietot ierīci miega režīmā"
+    },
+    "powerState": {
+      "title": "Barošanas stāvoklis"
+    }
   }
 }

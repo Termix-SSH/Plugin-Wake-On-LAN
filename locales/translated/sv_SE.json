@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Väck",
-    "sent": "Wake-on-LAN-paket skickat",
-    "failed": "Misslyckades med att skicka Wake-on-LAN-paket"
-  },
   "permissions": {
     "send": {
-      "title": "Skicka Wake-on-LAN-paket",
-      "description": "Väck en värd genom att skicka ett magic packet till dess MAC-adress."
+      "title": "Väck datorer",
+      "description": "Väck en värd från fliken Ström, dess meny eller en automatisering."
+    },
+    "shutdown": {
+      "title": "Stäng av datorer",
+      "description": "Stäng av en värd eller sätt den i viloläge."
+    },
+    "scan": {
+      "title": "Skanna nätverk",
+      "description": "Sök efter datorer från en SSH-värd du kan ansluta till."
+    },
+    "serverCommands": {
+      "title": "Använd Termix-servern",
+      "description": "Spara kommandon som körs på Termix-servern och skanna från den. Detta kan köra allt som servern kan."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Ström",
+        "description": "Visa denna värd på fliken Ström."
+      },
       "macAddress": {
         "label": "MAC-adress",
-        "description": "Värdens nätverks-MAC-adress, används för att skicka Wake-on-LAN-paket.",
+        "description": "MAC-adressen för den nätverksport som väcker denna värd.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Subnätets broadcast-adress att skicka paketet till. Lämna tomt för 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Intervall för statuskontroll",
+        "description": "Sekunder mellan statuskontroller. Kontroller via en relävärd använder SSH varje gång."
+      },
+      "allowServerCommands": {
+        "label": "Tillåt kommandon på Termix-servern",
+        "description": "Låt sparade ping-, väck- och avstängningskommandon köras på Termix-servern. Endast användare med behörigheten Använd Termix-servern kan spara dem."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Väck sovande datorer genom att skicka ett Wake-on-LAN-paket till deras MAC-adress."
+    "description": "Väck, stäng av och håll koll på dina datorer från ett enda strömdashboard."
+  },
+  "tile": {
+    "title": "Ström",
+    "none": "Denna värd är inte konfigurerad för strömstyrning.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Väcker",
+      "stopping": "Stänger av",
+      "failed": "Misslyckades",
+      "unknown": "Okänd"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Inga värdar har någon MAC-adress ännu. Lägg till en i en värdens inställningar."
+    "title": "Ström",
+    "empty": "Inga datorer ännu. Öppna fliken Ström för att lägga till en eller skanna ditt nätverk."
+  },
+  "tab": {
+    "title": "Ström",
+    "status": "{{online}} av {{total}} online",
+    "add": "Lägg till",
+    "scan": "Skanna",
+    "search": "Sök bland datorer",
+    "failed": "Kunde inte ladda dina datorer",
+    "empty": "Inga datorer ännu",
+    "emptyHint": "Lägg till en dator eller skanna ditt nätverk för att hitta dem.",
+    "noMatch": "Inget matchar din sökning",
+    "noFolder": "Ingen mapp",
+    "wakeAll": "Väck alla",
+    "wakeAllConfirm": "Väck {{count}} datorer i {{folder}}?"
+  },
+  "status": {
+    "unknown": "Inte kontrollerad ännu",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Väcker",
+    "stopping": "Stänger av",
+    "failed": "Svarade inte i tid"
+  },
+  "power": {
+    "wake": "Väck",
+    "shutdown": "Stäng av",
+    "sleep": "Viloläge",
+    "settings": "Ströminställningar",
+    "confirm": {
+      "wake": "Väck {{name}}?",
+      "shutdown": "Stäng av {{name}}?",
+      "sleep": "Sätt {{name}} i viloläge?"
+    },
+    "sent": {
+      "wake": "Väcker {{name}}",
+      "shutdown": "Stänger av {{name}}",
+      "sleep": "Sätter {{name}} i viloläge"
+    },
+    "failed": {
+      "wake": "Misslyckades med att väcka denna dator",
+      "shutdown": "Misslyckades med att stänga av denna dator",
+      "sleep": "Misslyckades med att sätta denna dator i viloläge"
+    }
+  },
+  "device": {
+    "title": "Dator",
+    "general": "Allmänt",
+    "name": "Namn",
+    "mac": "MAC-adress",
+    "noMac": "Ingen MAC-adress",
+    "lanIp": "LAN-IP",
+    "lanIpHint": "Adressen på maskinens eget nätverk, om den skiljer sig från värdens adress.",
+    "netmask": "Nätmask",
+    "netmaskHint": "Används för att beräkna broadcast-adressen.",
+    "description": "Beskrivning",
+    "link": "Länk",
+    "linkHint": "Gör namnet klickbart, som en länk till en dashboard.",
+    "autoOpen": "Öppna länk efter uppvaknande",
+    "autoOpenHint": "Öppnar länken när maskinen är online.",
+    "lastChange": "Senaste ändring",
+    "status": "Status",
+    "statusFrom": "Kontrollera från",
+    "statusFromHint": "Använd en SSH-värd på samma nätverk när Termix inte kan nå maskinen.",
+    "ports": "Portar",
+    "portsHint": "Öppna portar visas på kortet. Termix-servern kontrollerar bara portar, så lägg till en som maskinen svarar på.",
+    "pingCommand": "Anpassad kontroll",
+    "pingCommandHint": "Valfritt. Exitkod 0 betyder att maskinen är på. {{ip}} och {{mac}} fylls i.",
+    "wake": "Väck",
+    "wakeMode": "Väck med",
+    "wakeMagic": "Wake-on-LAN-paket",
+    "commandMode": "Anpassat kommando",
+    "wakeFrom": "Skicka från",
+    "wakeFromHint": "Paketet måste starta på maskinens eget nätverk. Välj en SSH-värd där om Termix inte är det.",
+    "fromServer": "Termix-servern",
+    "broadcast": "Broadcast-adress",
+    "broadcastHint": "Lämna tomt för att beräkna från LAN-IP och nätmask.",
+    "wakePort": "Port",
+    "secureOn": "SecureON-lösenord",
+    "secureOnHint": "Valfritt. 4 eller 6 tecken, eller ett värde skrivet som en MAC-adress.",
+    "secretSaved": "Sparat, lämna tomt för att behålla",
+    "wakeCommand": "Väckkommando",
+    "placeholders": "{{ip}} och {{mac}} fylls i.",
+    "timeout": "Timeout (sekunder)",
+    "timeoutHint": "Hur länge man ska vänta innan det markeras som inte svarar.",
+    "cron": "Schema (cron)",
+    "cronHint": "Valfritt. Fem fält, i serverns tidszon.",
+    "confirm": "Fråga innan körning",
+    "shutdown": "Stäng av",
+    "shutdownMode": "Stäng av med",
+    "shutdownNone": "Inget",
+    "shutdownSsh": "Denna värdens SSH-inloggning",
+    "shutdownSshHint": "Kräver root eller lösenordsfritt sudo på Linux och macOS.",
+    "shutdownCommand": "Avstängningskommando",
+    "commands": "Anpassade kommandon",
+    "commandTarget": "Kör kommandon på",
+    "commandTargetHint": "Kommandon körs med inloggningen för personen som sparade dem.",
+    "targetHost": "Denna värd, över SSH",
+    "targetRelay": "En annan värd, över SSH",
+    "targetServer": "Termix-servern",
+    "commandRelay": "Värd",
+    "pickHost": "Välj en värd",
+    "bmc": "BMC",
+    "useBmc": "Använd BMC när det finns en",
+    "useBmcHint": "Starta och stäng av via Out-of-band-pluginet om denna värd har en BMC länkad där. Annars används metoderna ovan.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Använd Sleep-On-LAN",
+    "solHint": "Kräver Sleep-On-LAN-verktyget på maskinen med en HTTP-listener.",
+    "solPort": "Port",
+    "solUser": "Användarnamn",
+    "solPassword": "Lösenord",
+    "test": "Testa",
+    "testShutdownConfirm": "Detta kör det verkliga kommandot och kan stänga av {{name}}. Vill du fortsätta?",
+    "testFailed": "Testet misslyckades",
+    "saveFirst": "Spara först",
+    "exitCode": "Avslutningskod {{code}}",
+    "loadFailed": "Kunde inte läsa in den här maskinen",
+    "saveFailed": "Kunde inte spara"
+  },
+  "add": {
+    "title": "Lägg till maskin",
+    "host": "Värd",
+    "newHost": "Ny värd",
+    "hostHint": "Om den här maskinen redan är en värd, välj den så att den inte visas två gånger. Dess adress förblir oförändrad."
+  },
+  "scan": {
+    "title": "Skanna nätverk",
+    "where": "Var ska skanningen ske",
+    "from": "Skanna från",
+    "fromHint": "Välj en SSH-värd på det nätverket. Den använder nmap om den finns tillgänglig, annars ping.",
+    "range": "Område",
+    "rangeHint": "Lämna tomt för värdens egna privata nätverk.",
+    "rangeNeeded": "Krävs vid skanning från Termix-servern.",
+    "start": "Skanna",
+    "scanning": "Skannar...",
+    "note": "En skanning hittar maskiner på nätverket. Den kan inte avgöra om Wake-on-LAN är aktiverat för dem.",
+    "none": "Inget hittat",
+    "failed": "Skanningen misslyckades",
+    "addFailed": "Kunde inte lägga till den maskinen",
+    "noMac": "Ingen MAC-adress hittad",
+    "newHost": "Ny värd",
+    "attachTo": "Bifoga till {{name}}",
+    "attach": "Bifoga",
+    "add": "Lägg till",
+    "added": "Klar",
+    "choose": "Var den här maskinen ska placeras",
+    "match": {
+      "mac": "Samma MAC som {{name}}",
+      "ip": "Samma IP som {{name}}",
+      "name": "Samma namn som {{name}}"
+    },
+    "hint": {
+      "bridge": "Bästan inget hittades. En Termix-container på ett bridge-nätverk kan inte se ditt LAN, så skanna istället från en SSH-värd.",
+      "no-mac": "Vissa maskiner har ingen MAC-adress. Kör skanningen med nmap som root, eller kontrollera att värdens kan se dem."
+    }
+  },
+  "widget": {
+    "name": "Ström",
+    "description": "Maskiner med deras status och strömbrytare.",
+    "pick": "Maskiner att visa. Välj inga för att visa alla."
+  },
+  "operations": {
+    "wake": {
+      "title": "Väck maskin"
+    },
+    "shutdown": {
+      "title": "Stäng av maskin"
+    },
+    "sleep": {
+      "title": "Vila maskin"
+    },
+    "powerState": {
+      "title": "Strömstatus"
+    }
   }
 }

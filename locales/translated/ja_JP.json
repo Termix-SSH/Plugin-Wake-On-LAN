@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "起動",
-    "sent": "Wake-on-LAN パケットを送信しました",
-    "failed": "Wake-on-LAN パケットの送信に失敗しました"
-  },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN パケットの送信",
-      "description": "MAC アドレスにマジックパケットを送信してホストを起動します。"
+      "title": "マシンの起動",
+      "description": "電源タブ、メニュー、または自動化からホストを起動します。"
+    },
+    "shutdown": {
+      "title": "マシンのシャットダウン",
+      "description": "ホストをシャットダウンまたはスリープ状態にします。"
+    },
+    "scan": {
+      "title": "ネットワークのスキャン",
+      "description": "接続可能なSSHホストからマシンを検索します。"
+    },
+    "serverCommands": {
+      "title": "Termixサーバーの使用",
+      "description": "Termixサーバー上で実行されるコマンドを保存し、そこからスキャンを実行します。サーバーが実行できるあらゆる操作が可能です。"
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "電源",
+        "description": "このホストを電源タブに表示します。"
+      },
       "macAddress": {
         "label": "MAC アドレス",
-        "description": "Wake-on-LAN パケットを送信するために使用する、ホストのネットワーク MAC アドレスです。",
+        "description": "このホストを起動するネットワークポートのMACアドレス。",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "パケットを送信するサブネットのブロードキャストアドレスです。空白のままにすると 255.255.255.255 が使用されます。",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "ステータスチェック間隔",
+        "description": "ステータスチェックの秒数間隔。リレーホスト経由のチェックは、毎回SSHを使用します。"
+      },
+      "allowServerCommands": {
+        "label": "Termixサーバーでのコマンド実行を許可",
+        "description": "保存されたping、起動、シャットダウンコマンドをTermixサーバー上で実行できるようにします。「Termixサーバーの使用」権限を持つユーザーのみがこれらを保存できます。"
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "MAC アドレスに Wake-on-LAN パケットを送信して、スリープ中のマシンを起動します。"
+    "description": "1つの電源ダッシュボードからマシンの起動、シャットダウン、追跡を行います。"
+  },
+  "tile": {
+    "title": "電源",
+    "none": "このホストは電源制御用に設定されていません。",
+    "status": {
+      "online": "オンライン",
+      "offline": "オフライン",
+      "waking": "起動中",
+      "stopping": "シャットダウン中",
+      "failed": "失敗",
+      "unknown": "不明"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "まだMACアドレスが設定されているホストはありません。ホストの設定から追加してください。"
+    "title": "電源",
+    "empty": "まだマシンがありません。電源タブを開いて追加するか、ネットワークをスキャンしてください。"
+  },
+  "tab": {
+    "title": "電源",
+    "status": "{{total}}台中{{online}}台オンライン",
+    "add": "追加",
+    "scan": "スキャン",
+    "search": "マシンの検索",
+    "failed": "マシンの読み込みに失敗しました",
+    "empty": "まだマシンがありません",
+    "emptyHint": "マシンを追加するか、ネットワークをスキャンして見つけましょう。",
+    "noMatch": "検索条件に一致する結果はありません",
+    "noFolder": "フォルダなし",
+    "wakeAll": "すべて起動",
+    "wakeAllConfirm": "{{folder}}内の{{count}}台のマシンを起動しますか？"
+  },
+  "status": {
+    "unknown": "まだチェックされていません",
+    "online": "オンライン",
+    "offline": "オフライン",
+    "waking": "起動中",
+    "stopping": "シャットダウン中",
+    "failed": "タイムアウトしました"
+  },
+  "power": {
+    "wake": "起動",
+    "shutdown": "シャットダウン",
+    "sleep": "スリープ",
+    "settings": "電源設定",
+    "confirm": {
+      "wake": "{{name}}を起動しますか？",
+      "shutdown": "{{name}}をシャットダウンしますか？",
+      "sleep": "{{name}}をスリープ状態にしますか？"
+    },
+    "sent": {
+      "wake": "{{name}}を起動しています",
+      "shutdown": "{{name}}をシャットダウンしています",
+      "sleep": "{{name}}をスリープ状態にしています"
+    },
+    "failed": {
+      "wake": "このマシンの起動に失敗しました",
+      "shutdown": "このマシンのシャットダウンに失敗しました",
+      "sleep": "このマシンのスリープ状態への移行に失敗しました"
+    }
+  },
+  "device": {
+    "title": "マシン",
+    "general": "一般",
+    "name": "名前",
+    "mac": "MAC アドレス",
+    "noMac": "MAC アドレスなし",
+    "lanIp": "LAN IP",
+    "lanIpHint": "ホストのアドレスと異なる場合、マシン自身のネットワーク上のアドレス。",
+    "netmask": "ネットマスク",
+    "netmaskHint": "ブロードキャストアドレスを計算するために使用されます。",
+    "description": "説明",
+    "link": "リンク",
+    "linkHint": "ダッシュボードへのリンクのように、名前をクリック可能にします。",
+    "autoOpen": "起動後にリンクを開く",
+    "autoOpenHint": "マシンがオンラインになった後、リンクを開きます。",
+    "lastChange": "最終変更",
+    "status": "ステータス",
+    "statusFrom": "チェック元",
+    "statusFromHint": "Termix がマシンに到達できない場合、同じネットワーク上の SSH ホストを使用します。",
+    "ports": "ポート",
+    "portsHint": "開いているポートはカード上に表示されます。Termix サーバーはポートのみをチェックするため、マシンが応答するポートを追加してください。",
+    "pingCommand": "カスタムチェック",
+    "pingCommandHint": "オプション。終了コード 0 はマシンがオンであることを意味します。{{ip}} と {{mac}} は埋め込まれます。",
+    "wake": "起動",
+    "wakeMode": "起動方法",
+    "wakeMagic": "Wake-on-LAN パケット",
+    "commandMode": "カスタムコマンド",
+    "wakeFrom": "送信元",
+    "wakeFromHint": "パケットはマシンのネットワークから開始する必要があります。Termix がそこにいない場合は、SSH ホストを選択してください。",
+    "fromServer": "Termix サーバー",
+    "broadcast": "ブロードキャストアドレス",
+    "broadcastHint": "LAN IP とネットマスクから計算するには空白のままにしてください。",
+    "wakePort": "ポート",
+    "secureOn": "SecureON パスワード",
+    "secureOnHint": "オプション。4 または 6 文字、または MAC アドレスのように書かれた値。",
+    "secretSaved": "保存済み、保持するには空白のままにしてください",
+    "wakeCommand": "起動コマンド",
+    "placeholders": "{{ip}} と {{mac}} は埋め込まれます。",
+    "timeout": "タイムアウト（秒）",
+    "timeoutHint": "応答なしとマークする前に待つ時間。",
+    "cron": "スケジュール（cron）",
+    "cronHint": "オプション。サーバーのタイムゾーンで5つのフィールド。",
+    "confirm": "実行前に確認",
+    "shutdown": "シャットダウン",
+    "shutdownMode": "シャットダウン方法",
+    "shutdownNone": "なし",
+    "shutdownSsh": "このホストの SSH ログイン",
+    "shutdownSshHint": "Linux および macOS には root またはパスワードなしの sudo が必要です。",
+    "shutdownCommand": "シャットダウンコマンド",
+    "commands": "カスタムコマンド",
+    "commandTarget": "コマンドの実行先",
+    "commandTargetHint": "コマンドは、それらを保存した人のログインで実行されます。",
+    "targetHost": "このホスト、SSH経由",
+    "targetRelay": "別のホスト、SSH経由",
+    "targetServer": "Termix サーバー",
+    "commandRelay": "ホスト",
+    "pickHost": "ホストを選択",
+    "bmc": "BMC",
+    "useBmc": "BMC が存在する場合は使用する",
+    "useBmcHint": "このホストが Out-of-band プラグインでリンクされた BMC を持っている場合、電源オンとシャットダウンはそれを通じて行われます。それ以外の場合は上記の方法が使用されます。",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Sleep-On-LAN を使用する",
+    "solHint": "HTTP リスナーを持つマシン上の Sleep-On-LAN ツールが必要です。",
+    "solPort": "ポート",
+    "solUser": "ユーザー名",
+    "solPassword": "パスワード",
+    "test": "テスト",
+    "testShutdownConfirm": "実際のコマンドが実行され、{{name}} がシャットダウンする可能性があります。続行しますか？",
+    "testFailed": "テストに失敗しました",
+    "saveFirst": "まず保存してください",
+    "exitCode": "終了コード {{code}}",
+    "loadFailed": "このマシンを読み込めませんでした",
+    "saveFailed": "保存できませんでした"
+  },
+  "add": {
+    "title": "マシンの追加",
+    "host": "ホスト",
+    "newHost": "新しいホスト",
+    "hostHint": "このマシンが既にホストとして登録されている場合は、重複して表示されないように選択してください。アドレスはそのまま維持されます。"
+  },
+  "scan": {
+    "title": "ネットワークのスキャン",
+    "where": "スキャン対象",
+    "from": "スキャン元",
+    "fromHint": "そのネットワーク上の SSH ホストを選択してください。nmap がインストールされている場合はそれを使用し、そうでない場合は ping を使用します。",
+    "range": "範囲",
+    "rangeHint": "空白のままにすると、そのホストのプライベートネットワークが対象になります。",
+    "rangeNeeded": "Termix サーバーからスキャンする場合は必須です。",
+    "start": "スキャン",
+    "scanning": "スキャン中...",
+    "note": "スキャンはネットワーク上のマシンを検出しますが、Wake-on-LAN が有効かどうかは判断できません。",
+    "none": "見つかりませんでした",
+    "failed": "スキャンに失敗しました",
+    "addFailed": "そのマシンを追加できませんでした",
+    "noMac": "MAC アドレスが見つかりませんでした",
+    "newHost": "新しいホスト",
+    "attachTo": "{{name}} に接続",
+    "attach": "接続",
+    "add": "追加",
+    "added": "完了",
+    "choose": "このマシンの配置先",
+    "match": {
+      "mac": "{{name}} と同じ MAC アドレス",
+      "ip": "{{name}} と同じ IP アドレス",
+      "name": "{{name}} と同じ名前"
+    },
+    "hint": {
+      "bridge": "ほとんど何も見つかりませんでした。ブリッジネットワーク上の Termix コンテナは LAN を見えないため、代わりに SSH ホストからスキャンしてください。",
+      "no-mac": "一部のマシンには MAC アドレスがありません。nmap を root 権限で実行するか、ホストがそれらを確認できるかを確認してください。"
+    }
+  },
+  "widget": {
+    "name": "電源",
+    "description": "ステータスと電源ボタン付きのマシン。",
+    "pick": "表示するマシン。すべてを表示するには何も選択しないでください。"
+  },
+  "operations": {
+    "wake": {
+      "title": "マシンの起動"
+    },
+    "shutdown": {
+      "title": "マシンのシャットダウン"
+    },
+    "sleep": {
+      "title": "マシンのスリープ"
+    },
+    "powerState": {
+      "title": "電源状態"
+    }
   }
 }

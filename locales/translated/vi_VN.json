@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Đánh thức",
-    "sent": "Đã gửi gói Wake-on-LAN",
-    "failed": "Không thể gửi gói Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Gửi gói Wake-on-LAN",
-      "description": "Đánh thức máy chủ bằng cách gửi gói tin magic đến địa chỉ MAC của nó."
+      "title": "Bật nguồn máy",
+      "description": "Bật nguồn một host từ tab Nguồn, menu của nó hoặc một quy trình tự động."
+    },
+    "shutdown": {
+      "title": "Tắt máy",
+      "description": "Tắt hoặc đặt một host vào chế độ ngủ."
+    },
+    "scan": {
+      "title": "Quét mạng",
+      "description": "Tìm kiếm các máy từ một host SSH mà bạn có thể kết nối."
+    },
+    "serverCommands": {
+      "title": "Sử dụng máy chủ Termix",
+      "description": "Lưu các lệnh chạy trên máy chủ Termix và quét từ đó. Điều này có thể chạy bất kỳ thứ gì mà máy chủ có thể thực hiện."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Nguồn",
+        "description": "Hiển thị host này trên tab Nguồn."
+      },
       "macAddress": {
         "label": "Địa chỉ MAC",
-        "description": "Địa chỉ MAC mạng của máy chủ, dùng để gửi các gói Wake-on-LAN.",
+        "description": "Địa chỉ MAC của cổng mạng dùng để bật nguồn cho host này.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Địa chỉ broadcast của subnet để gửi gói tin. Để trống nếu muốn dùng 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Khoảng thời gian kiểm tra trạng thái",
+        "description": "Số giây giữa các lần kiểm tra trạng thái. Các kiểm tra qua host trung gian sẽ sử dụng SSH mỗi lần."
+      },
+      "allowServerCommands": {
+        "label": "Cho phép lệnh trên máy chủ Termix",
+        "description": "Cho phép các lệnh ping, bật nguồn và tắt máy đã lưu chạy trên máy chủ Termix. Chỉ người dùng có quyền Sử dụng máy chủ Termix mới có thể lưu chúng."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Khởi động các máy đang ngủ bằng cách gửi gói Wake-on-LAN đến địa chỉ MAC của chúng."
+    "description": "Bật nguồn, tắt máy và theo dõi các máy của bạn từ một bảng điều khiển nguồn duy nhất."
+  },
+  "tile": {
+    "title": "Nguồn",
+    "none": "Host này chưa được cấu hình để điều khiển nguồn.",
+    "status": {
+      "online": "Trực tuyến",
+      "offline": "Ngoại tuyến",
+      "waking": "Đang bật nguồn",
+      "stopping": "Đang tắt máy",
+      "failed": "Thất bại",
+      "unknown": "Không xác định"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Chưa có máy chủ nào có địa chỉ MAC. Hãy thêm địa chỉ trong cài đặt của máy chủ."
+    "title": "Nguồn",
+    "empty": "Chưa có máy nào. Mở tab Nguồn để thêm một máy hoặc quét mạng của bạn."
+  },
+  "tab": {
+    "title": "Nguồn",
+    "status": "{{online}} trong số {{total}} trực tuyến",
+    "add": "Thêm",
+    "scan": "Quét",
+    "search": "Tìm kiếm máy",
+    "failed": "Không thể tải danh sách máy của bạn",
+    "empty": "Chưa có máy nào",
+    "emptyHint": "Thêm một máy hoặc quét mạng của bạn để tìm chúng.",
+    "noMatch": "Không có kết quả phù hợp với tìm kiếm của bạn",
+    "noFolder": "Không có thư mục",
+    "wakeAll": "Bật nguồn tất cả",
+    "wakeAllConfirm": "Bật nguồn {{count}} máy trong {{folder}}?"
+  },
+  "status": {
+    "unknown": "Chưa kiểm tra",
+    "online": "Trực tuyến",
+    "offline": "Ngoại tuyến",
+    "waking": "Đang bật nguồn",
+    "stopping": "Đang tắt máy",
+    "failed": "Không phản hồi kịp thời"
+  },
+  "power": {
+    "wake": "Bật nguồn",
+    "shutdown": "Tắt máy",
+    "sleep": "Ngủ",
+    "settings": "Cài đặt nguồn",
+    "confirm": {
+      "wake": "Bật nguồn {{name}}?",
+      "shutdown": "Tắt máy {{name}}?",
+      "sleep": "Đặt {{name}} vào chế độ ngủ?"
+    },
+    "sent": {
+      "wake": "Đang bật nguồn {{name}}",
+      "shutdown": "Đang tắt máy {{name}}",
+      "sleep": "Đang đặt {{name}} vào chế độ ngủ"
+    },
+    "failed": {
+      "wake": "Không thể bật nguồn máy này",
+      "shutdown": "Không thể tắt máy này",
+      "sleep": "Không thể đặt máy này vào chế độ ngủ"
+    }
+  },
+  "device": {
+    "title": "Máy",
+    "general": "Chung",
+    "name": "Tên",
+    "mac": "Địa chỉ MAC",
+    "noMac": "Không có địa chỉ MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "Địa chỉ trên mạng nội bộ của máy, nếu khác với địa chỉ của host.",
+    "netmask": "Mặt nạ mạng",
+    "netmaskHint": "Dùng để tính toán địa chỉ broadcast.",
+    "description": "Mô tả",
+    "link": "Liên kết",
+    "linkHint": "Biến tên thành dạng nhấp được, giống như liên kết đến bảng điều khiển.",
+    "autoOpen": "Mở liên kết sau khi đánh thức",
+    "autoOpenHint": "Mở liên kết ngay khi máy đã trực tuyến.",
+    "lastChange": "Thay đổi lần cuối",
+    "status": "Trạng thái",
+    "statusFrom": "Kiểm tra từ",
+    "statusFromHint": "Sử dụng host SSH trên cùng mạng khi Termix không thể kết nối đến máy.",
+    "ports": "Cổng",
+    "portsHint": "Các cổng mở sẽ hiển thị trên thẻ. Máy chủ Termix chỉ kiểm tra cổng, vì vậy hãy thêm một cổng mà máy phản hồi.",
+    "pingCommand": "Kiểm tra tùy chỉnh",
+    "pingCommandHint": "Tùy chọn. Mã thoát 0 có nghĩa là máy đang bật. {{ip}} và {{mac}} sẽ được điền vào.",
+    "wake": "Đánh thức",
+    "wakeMode": "Đánh thức bằng",
+    "wakeMagic": "Gói Wake-on-LAN",
+    "commandMode": "Lệnh tùy chỉnh",
+    "wakeFrom": "Gửi từ",
+    "wakeFromHint": "Gói phải được gửi từ mạng nội bộ của máy. Chọn một host SSH ở đó nếu Termix không nằm trên mạng này.",
+    "fromServer": "Máy chủ Termix",
+    "broadcast": "Địa chỉ broadcast",
+    "broadcastHint": "Để trống để tự động tính từ IP LAN và mặt nạ mạng.",
+    "wakePort": "Cổng",
+    "secureOn": "Mật khẩu SecureON",
+    "secureOnHint": "Tùy chọn. 4 hoặc 6 ký tự, hoặc một giá trị viết giống địa chỉ MAC.",
+    "secretSaved": "Đã lưu, để trống để giữ nguyên",
+    "wakeCommand": "Lệnh đánh thức",
+    "placeholders": "{{ip}} và {{mac}} sẽ được điền vào.",
+    "timeout": "Thời gian chờ (giây)",
+    "timeoutHint": "Thời gian chờ trước khi đánh dấu là không phản hồi.",
+    "cron": "Lịch trình (cron)",
+    "cronHint": "Tùy chọn. Năm trường, theo múi giờ của máy chủ.",
+    "confirm": "Hỏi trước khi chạy",
+    "shutdown": "Tắt máy",
+    "shutdownMode": "Tắt máy bằng",
+    "shutdownNone": "Không có",
+    "shutdownSsh": "Đăng nhập SSH của host này",
+    "shutdownSshHint": "Cần quyền root hoặc sudo không mật khẩu trên Linux và macOS.",
+    "shutdownCommand": "Lệnh tắt máy",
+    "commands": "Lệnh tùy chỉnh",
+    "commandTarget": "Chạy lệnh trên",
+    "commandTargetHint": "Lệnh được chạy với quyền đăng nhập của người đã lưu chúng.",
+    "targetHost": "Host này, qua SSH",
+    "targetRelay": "Host khác, qua SSH",
+    "targetServer": "Máy chủ Termix",
+    "commandRelay": "Host",
+    "pickHost": "Chọn một host",
+    "bmc": "BMC",
+    "useBmc": "Sử dụng BMC khi có sẵn",
+    "useBmcHint": "Bật và tắt máy thông qua plugin Out-of-band nếu host này có BMC được liên kết ở đó. Nếu không, các phương pháp ở trên sẽ được sử dụng.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Sử dụng Sleep-On-LAN",
+    "solHint": "Cần công cụ Sleep-On-LAN trên máy với trình nghe HTTP.",
+    "solPort": "Cổng",
+    "solUser": "Tên đăng nhập",
+    "solPassword": "Mật khẩu",
+    "test": "Kiểm tra",
+    "testShutdownConfirm": "Hành động này sẽ chạy lệnh thực tế và có thể tắt {{name}}. Tiếp tục?",
+    "testFailed": "Kiểm tra thất bại",
+    "saveFirst": "Hãy lưu trước",
+    "exitCode": "Mã thoát {{code}}",
+    "loadFailed": "Không thể tải máy này",
+    "saveFailed": "Không thể lưu"
+  },
+  "add": {
+    "title": "Thêm máy",
+    "host": "Máy chủ",
+    "newHost": "Máy chủ mới",
+    "hostHint": "Nếu máy này đã là một máy chủ, hãy chọn nó để tránh hiển thị trùng lặp. Địa chỉ của nó sẽ giữ nguyên."
+  },
+  "scan": {
+    "title": "Quét mạng",
+    "where": "Vị trí quét",
+    "from": "Quét từ",
+    "fromHint": "Chọn một máy chủ SSH trên mạng đó. Nó sẽ dùng nmap nếu có, nếu không thì dùng ping.",
+    "range": "Phạm vi",
+    "rangeHint": "Để trống để quét các mạng riêng của máy chủ đó.",
+    "rangeNeeded": "Bắt buộc khi quét từ máy chủ Termix.",
+    "start": "Quét",
+    "scanning": "Đang quét...",
+    "note": "Quét sẽ tìm các máy trên mạng. Nó không thể xác định xem Wake-on-LAN có được bật cho chúng hay không.",
+    "none": "Không tìm thấy gì",
+    "failed": "Quét thất bại",
+    "addFailed": "Không thể thêm máy đó",
+    "noMac": "Không tìm thấy MAC",
+    "newHost": "Máy chủ mới",
+    "attachTo": "Gắn vào {{name}}",
+    "attach": "Gắn",
+    "add": "Thêm",
+    "added": "Xong",
+    "choose": "Vị trí của máy này",
+    "match": {
+      "mac": "Cùng MAC với {{name}}",
+      "ip": "Cùng IP với {{name}}",
+      "name": "Cùng tên với {{name}}"
+    },
+    "hint": {
+      "bridge": "Hầu như không tìm thấy gì. Một container Termix trên mạng bridge không thể thấy LAN của bạn, hãy quét từ một máy chủ SSH thay vì vậy.",
+      "no-mac": "Một số máy không có MAC. Hãy chạy quét với nmap dưới quyền root, hoặc kiểm tra xem máy chủ có thể thấy chúng không."
+    }
+  },
+  "widget": {
+    "name": "Nguồn",
+    "description": "Các máy với trạng thái và nút nguồn.",
+    "pick": "Các máy cần hiển thị. Không chọn gì để hiển thị tất cả."
+  },
+  "operations": {
+    "wake": {
+      "title": "Bật máy"
+    },
+    "shutdown": {
+      "title": "Tắt máy"
+    },
+    "sleep": {
+      "title": "Đưa máy vào chế độ ngủ"
+    },
+    "powerState": {
+      "title": "Trạng thái nguồn"
+    }
   }
 }

@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Pabudinti",
-    "sent": "Wake-on-LAN paketas išsiųstas",
-    "failed": "Nepavyko išsiųsti Wake-on-LAN paketo"
-  },
   "permissions": {
     "send": {
-      "title": "Siųsti Wake-on-LAN paketus",
-      "description": "Pabudinti hostą išsiuntus magišką paketą jo MAC adresui."
+      "title": "Pabudinti kompiuterius",
+      "description": "Pabudinti hostą iš „Power“ skirtuko, jo meniu arba automatizacijos."
+    },
+    "shutdown": {
+      "title": "Išjungti kompiuterius",
+      "description": "Išjungti hostą arba perkelti jį į miego režimą."
+    },
+    "scan": {
+      "title": "Skaityti tinklus",
+      "description": "Ieškoti kompiuterių iš SSH hosto, prie kurio galite prisijungti."
+    },
+    "serverCommands": {
+      "title": "Naudoti Termix serverį",
+      "description": "Išsaugoti komandas, vykdomas Termix serveryje, ir skenuoti iš jo. Tai gali vykdyti bet ką, ką gali serveris."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Maitinimas",
+        "description": "Rodyti šį hostą „Power“ skirtuke."
+      },
       "macAddress": {
         "label": "MAC adresas",
-        "description": "Hosto tinklo MAC adresas, naudojamas siunčiant Wake-on-LAN paketus.",
+        "description": "Tinklo prievado MAC adresas, kuris pabudina šį hostą.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Po tinklo transliavimo adresas, kuriam siunčiamas paketas. Palikite tuščią, jei norite naudoti 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Būsenos tikrinimo intervalas",
+        "description": "Sekundžių skaičius tarp būsenos tikrinimų. Tikrinimai per tarpinį hostą kiekvieną kartą naudoja SSH."
+      },
+      "allowServerCommands": {
+        "label": "Leisti komandas Termix serveryje",
+        "description": "Leisti išsaugotoms ping, pabudinimo ir išjungimo komandoms vykti Termix serveryje. Jas gali išsaugoti tik vartotojai, turintys leidimą „Naudoti Termix serverį“."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Pabudinkite miegančius kompiuterius, siųsdami Wake-on-LAN paketą jų MAC adresui."
+    "description": "Pabudinkite, išjunkite ir stebėkite savo kompiuterius iš vieno maitinimo skydelio."
+  },
+  "tile": {
+    "title": "Maitinimas",
+    "none": "Šis hostas nėra sukonfigūruotas maitinimo valdymui.",
+    "status": {
+      "online": "Prijungtas",
+      "offline": "Atjungtas",
+      "waking": "Budinamas",
+      "stopping": "Išjungiamas",
+      "failed": "Nepavyko",
+      "unknown": "Nežinoma"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Nėra jokių serverių su MAC adresu. Pridėkite vieną serverio nustatymuose."
+    "title": "Maitinimas",
+    "empty": "Dar nėra kompiuterių. Atidarykite „Power“ skirtuką, kad pridėtumėte vieną arba nuskaitytumėte savo tinklą."
+  },
+  "tab": {
+    "title": "Maitinimas",
+    "status": "{{online}} iš {{total}} prijungta",
+    "add": "Pridėti",
+    "scan": "Skaityti",
+    "search": "Ieškoti kompiuterių",
+    "failed": "Nepavyko įkelti jūsų kompiuterių",
+    "empty": "Dar nėra kompiuterių",
+    "emptyHint": "Pridėkite kompiuterį arba nuskaitykite savo tinklą, kad juos rastumėte.",
+    "noMatch": "Nieko neatitinka jūsų paieškos",
+    "noFolder": "Be aplanko",
+    "wakeAll": "Pabudinti visus",
+    "wakeAllConfirm": "Pabudinti {{count}} kompiuterius(ų) aplanke {{folder}}?"
+  },
+  "status": {
+    "unknown": "Dar netikrinta",
+    "online": "Prijungtas",
+    "offline": "Atjungtas",
+    "waking": "Budinamas",
+    "stopping": "Išjungiamas",
+    "failed": "Neatsakė laiku"
+  },
+  "power": {
+    "wake": "Pabudinti",
+    "shutdown": "Išjungti",
+    "sleep": "Miegoti",
+    "settings": "Maitinimo nustatymai",
+    "confirm": {
+      "wake": "Pabudinti {{name}}?",
+      "shutdown": "Išjungti {{name}}?",
+      "sleep": "Perkelti {{name}} į miego režimą?"
+    },
+    "sent": {
+      "wake": "Budinamas {{name}}",
+      "shutdown": "Išjungiamas {{name}}",
+      "sleep": "Perkeliamas {{name}} į miego režimą"
+    },
+    "failed": {
+      "wake": "Nepavyko pabudinti šio kompiuterio",
+      "shutdown": "Nepavyko išjungti šio kompiuterio",
+      "sleep": "Nepavyko perkelti šio kompiuterio į miego režimą"
+    }
+  },
+  "device": {
+    "title": "Kompiuteris",
+    "general": "Bendra",
+    "name": "Pavadinimas",
+    "mac": "MAC adresas",
+    "noMac": "Nėra MAC adreso",
+    "lanIp": "LAN IP",
+    "lanIpHint": "Adresas mašinos pačiame tinkle, jei jis skiriasi nuo hosto adreso.",
+    "netmask": "Tinklo maska",
+    "netmaskHint": "Naudojama apskaičiuoti transliavimo adresą.",
+    "description": "Aprašymas",
+    "link": "Nuoroda",
+    "linkHint": "Paverčia pavadinimą paspaudžiamu, pvz., nuoroda į prietaisų skydelį.",
+    "autoOpen": "Atidaryti nuorodą po įjungimo",
+    "autoOpenHint": "Atidaro nuorodą, kai mašina yra internete.",
+    "lastChange": "Paskutinis pakeitimas",
+    "status": "Būsena",
+    "statusFrom": "Tikrinti iš",
+    "statusFromHint": "Naudokite SSH hostą tame pačiame tinkle, kai Termix negali pasiekti mašinos.",
+    "ports": "Prievadai",
+    "portsHint": "Atidaryti prievadai rodomi kortelėje. Termix serveris tikrina tik prievadus, todėl pridėkite vieną, į kurį mašina atsako.",
+    "pingCommand": "Tinkintas tikrinimas",
+    "pingCommandHint": "Pasirinktinai. Išėjimo kodas 0 reiškia, kad mašina įjungta. {{ip}} ir {{mac}} yra užpildomi.",
+    "wake": "Įjungti",
+    "wakeMode": "Įjungti su",
+    "wakeMagic": "Wake-on-LAN paketas",
+    "commandMode": "Tinkintas įsakymas",
+    "wakeFrom": "Siųsti iš",
+    "wakeFromHint": "Paketas turi būti siunčiamas iš mašinos pačiojo tinklo. Jei Termix nėra tame tinkle, pasirinkite SSH hostą ten.",
+    "fromServer": "Termix serveris",
+    "broadcast": "Transliavimo adresas",
+    "broadcastHint": "Palikite tuščią, kad būtų apskaičiuotas iš LAN IP ir tinklo maskos.",
+    "wakePort": "Prievadas",
+    "secureOn": "SecureON slaptažodis",
+    "secureOnHint": "Pasirinktinai. 4 arba 6 simboliai, arba reikšmė, parašyta kaip MAC adresas.",
+    "secretSaved": "Išsaugota, palikite tuščią, kad išlaikytumėte",
+    "wakeCommand": "Įjungimo įsakymas",
+    "placeholders": "{{ip}} ir {{mac}} yra užpildomi.",
+    "timeout": "Laiko limitas (sekundės)",
+    "timeoutHint": "Kiek laukti, prieš pažymint kaip neatsakantį.",
+    "cron": "Tvarkaraštis (cron)",
+    "cronHint": "Pasirinktinai. Penki laukai, serverio laiko juostoje.",
+    "confirm": "Klausti prieš vykdydami",
+    "shutdown": "Išjungti",
+    "shutdownMode": "Išjungti su",
+    "shutdownNone": "Nieko",
+    "shutdownSsh": "Šio hosto SSH prisijungimas",
+    "shutdownSshHint": "Reikia root arba slaptažodžio nereikalaujančio sudo Linux ir macOS.",
+    "shutdownCommand": "Išjungimo įsakymas",
+    "commands": "Tinkinti įsakymai",
+    "commandTarget": "Vykdyti įsakymus",
+    "commandTargetHint": "Įsakymai vykdomi su asmenies, kuris juos išsaugojo, prisijungimu.",
+    "targetHost": "Šis hostas, per SSH",
+    "targetRelay": "Kitas hostas, per SSH",
+    "targetServer": "Termix serveris",
+    "commandRelay": "Hostas",
+    "pickHost": "Pasirinkite hostą",
+    "bmc": "BMC",
+    "useBmc": "Naudoti BMC, jei jis yra",
+    "useBmcHint": "Įjungti ir išjungti per Out-of-band įskiepius, jei šis hostas turi ten susietą BMC. Priešingu atveju naudojami aukščiau nurodyti metodai.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Naudoti Sleep-On-LAN",
+    "solHint": "Reikia Sleep-On-LAN įrankio mašinoje su HTTP klausytoju.",
+    "solPort": "Prievadas",
+    "solUser": "Vartotojo vardas",
+    "solPassword": "Slaptažodis",
+    "test": "Testas",
+    "testShutdownConfirm": "Tai vykdo tikrąją komandą ir gali išjungti {{name}}. Tęsti?",
+    "testFailed": "Testas nepavyko",
+    "saveFirst": "Pirmiausia išsaugokite",
+    "exitCode": "Išėjimo kodas {{code}}",
+    "loadFailed": "Nepavyko įkelti šio kompiuterio",
+    "saveFailed": "Nepavyko išsaugoti"
+  },
+  "add": {
+    "title": "Pridėti kompiuterį",
+    "host": "Svetainė",
+    "newHost": "Nauja svetainė",
+    "hostHint": "Jei šis kompiuteris jau yra svetainė, pasirinkite ją, kad ji neatrodytų du kartus. Jos adresas lieka nepakitęs."
+  },
+  "scan": {
+    "title": "Nuskenuoti tinklą",
+    "where": "Kur skenuoti",
+    "from": "Skenuoti iš",
+    "fromHint": "Pasirinkite SSH svetainę tame tinkle. Ji naudoja nmap, jei jis yra, kitaip ping.",
+    "range": "Diapazonas",
+    "rangeHint": "Palikite tuščią, jei norite naudoti tos svetainės privačius tinklus.",
+    "rangeNeeded": "Būtina skenuojant iš Termix serverio.",
+    "start": "Skenuoti",
+    "scanning": "Skenuojama...",
+    "note": "Skenuojant randami tinklo kompiuteriai. Negalima nustatyti, ar jiems įjungtas Wake-on-LAN.",
+    "none": "Nieko nerasta",
+    "failed": "Skenuojant nepavyko",
+    "addFailed": "Nepavyko pridėti šio kompiuterio",
+    "noMac": "MAC adreso nerasta",
+    "newHost": "Nauja svetainė",
+    "attachTo": "Prijungti prie {{name}}",
+    "attach": "Prijungti",
+    "add": "Pridėti",
+    "added": "Atlikta",
+    "choose": "Kur bus šis kompiuteris",
+    "match": {
+      "mac": "Toks pats MAC kaip {{name}}",
+      "ip": "Toks pats IP kaip {{name}}",
+      "name": "Toks pats pavadinimas kaip {{name}}"
+    },
+    "hint": {
+      "bridge": "Rasta beveik nieko. Termix konteineris tiltinio tinkle nemato jūsų LAN, todėl skenuokite iš SSH svetainės.",
+      "no-mac": "Kai kurie kompiuteriai neturi MAC. Paleiskite skenavimą su nmap kaip root arba patikrinkite, ar svetainė gali juos matyti."
+    }
+  },
+  "widget": {
+    "name": "Maitinimas",
+    "description": "Kompiuteriai su jų būsena ir maitinimo mygtukais.",
+    "pick": "Rodomi kompiuteriai. Jei nenorite rodyti jokių, palikite tuščią."
+  },
+  "operations": {
+    "wake": {
+      "title": "Pabudinti kompiuterį"
+    },
+    "shutdown": {
+      "title": "Išjungti kompiuterį"
+    },
+    "sleep": {
+      "title": "Įjungti miego režimą"
+    },
+    "powerState": {
+      "title": "Maitinimo būsena"
+    }
   }
 }

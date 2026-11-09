@@ -4,7 +4,7 @@
 
 <h1>Wake-on-LAN</h1>
 
-<p>Wake sleeping machines by sending a Wake-on-LAN packet to their MAC address</p>
+<p>Wake, shut down and track your machines from one power dashboard</p>
 
 <!-- VIDEO:START -->
 
@@ -18,7 +18,7 @@
 
 ## Overview
 
-Wake-on-LAN sends a magic packet to wake a host up.
+Wake-on-LAN gives you a Power tab with every machine, its status and a power button. Termix doesn't have to be on the same network: any SSH host there can send the packet.
 
 Read the [docs](https://docs.termix.site/plugins/wake-on-lan) to set it up and use it.
 
@@ -26,9 +26,18 @@ Read the [docs](https://docs.termix.site/plugins/wake-on-lan) to set it up and u
 
 ## Features
 
-- Wake a host in one click
+- A Power tab with every machine, its status, last change and a power button
+- Wake from the Termix server, or from any SSH host on the machine's network
+- Shut down over SSH, with Sleep-On-LAN or with your own command
+- Check status by port, ping or your own command
+- Find machines with a network scan and attach them to existing hosts
+- Wake and shut down on a schedule with cron
+- SecureON passwords
+- A dashboard card and homepage widget with power buttons
 - Wake a host before a remote desktop connection
 - Wake a host from an automation
+- Power on and shut down through a BMC from the Out-of-band plugin
+- Power state as a status tile
 
 <br />
 

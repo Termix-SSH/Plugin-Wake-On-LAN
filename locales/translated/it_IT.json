@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Accendi",
-    "sent": "Pacchetto Wake-on-LAN inviato",
-    "failed": "Impossibile inviare il pacchetto Wake-on-LAN"
-  },
   "permissions": {
     "send": {
-      "title": "Invia pacchetti Wake-on-LAN",
-      "description": "Accendi un host inviando un magic packet al suo indirizzo MAC."
+      "title": "Accendi le macchine",
+      "description": "Accendi un host dalla scheda Alimentazione, dal relativo menu o da un'automazione."
+    },
+    "shutdown": {
+      "title": "Spegni le macchine",
+      "description": "Spegni un host o mettilo in sospensione."
+    },
+    "scan": {
+      "title": "Scansiona le reti",
+      "description": "Cerca macchine da un host SSH a cui puoi connetterti."
+    },
+    "serverCommands": {
+      "title": "Usa il server Termix",
+      "description": "Salva comandi che vengono eseguiti sul server Termix ed esegui scansioni da esso. Questo può eseguire qualsiasi operazione consentita al server."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Alimentazione",
+        "description": "Mostra questo host nella scheda Alimentazione."
+      },
       "macAddress": {
         "label": "Indirizzo MAC",
-        "description": "L'indirizzo MAC di rete dell'host, utilizzato per inviare pacchetti Wake-on-LAN.",
+        "description": "L'indirizzo MAC della porta di rete che accende questo host.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "L'indirizzo di broadcast della subnet a cui inviare il pacchetto. Lascia vuoto per 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Intervallo di controllo stato",
+        "description": "Secondi tra i controlli di stato. I controlli tramite un host relay utilizzano SSH ogni volta."
+      },
+      "allowServerCommands": {
+        "label": "Consenti comandi sul server Termix",
+        "description": "Consenti l'esecuzione di comandi salvati per ping, accensione e spegnimento sul server Termix. Solo gli utenti con il permesso Usa il server Termix possono salvarli."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Riattiva le macchine in sospensione inviando un pacchetto Wake-on-LAN al loro indirizzo MAC."
+    "description": "Accendi, spegni e monitora le tue macchine da un'unica dashboard di alimentazione."
+  },
+  "tile": {
+    "title": "Alimentazione",
+    "none": "Questo host non è configurato per il controllo dell'alimentazione.",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "waking": "Accensione in corso",
+      "stopping": "Spegnimento in corso",
+      "failed": "Non riuscito",
+      "unknown": "Sconosciuto"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Nessun host ha ancora un indirizzo MAC. Aggiungine uno nelle impostazioni di un host."
+    "title": "Alimentazione",
+    "empty": "Nessuna macchina ancora. Apri la scheda Alimentazione per aggiungerne una o scansionare la tua rete."
+  },
+  "tab": {
+    "title": "Alimentazione",
+    "status": "{{online}} di {{total}} online",
+    "add": "Aggiungi",
+    "scan": "Scansiona",
+    "search": "Cerca macchine",
+    "failed": "Impossibile caricare le tue macchine",
+    "empty": "Nessuna macchina ancora",
+    "emptyHint": "Aggiungi una macchina o scansiona la tua rete per trovarle.",
+    "noMatch": "Nessun risultato per la tua ricerca",
+    "noFolder": "Nessuna cartella",
+    "wakeAll": "Accendi tutto",
+    "wakeAllConfirm": "Accendi {{count}} macchine in {{folder}}?"
+  },
+  "status": {
+    "unknown": "Non ancora verificato",
+    "online": "Online",
+    "offline": "Offline",
+    "waking": "Accensione in corso",
+    "stopping": "Spegnimento in corso",
+    "failed": "Nessuna risposta nei tempi previsti"
+  },
+  "power": {
+    "wake": "Accendi",
+    "shutdown": "Spegni",
+    "sleep": "Sospendi",
+    "settings": "Impostazioni alimentazione",
+    "confirm": {
+      "wake": "Accendi {{name}}?",
+      "shutdown": "Spegni {{name}}?",
+      "sleep": "Metti {{name}} in sospensione?"
+    },
+    "sent": {
+      "wake": "Accensione di {{name}} in corso",
+      "shutdown": "Spegnimento di {{name}} in corso",
+      "sleep": "Sospensione di {{name}} in corso"
+    },
+    "failed": {
+      "wake": "Impossibile accendere questa macchina",
+      "shutdown": "Impossibile spegnere questa macchina",
+      "sleep": "Impossibile mettere in sospensione questa macchina"
+    }
+  },
+  "device": {
+    "title": "Macchina",
+    "general": "Generale",
+    "name": "Nome",
+    "mac": "Indirizzo MAC",
+    "noMac": "Nessun indirizzo MAC",
+    "lanIp": "IP LAN",
+    "lanIpHint": "L'indirizzo sulla rete locale della macchina, se diverso dall'indirizzo dell'host.",
+    "netmask": "Maschera di rete",
+    "netmaskHint": "Utilizzato per calcolare l'indirizzo di broadcast.",
+    "description": "Descrizione",
+    "link": "Link",
+    "linkHint": "Rende il nome cliccabile, come un link a una dashboard.",
+    "autoOpen": "Apri link dopo l'avvio",
+    "autoOpenHint": "Apre il link una volta che la macchina è online.",
+    "lastChange": "Ultima modifica",
+    "status": "Stato",
+    "statusFrom": "Verifica da",
+    "statusFromHint": "Utilizza un host SSH sulla stessa rete quando Termix non può raggiungere la macchina.",
+    "ports": "Porte",
+    "portsHint": "Le porte aperte vengono mostrate sulla scheda. Il server Termix controlla solo le porte, quindi aggiungine una a cui la macchina risponde.",
+    "pingCommand": "Verifica personalizzata",
+    "pingCommandHint": "Opzionale. Il codice di uscita 0 indica che la macchina è accesa. {{ip}} e {{mac}} vengono compilati automaticamente.",
+    "wake": "Avvia",
+    "wakeMode": "Avvia con",
+    "wakeMagic": "Pacchetto Wake-on-LAN",
+    "commandMode": "Comando personalizzato",
+    "wakeFrom": "Invia da",
+    "wakeFromHint": "Il pacchetto deve essere inviato dalla rete locale della macchina. Seleziona un host SSH presente su quella rete se Termix non si trova lì.",
+    "fromServer": "Server Termix",
+    "broadcast": "Indirizzo di broadcast",
+    "broadcastHint": "Lascia vuoto per calcolarlo in base all'IP LAN e alla maschera di rete.",
+    "wakePort": "Porta",
+    "secureOn": "Password SecureON",
+    "secureOnHint": "Opzionale. 4 o 6 caratteri, oppure un valore scritto come un indirizzo MAC.",
+    "secretSaved": "Salvato, lascia vuoto per mantenere",
+    "wakeCommand": "Comando di avvio",
+    "placeholders": "{{ip}} e {{mac}} vengono compilati automaticamente.",
+    "timeout": "Timeout (secondi)",
+    "timeoutHint": "Tempo di attesa prima di segnalarlo come non rispondente.",
+    "cron": "Programma (cron)",
+    "cronHint": "Opzionale. Cinque campi, nel fuso orario del server.",
+    "confirm": "Chiedi conferma prima di eseguire",
+    "shutdown": "Spegni",
+    "shutdownMode": "Spegni con",
+    "shutdownNone": "Nessuno",
+    "shutdownSsh": "Accesso SSH di questo host",
+    "shutdownSshHint": "Richiede root o sudo senza password su Linux e macOS.",
+    "shutdownCommand": "Comando di spegnimento",
+    "commands": "Comandi personalizzati",
+    "commandTarget": "Esegui comandi su",
+    "commandTargetHint": "I comandi vengono eseguiti con le credenziali di accesso della persona che li ha salvati.",
+    "targetHost": "Questo host, tramite SSH",
+    "targetRelay": "Un altro host, tramite SSH",
+    "targetServer": "Il server Termix",
+    "commandRelay": "Host",
+    "pickHost": "Seleziona un host",
+    "bmc": "BMC",
+    "useBmc": "Utilizza la BMC se disponibile",
+    "useBmcHint": "Accendi e spegni tramite il plugin Out-of-band se questo host ha una BMC collegata lì. Altrimenti vengono utilizzati i metodi sopra.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Utilizza Sleep-On-LAN",
+    "solHint": "Richiede lo strumento Sleep-On-LAN sulla macchina con un listener HTTP.",
+    "solPort": "Porta",
+    "solUser": "Nome utente",
+    "solPassword": "Password",
+    "test": "Test",
+    "testShutdownConfirm": "Questo esegue il comando reale e potrebbe spegnere {{name}}. Continuare?",
+    "testFailed": "Il test non è riuscito",
+    "saveFirst": "Salva prima",
+    "exitCode": "Codice di uscita {{code}}",
+    "loadFailed": "Impossibile caricare questa macchina",
+    "saveFailed": "Impossibile salvare"
+  },
+  "add": {
+    "title": "Aggiungi macchina",
+    "host": "Host",
+    "newHost": "Nuovo host",
+    "hostHint": "Se questa macchina è già un host, selezionala per evitare che appaia due volte. Il suo indirizzo rimane invariato."
+  },
+  "scan": {
+    "title": "Scansiona rete",
+    "where": "Dove scansionare",
+    "from": "Scansiona da",
+    "fromHint": "Seleziona un host SSH su quella rete. Utilizzerà nmap se disponibile, altrimenti ping.",
+    "range": "Intervallo",
+    "rangeHint": "Lascia vuoto per le reti private di quell'host.",
+    "rangeNeeded": "Necessario quando si scansiona dal server Termix.",
+    "start": "Scansiona",
+    "scanning": "Scansione in corso...",
+    "note": "Una scansione individua le macchine sulla rete. Non può determinare se Wake-on-LAN è attivato per esse.",
+    "none": "Nessun risultato",
+    "failed": "La scansione non è riuscita",
+    "addFailed": "Impossibile aggiungere quella macchina",
+    "noMac": "Nessun MAC trovato",
+    "newHost": "Nuovo host",
+    "attachTo": "Collega a {{name}}",
+    "attach": "Collega",
+    "add": "Aggiungi",
+    "added": "Fatto",
+    "choose": "Dove posizionare questa macchina",
+    "match": {
+      "mac": "Stesso MAC di {{name}}",
+      "ip": "Stesso IP di {{name}}",
+      "name": "Stesso nome di {{name}}"
+    },
+    "hint": {
+      "bridge": "Quasi nulla è stato trovato. Un container Termix su una rete bridge non può vedere la tua LAN, quindi scansiona da un host SSH invece.",
+      "no-mac": "Alcune macchine non hanno un MAC. Esegui la scansione con nmap come root, oppure verifica che l'host possa vederle."
+    }
+  },
+  "widget": {
+    "name": "Alimentazione",
+    "description": "Macchine con il loro stato e i pulsanti di alimentazione.",
+    "pick": "Macchine da mostrare. Non selezionarne nessuna per mostrarle tutte."
+  },
+  "operations": {
+    "wake": {
+      "title": "Accendi macchina"
+    },
+    "shutdown": {
+      "title": "Spegni macchina"
+    },
+    "sleep": {
+      "title": "Metti macchina in sospensione"
+    },
+    "powerState": {
+      "title": "Stato alimentazione"
+    }
   }
 }

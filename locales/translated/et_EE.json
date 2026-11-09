@@ -1,20 +1,31 @@
 {
-  "hostAction": {
-    "title": "Ärda",
-    "sent": "Wake-on-LAN-i pakett saadetud",
-    "failed": "Wake-on-LAN-i paketi saatmine ebaõnnestus"
-  },
   "permissions": {
     "send": {
-      "title": "Wake-on-LAN-i pakettide saatmine",
-      "description": "Ärda host, saatides selle MAC-aadressile maagilise paketi."
+      "title": "Käivita masinad",
+      "description": "Käivita host Võimsuse vahelehelt, selle menüüst või automatiseerimisega."
+    },
+    "shutdown": {
+      "title": "Lülita masinad välja",
+      "description": "Lülita host välja või pane see uinumisele."
+    },
+    "scan": {
+      "title": "Skaneeri võrke",
+      "description": "Otsi masinaid SSH-hostilt, millega sa ühendust võtta."
+    },
+    "serverCommands": {
+      "title": "Kasuta Termixi serverit",
+      "description": "Salvesta käsud, mis käivituvad Termixi serveril, ja skaneeri selle kaudu. See võib käivitada kõike, mida server suudab."
     }
   },
   "settings": {
     "host": {
+      "enable": {
+        "label": "Toide",
+        "description": "Kuva see host Võimsuse vahelehel."
+      },
       "macAddress": {
         "label": "MAC-aadress",
-        "description": "Hosti võrgu MAC-aadress, mida kasutatakse Wake-on-LAN-i pakettide saatmiseks.",
+        "description": "Võrgukaardi MAC-aadress, mis käivitab selle hosti.",
         "placeholder": "AA:BB:CC:DD:EE:FF"
       },
       "broadcastAddress": {
@@ -22,14 +33,209 @@
         "description": "Alamvõrgu laialeviiaadress, kuhu pakett saadetakse. Jäta tühjaks, kui kasutada 255.255.255.255.",
         "placeholder": "192.168.1.255"
       }
+    },
+    "admin": {
+      "statusInterval": {
+        "label": "Olekukontrolli intervall",
+        "description": "Sekundeid olekukontrollide vahel. Ühendus hosti kaudu toimuvad kontrollid kasutavad iga kord SSH-d."
+      },
+      "allowServerCommands": {
+        "label": "Luba käsud Termixi serveril",
+        "description": "Luba salvestatud pingi, käivitamise ja väljalülitamise käsud käivitada Termixi serveril. Ainult kasutajad, kellel on luba Termixi serveri kasutamiseks, saavad need salvestada."
+      }
     }
   },
   "plugin": {
     "name": "Wake-on-LAN",
-    "description": "Äratab uinuvad masinad, saates nende MAC-aadressile Wake-on-LAN-i paketi."
+    "description": "Käivita, lülita välja ja jälgima oma masinaid ühest toitejuhtimise paneelist."
+  },
+  "tile": {
+    "title": "Toide",
+    "none": "Selle hosti toitejuhtimine ei ole seadistatud.",
+    "status": {
+      "online": "Ühendatud",
+      "offline": "Ühendusest väljas",
+      "waking": "Käivitub",
+      "stopping": "Lülitub välja",
+      "failed": "Ebaõnnestus",
+      "unknown": "Tundmatu"
+    }
   },
   "card": {
-    "title": "Wake-on-LAN",
-    "empty": "Ühelgi perel pole veel MAC-aadressi. Lisa see hosti seadetes."
+    "title": "Toide",
+    "empty": "Masinaid veel ei ole. Ava Võimsuse vaheleht, et lisada üks või skaneerida oma võrgu."
+  },
+  "tab": {
+    "title": "Toide",
+    "status": "{{online}}/{{total}} ühendatud",
+    "add": "Lisa",
+    "scan": "Skaneeri",
+    "search": "Otsi masinaid",
+    "failed": "Sinu masinaid ei õnnestunud laadida",
+    "empty": "Masinaid veel ei ole",
+    "emptyHint": "Lisa masin või skaneeri oma võrgu, et leida neid.",
+    "noMatch": "Ükski tulemus ei vasta sinu otsingule",
+    "noFolder": "Ilma kaustata",
+    "wakeAll": "Käivita kõik",
+    "wakeAllConfirm": "Kas käivitada {{count}} masinat kaustas {{folder}}?"
+  },
+  "status": {
+    "unknown": "Pole veel kontrollitud",
+    "online": "Ühendatud",
+    "offline": "Ühendusest väljas",
+    "waking": "Käivitub",
+    "stopping": "Lülitub välja",
+    "failed": "Ei vastanud õigeaegselt"
+  },
+  "power": {
+    "wake": "Käivita",
+    "shutdown": "Lülita välja",
+    "sleep": "Unusta",
+    "settings": "Toite seaded",
+    "confirm": {
+      "wake": "Kas käivitada {{name}}?",
+      "shutdown": "Kas lülitada {{name}} välja?",
+      "sleep": "Kas panna {{name}} uinumisele?"
+    },
+    "sent": {
+      "wake": "Käivitatakse {{name}}",
+      "shutdown": "Lülitatakse välja {{name}}",
+      "sleep": "Paneksele {{name}} uinumisele"
+    },
+    "failed": {
+      "wake": "Selle masina käivitamine ebaõnnestus",
+      "shutdown": "Selle masina väljalülitamine ebaõnnestus",
+      "sleep": "Selle masina uinumisele panek ebaõnnestus"
+    }
+  },
+  "device": {
+    "title": "Masin",
+    "general": "Üldine",
+    "name": "Nimi",
+    "mac": "MAC-aadress",
+    "noMac": "MAC-aadress puudub",
+    "lanIp": "LAN-i IP",
+    "lanIpHint": "Masina enda võrgu aadress, kui see erineb hosti aadressist.",
+    "netmask": "Võrgumask",
+    "netmaskHint": "Kasutatakse laialevi aadressi määramiseks.",
+    "description": "Kirjeldus",
+    "link": "Link",
+    "linkHint": "Teeb nime klõpsatavaks, nagu link juhtpaneelile.",
+    "autoOpen": "Ava link ärkamisel",
+    "autoOpenHint": "Avab lingi, kui masin on võrgus.",
+    "lastChange": "Viimane muudatus",
+    "status": "Olek",
+    "statusFrom": "Kontrolli läbi",
+    "statusFromHint": "Kasuta sama võrgus asuvat SSH-hosti, kui Termix ei suuda masinaga ühendust võtta.",
+    "ports": "Pordid",
+    "portsHint": "Avatud pordid kuvatakse kaardil. Termixi server kontrollib ainult portide olekut, seega lisa port, millel masin vastab.",
+    "pingCommand": "Kohandatud kontroll",
+    "pingCommandHint": "Valikuline. Väljumiskood 0 tähendab, et masin on sisse lülitatud. {{ip}} ja {{mac}} täidetakse automaatselt.",
+    "wake": "Ärata",
+    "wakeMode": "Ärata kasutades",
+    "wakeMagic": "Wake-on-LAN pakkett",
+    "commandMode": "Kohandatud käsk",
+    "wakeFrom": "Saada läbi",
+    "wakeFromHint": "Pakett peab algama masina enda võrgus. Kui Termix ei asu seal, vali SSH-host sellest võrgust.",
+    "fromServer": "Termixi server",
+    "broadcast": "Laialevi aadress",
+    "broadcastHint": "Jäta tühjaks, et arvutada LAN-i IP ja võrgumaski põhjal.",
+    "wakePort": "Port",
+    "secureOn": "SecureON parool",
+    "secureOnHint": "Valikuline. 4 või 6 tähemärki või väärtus MAC-aadressi kujul.",
+    "secretSaved": "Salvestatud, jäta tühjaks säilitamiseks",
+    "wakeCommand": "Äratamise käsk",
+    "placeholders": "{{ip}} ja {{mac}} täidetakse automaatselt.",
+    "timeout": "Aegumine (sekundites)",
+    "timeoutHint": "Kui kaua oodata enne vastamatuks märkimist.",
+    "cron": "Ajakava (cron)",
+    "cronHint": "Valikuline. Viis väljal, serveri ajavööndis.",
+    "confirm": "Küsi enne käivitamist",
+    "shutdown": "Sulge",
+    "shutdownMode": "Sulge kasutades",
+    "shutdownNone": "Midagi ei tee",
+    "shutdownSsh": "Selle hosti SSH-sisselogimine",
+    "shutdownSshHint": "Nõuab Linuxis ja macOS-is root-õigusi või paroolita sudo-d.",
+    "shutdownCommand": "Sulgemise käsk",
+    "commands": "Kohandatud käsud",
+    "commandTarget": "Käivita käsud",
+    "commandTargetHint": "Käsud käivitatakse selle inimese sisselogimisandmetega, kes need salvestas.",
+    "targetHost": "See host, SSH kaudu",
+    "targetRelay": "Teine host, SSH kaudu",
+    "targetServer": "Termixi server",
+    "commandRelay": "Host",
+    "pickHost": "Vali host",
+    "bmc": "BMC",
+    "useBmc": "Kasuta BMC-d, kui see on olemas",
+    "useBmcHint": "Lülita sisse ja välja Out-of-band pluginat kasutades, kui sellel hostil on seal BMC seotud. Vastasel juhul kasutatakse ülaltoodud meetodeid.",
+    "sleep": "Sleep-On-LAN",
+    "solEnable": "Kasuta Sleep-On-LAN-i",
+    "solHint": "Nõuab Sleep-On-LAN tööriista masinas koos HTTP-kuulajaga.",
+    "solPort": "Port",
+    "solUser": "Kasutajanimi",
+    "solPassword": "Parool",
+    "test": "Testi",
+    "testShutdownConfirm": "See käivitab tegeliku käsu ja võib seadme {{name}} välja lülitada. Kas jätkata?",
+    "testFailed": "Test ebaõnnestus",
+    "saveFirst": "Salvesta esmalt",
+    "exitCode": "Väljumiskood {{code}}",
+    "loadFailed": "Selle masina laadimine ei õnnestunud",
+    "saveFailed": "Salvestamine ei õnnestunud"
+  },
+  "add": {
+    "title": "Lisa masin",
+    "host": "Peremeesmasin",
+    "newHost": "Uus peremeesmasin",
+    "hostHint": "Kui see masin on juba peremeesmasin, vali see, et see ei ilmuks kaks korda. Selle aadress jääb samaks."
+  },
+  "scan": {
+    "title": "Skaneeri võrgu",
+    "where": "Kus skaneerida",
+    "from": "Skaneeri alates",
+    "fromHint": "Vali sellel võrgul asuv SSH peremeesmasin. See kasutab nmap'i, kui see on olemas, muidu ping'i.",
+    "range": "Vahemik",
+    "rangeHint": "Jäta tühjaks, kui soovid skaneerida selle peremeesmasina enda privaatvõrke.",
+    "rangeNeeded": "Nõutav, kui skaneeritakse Termix serverist.",
+    "start": "Skaneeri",
+    "scanning": "Skaneerimine...",
+    "note": "Skaneerimine leiab võrgus olevaid masinaid. See ei suuda tuvastada, kas Wake-on-LAN on neile sisse lülitatud.",
+    "none": "Midagi ei leitud",
+    "failed": "Skaneerimine ebaõnnestus",
+    "addFailed": "Selle masina lisamine ei õnnestunud",
+    "noMac": "MAC-aadressi ei leitud",
+    "newHost": "Uus peremeesmasin",
+    "attachTo": "Lisa masin {{name}} juurde",
+    "attach": "Lisa",
+    "add": "Lisa",
+    "added": "Valmis",
+    "choose": "Kuhu see masin paigutada",
+    "match": {
+      "mac": "Samamoodi MAC-aadress kui {{name}}",
+      "ip": "Samamoodi IP-aadress kui {{name}}",
+      "name": "Samamoodi nimi kui {{name}}"
+    },
+    "hint": {
+      "bridge": "Peaaegu midagi ei leitud. Termix konteiner sildvõrgus ei näe teie LAN-i, seega skaneerige hoopis SSH peremeesmasinast.",
+      "no-mac": "Mõnel masinal puudub MAC-aadress. Käivitage skaneerimine nmap'iga root-õigustega või kontrollige, kas peremeesmasin näeb neid."
+    }
+  },
+  "widget": {
+    "name": "Toide",
+    "description": "Masinad koos nende olekuga ja toitenuppudega.",
+    "pick": "Kuvamiseks valitavad masinad. Ühegi valimata kuvatakse kõik."
+  },
+  "operations": {
+    "wake": {
+      "title": "Käivita masin"
+    },
+    "shutdown": {
+      "title": "Lülita masin välja"
+    },
+    "sleep": {
+      "title": "Panek masin uinumisele"
+    },
+    "powerState": {
+      "title": "Toiteolek"
+    }
   }
 }
