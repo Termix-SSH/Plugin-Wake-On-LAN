@@ -1,0 +1,111 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Termix-SSH/Termix/main/scripts/authz/authz.schema.json",
+  "seed": [],
+  "routes": {
+    "GET /plugin-api/wake-on-lan/devices": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "connect",
+        "key": "hostId"
+      },
+      "filtered": true,
+      "note": "Lists only what the caller may see"
+    },
+    "POST /plugin-api/wake-on-lan/devices": {
+      "access": "user",
+      "body": {
+        "name": "authz-x",
+        "ip": "192.0.2.10",
+        "mac": "AA:BB:CC:DD:EE:FF",
+        "hostId": "{{host}}"
+      },
+      "note": "Creates a new device host owned by the caller"
+    },
+    "GET /plugin-api/wake-on-lan/devices/:hostId": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "edit"
+      }
+    },
+    "PUT /plugin-api/wake-on-lan/devices/:hostId": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/devices/:hostId/shutdown": {
+      "access": "user",
+      "permission": "wake-on-lan.shutdown",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "destructive": true
+    },
+    "POST /plugin-api/wake-on-lan/devices/:hostId/sleep": {
+      "access": "user",
+      "permission": "wake-on-lan.shutdown",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/devices/:hostId/test": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "body": {
+        "kind": "wake"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/devices/:hostId/wake": {
+      "access": "user",
+      "permission": "wake-on-lan.send",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/host/:id/wake": {
+      "access": "user",
+      "permission": "wake-on-lan.send",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "params": {
+        "id": "host"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/scan": {
+      "access": "user",
+      "permission": "wake-on-lan.scan",
+      "resource": {
+        "kind": "host",
+        "min": "connect",
+        "key": "hostId"
+      }
+    },
+    "POST /plugin-api/wake-on-lan/scan/attach": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "connect",
+        "key": "hostId"
+      },
+      "body": {
+        "hostId": "{{host}}",
+        "ip": "192.0.2.10",
+        "mac": "AA:BB:CC:DD:EE:FF"
+      }
+    },
+    "GET /plugin-api/wake-on-lan/status": {
+      "access": "user"
+    }
+  }
+}
