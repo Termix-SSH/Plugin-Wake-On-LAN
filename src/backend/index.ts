@@ -1,5 +1,6 @@
 import type { Router } from "express";
 import { registerOperations } from "./operations.js";
+import { keepAwake } from "./keep-awake.js";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { createCommandRunner } from "./commands.js";
 import { createDeviceStore } from "./devices.js";
@@ -56,6 +57,7 @@ export async function activate(ctx: PluginContext) {
     relay,
   });
 
+  keepAwake(ctx, "status", true);
   ctx.schedule.every(TICK_MS, () => status.tick(), {
     id: "status",
     jitterMs: 2000,
