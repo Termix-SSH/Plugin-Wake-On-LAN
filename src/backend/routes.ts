@@ -26,6 +26,7 @@ import {
   expandCidr,
   parseRelayOutput,
   relayScanScript,
+  readServerArpTable,
   serverScan,
   withMatches,
   type Found,
@@ -581,7 +582,7 @@ export function registerWakeOnLanRoutes(
             .status(400)
             .json({ error: "Enter a range to scan from the server" });
         }
-        found = await serverScan(addresses);
+        found = await serverScan(addresses, () => readServerArpTable(ctx));
       }
       const response: ScanResponse = {
         results: withMatches(found, await knownHosts()),

@@ -56,9 +56,16 @@ export async function activate(ctx: PluginContext) {
     relay,
   });
 
-  ctx.schedule.every(TICK_MS, () => status.tick(), { jitterMs: 2000 });
-  ctx.schedule.every(FAST_TICK_MS, () => status.fastTick());
-  ctx.schedule.every(SCHEDULE_TICK_MS, () => scheduler.tick());
+  ctx.schedule.every(TICK_MS, () => status.tick(), {
+    id: "status",
+    jitterMs: 2000,
+  });
+  ctx.schedule.every(FAST_TICK_MS, () => status.fastTick(), {
+    id: "status-fast",
+  });
+  ctx.schedule.every(SCHEDULE_TICK_MS, () => scheduler.tick(), {
+    id: "schedules",
+  });
   ctx.log.info("Wake-on-LAN routes mounted at /plugin-api/wake-on-lan");
 }
 

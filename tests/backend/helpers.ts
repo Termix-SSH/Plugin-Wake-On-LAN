@@ -129,6 +129,7 @@ export async function startServer(
   );
   for (const host of hosts) addRow.run(host.id);
   const mock = createMockCtx({
+    sandbox: true,
     pluginId: manifest.id,
     manifest,
     capabilities: options.capabilities ?? manifest.capabilities,
