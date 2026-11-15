@@ -14,7 +14,7 @@
     "migrations": "termix-plugin migrations"
   },
   "dependencies": {
-    "lucide-react": "^1.70.0"
+    "lucide-react": "^1.72.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
@@ -25,14 +25,14 @@
     "@types/node": "^26.6.6",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "better-sqlite3": "^13.0.3",
+    "better-sqlite3": "^13.1.1",
     "drizzle-orm": "^0.45.4",
     "husky": "^9.1.7",
-    "i18next": "^26.4.2",
+    "i18next": "^26.7.2",
     "jsdom": "^31.0.0",
     "lint-staged": "^17.2.0",
-    "prettier": "3.9.10",
-    "react-i18next": "^17.0.16",
+    "prettier": "3.10.1",
+    "react-i18next": "^17.1.13",
     "vitest": "^5.1.0"
   },
   "peerDependencies": {
