@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
 import net from "net";
+import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { ScanMatch, ScanResult } from "../shared/types.js";
 
 /** Biggest range one scan may cover, a /22. */
@@ -171,7 +171,10 @@ exit 0
  * From the server: a TCP connect makes the kernel ARP each address, whatever
  * the port answers. Then the table holds everything that replied. On Linux only.
  */
-export async function serverScan(addresses: string[]): Promise<Found[]> {
+export async function serverScan(
+  addresses: string[],
+  readArpTable: () => Promise<string>,
+): Promise<Found[]> {
   const queue = [...addresses];
   const touch = (ip: string) =>
     new Promise<void>((resolve) => {
@@ -190,7 +193,7 @@ export async function serverScan(addresses: string[]): Promise<Found[]> {
       for (let ip = queue.shift(); ip; ip = queue.shift()) await touch(ip);
     }),
   );
-  const table = await fs.readFile("/proc/net/arp", "utf8").catch(() => "");
+  const table = await readArpTable().catch(() => "");
   const wanted = new Set(addresses);
   return parseProcArp(table).filter((entry) => wanted.has(entry.ip));
 }
@@ -228,4 +231,18 @@ export function matchHost(found: Found, hosts: KnownHost[]): ScanMatch | null {
 
 export function withMatches(found: Found[], hosts: KnownHost[]): ScanResult[] {
   return found.map((entry) => ({ ...entry, match: matchHost(entry, hosts) }));
+}
+
+/**
+ * The server's ARP table. Read through a child process, since the plugin's
+ * own process can only open its own files.
+ */
+export async function readServerArpTable(ctx: PluginContext): Promise<string> {
+  const child = await ctx.process.run("cat", ["/proc/net/arp"], {
+    timeoutMs: 5000,
+  });
+  let table = "";
+  child.onStdout((chunk) => (table += chunk));
+  const { code } = await child.exited;
+  return code === 0 ? table : "";
 }

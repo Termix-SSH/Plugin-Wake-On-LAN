@@ -1,5 +1,6 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { nextCronRun } from "./cron.js";
+import { keepAwake } from "./keep-awake.js";
 import type { DeviceRow, DeviceStore } from "./devices.js";
 import type { PowerManager } from "./power.js";
 import type { StatusTracker } from "./status.js";
@@ -53,7 +54,14 @@ export function createScheduler(
 
   return {
     async tick(now = new Date()) {
-      for (const row of await store.all()) {
+      const rows = await store.all();
+      // No timed wake or shutdown: nothing keeps the process running.
+      keepAwake(
+        ctx,
+        "schedules",
+        rows.some((row) => Boolean(row.wakeCron || row.shutdownCron)),
+      );
+      for (const row of rows) {
         if (isDue(row.wakeCron, row.lastWakeRunAt, now)) {
           await run(row, "wake", "lastWakeRunAt");
         }

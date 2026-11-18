@@ -22,9 +22,9 @@ export interface Bmc {
 
 /** Power through the Out-of-band plugin, when it is there. Never required. */
 export function createBmc(ctx: PluginContext): Bmc {
-  const service = (): OutOfBandPower | null => {
-    if (!ctx.services.providers(SERVICE).includes("")) return null;
-    const found = ctx.services.get<Partial<OutOfBandPower>>(SERVICE);
+  const service = async (): Promise<OutOfBandPower | null> => {
+    if (!(await ctx.services.providers(SERVICE)).includes("")) return null;
+    const found = await ctx.services.get<Partial<OutOfBandPower>>(SERVICE);
     return typeof found.has === "function" && typeof found.set === "function"
       ? (found as OutOfBandPower)
       : null;
@@ -35,7 +35,7 @@ export function createBmc(ctx: PluginContext): Bmc {
 
   return {
     async available(hostId, userId) {
-      const found = service();
+      const found = await service();
       if (!found) return false;
       try {
         return await as(userId, () => found.has(hostId));
@@ -44,7 +44,7 @@ export function createBmc(ctx: PluginContext): Bmc {
       }
     },
     async set(hostId, userId, action) {
-      const found = service();
+      const found = await service();
       if (!found) throw new Error("Out-of-band is not turned on");
       await as(userId, () => found.set(hostId, action));
     },

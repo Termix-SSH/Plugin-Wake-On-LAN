@@ -4,6 +4,7 @@ import type {
 } from "@termix-ssh/plugin-sdk/backend";
 import type { DeviceStatus, PowerStatus } from "../shared/types.js";
 import { substitute, type CommandRunner } from "./commands.js";
+import { keepAwake } from "./keep-awake.js";
 import {
   defaultRow,
   parsePorts,
@@ -344,6 +345,7 @@ export function createStatusTracker(
     },
     async expect(hostId, status, timeoutSeconds, onFail) {
       misses.delete(hostId);
+      keepAwake(ctx, "pending", true);
       pending.set(hostId, {
         target: status === "waking" ? "online" : "offline",
         deadline: Date.now() + timeoutSeconds * 1000,
@@ -356,11 +358,16 @@ export function createStatusTracker(
         (await ctx.settings.get<number>("statusInterval")) ?? DEFAULT_INTERVAL;
       if (Date.now() - lastRun < seconds * 1000) return;
       lastRun = Date.now();
-      await check(await enabledHosts()).catch((error: unknown) => {
+      const hosts = await enabledHosts();
+      // No host has Wake-on-LAN on: nothing keeps the process running.
+      keepAwake(ctx, "status", hosts.length > 0);
+      await check(hosts).catch((error: unknown) => {
         ctx.log.warn(`Status check failed: ${String(error)}`);
       });
     },
     async fastTick() {
+      // A wake or shutdown still waits for its answer.
+      keepAwake(ctx, "pending", pending.size > 0);
       if (pending.size === 0) return;
       const hosts = await enabledHosts();
       const on = new Set(hosts.map((host) => host.hostId));
